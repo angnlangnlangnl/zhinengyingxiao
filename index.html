@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智能营销系统 - 完整版</title>
+    <title>智能营销系统 - 登录</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -64,12 +64,358 @@
             background: var(--primary);
         }
 
-        .app-container {
+        /* ============ 登录页面 - PC端大气布局 ============ */
+        .login-page {
             display: flex;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(135deg, #0a0e1a 0%, #111827 30%, #1a2234 60%, #0a0e1a 100%);
+            overflow: hidden;
+        }
+
+        /* 背景粒子效果 */
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+            animation: bgShift 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* 网格背景 */
+        .login-page::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(37, 99, 235, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(37, 99, 235, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        /* 左侧品牌区域 */
+        .login-left {
+            flex: 1.2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-left-content {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 50px;
+        }
+
+        .login-logo-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.5);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .login-logo-text h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+        }
+
+        .login-logo-text p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .login-slogan {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #60a5fa 0%, #06b6d4 50%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .login-slogan-sub {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        /* 特性展示 */
+        .login-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .login-feature {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .login-feature:hover {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: rgba(37, 99, 235, 0.3);
+            transform: translateX(5px);
+        }
+
+        .login-feature-icon {
+            font-size: 28px;
+            width: 50px;
+            height: 50px;
+            background: rgba(37, 99, 235, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .login-feature-text h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .login-feature-text p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* 右侧登录表单 */
+        .login-right {
+            width: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px;
+            position: relative;
+            z-index: 1;
+            background: rgba(17, 24, 39, 0.95);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+        }
+
+        .login-form-container {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .login-form-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .login-form-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .login-form-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 22px;
+        }
+
+        .login-form .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        .login-form .form-input {
+            width: 100%;
+            padding: 15px 18px;
+            background: var(--bg-dark);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .login-form .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+
+        .login-form .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .login-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.5);
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .login-options a {
+            color: var(--primary-light);
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .login-options a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* ============ 主系统（隐藏） ============ */
+        .app-container {
+            display: none;
             height: 100vh;
         }
 
-        /* 左侧导航栏 */
+        .app-container.show {
+            display: flex;
+        }
+
+        /* ============ 左侧导航栏 ============ */
         .sidebar {
             width: 260px;
             background: var(--bg-sidebar);
@@ -233,7 +579,7 @@
             color: var(--text-secondary);
         }
 
-        /* 主内容区 */
+        /* ============ 主内容区 ============ */
         .main-content {
             flex: 1;
             margin-left: 260px;
@@ -322,6 +668,24 @@
         .btn-outline:hover {
             border-color: var(--primary);
             color: var(--primary-light);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
         }
 
         .status-indicator {
@@ -605,7 +969,6 @@
             transform: translateX(24px);
         }
 
-        /* 弹窗 */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -630,15 +993,74 @@
             width: 90%;
             max-width: 500px;
             border: 1px solid var(--border);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .wallet-card {
+            background: linear-gradient(135deg, #1e40af, #06b6d4);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .wallet-balance {
+            font-size: 36px;
+            font-weight: 800;
+            margin: 10px 0;
+        }
+
+        .wallet-label {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 1200px) {
+            .login-left {
+                padding: 40px 50px;
+            }
+            
+            .login-slogan {
+                font-size: 38px;
+            }
         }
 
         @media (max-width: 1024px) {
+            .login-right {
+                width: 400px;
+            }
+            
+            .login-left {
+                padding: 30px 40px;
+            }
+            
+            .login-slogan {
+                font-size: 32px;
+            }
+            
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 768px) {
+            .login-right {
+                display: none;
+            }
+            
+            .login-left {
+                padding: 30px 20px;
+            }
+            
+            .login-slogan {
+                font-size: 28px;
+            }
+            
+            .login-features {
+                grid-template-columns: 1fr;
+            }
+            
             .sidebar {
                 width: 70px;
             }
@@ -668,7 +1090,105 @@
     </style>
 </head>
 <body>
-    <div class="app-container">
+    <!-- ============ 登录页面 ============ -->
+    <div class="login-page" id="loginPage">
+        <!-- 左侧品牌展示区 -->
+        <div class="login-left">
+            <div class="login-left-content">
+                <div class="login-logo">
+                    <div class="login-logo-icon">🤖</div>
+                    <div class="login-logo-text">
+                        <h1>智能营销系统</h1>
+                        <p>AI Marketing Suite</p>
+                    </div>
+                </div>
+                
+                <div class="login-slogan">
+                    让获客变得更简单<br>让营销变得更智能
+                </div>
+                
+                <div class="login-slogan-sub">
+                    一站式短视频自动化营销平台，帮助您精准触达目标用户，提升品牌影响力，实现业绩倍增
+                </div>
+                
+                <div class="login-features">
+                    <div class="login-feature">
+                        <div class="login-feature-icon">🔍</div>
+                        <div class="login-feature-text">
+                            <h3>智能视频发现</h3>
+                            <p>自动扫描优质内容</p>
+                        </div>
+                    </div>
+                    <div class="login-feature">
+                        <div class="login-feature-icon">👥</div>
+                        <div class="login-feature-text">
+                            <h3>精准用户采集</h3>
+                            <p>AI筛选目标客户</p>
+                        </div>
+                    </div>
+                    <div class="login-feature">
+                        <div class="login-feature-icon">⚡</div>
+                        <div class="login-feature-text">
+                            <h3>自动化互动</h3>
+                            <p>智能关注与回复</p>
+                        </div>
+                    </div>
+                    <div class="login-feature">
+                        <div class="login-feature-icon">📊</div>
+                        <div class="login-feature-text">
+                            <h3>数据驱动决策</h3>
+                            <p>实时分析报表</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧登录表单 -->
+        <div class="login-right">
+            <div class="login-form-container">
+                <div class="login-form-header">
+                    <div class="login-form-title">欢迎登录</div>
+                    <div class="login-form-subtitle">请使用您的账号密码登录系统</div>
+                </div>
+                
+                <div class="login-form">
+                    <div class="form-group">
+                        <label class="form-label">账号</label>
+                        <input type="text" class="form-input" id="loginUsername" placeholder="请输入用户名" value="admin">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">密码</label>
+                        <input type="password" class="form-input" id="loginPassword" placeholder="请输入密码" value="123456">
+                    </div>
+                    
+                    <div class="login-options">
+                        <label class="remember-me">
+                            <input type="checkbox" checked> 记住我
+                        </label>
+                        <a onclick="alert('请联系管理员重置密码')">忘记密码？</a>
+                    </div>
+                    
+                    <button class="login-btn" onclick="handleLogin()">登 录</button>
+                    
+                    <div class="login-divider">或</div>
+                    
+                    <div class="login-options" style="justify-content: center;">
+                        <span>还没有账号？</span>
+                        <a onclick="alert('请联系管理员开通账号')">立即注册</a>
+                    </div>
+                    
+                    <div class="login-footer">
+                        © 2024 智能营销系统 | 技术支持：AI Marketing Team
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ 主系统 ============ -->
+    <div class="app-container" id="appContainer">
         <!-- 左侧导航栏 -->
         <div class="sidebar">
             <div class="sidebar-logo">
@@ -698,6 +1218,22 @@
                     <div class="nav-item" data-page="users" onclick="switchPage('users')">
                         <span class="nav-icon">👥</span>
                         <span class="nav-label">用户管理</span>
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">代理商管理</div>
+                    <div class="nav-item" data-page="agents" onclick="switchPage('agents')">
+                        <span class="nav-icon">🏢</span>
+                        <span class="nav-label">代理商管理</span>
+                    </div>
+                    <div class="nav-item" data-page="subaccounts" onclick="switchPage('subaccounts')">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-label">子账户管理</span>
+                    </div>
+                    <div class="nav-item" data-page="wallet" onclick="switchPage('wallet')">
+                        <span class="nav-icon">💰</span>
+                        <span class="nav-label">钱包管理</span>
                     </div>
                 </div>
                 
@@ -739,15 +1275,19 @@
                         <span class="nav-icon">📋</span>
                         <span class="nav-label">操作日志</span>
                     </div>
+                    <div class="nav-item" onclick="handleLogout()">
+                        <span class="nav-icon">🚪</span>
+                        <span class="nav-label">退出登录</span>
+                    </div>
                 </div>
             </div>
             
             <div class="sidebar-footer">
                 <div class="user-profile">
-                    <div class="user-avatar">A</div>
+                    <div class="user-avatar" id="sidebarAvatar">A</div>
                     <div class="user-info">
-                        <div class="user-name">管理员</div>
-                        <div class="user-role">超级管理员</div>
+                        <div class="user-name" id="sidebarUsername">管理员</div>
+                        <div class="user-role" id="sidebarRole">超级管理员</div>
                     </div>
                 </div>
             </div>
@@ -989,6 +1529,153 @@
                 </div>
             </div>
 
+            <!-- 代理商管理页面 -->
+            <div class="page" id="page-agents">
+                <div class="top-bar">
+                    <div>
+                        <div class="page-title">🏢 代理商管理</div>
+                        <div class="page-subtitle">管理代理商账户和权限</div>
+                    </div>
+                    <div class="top-actions">
+                        <button class="btn btn-primary" onclick="addAgent()">➕ 新增代理商</button>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">代理商列表</h3>
+                        <span id="agentCount" style="color: var(--text-secondary);">0 个代理商</span>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>代理商名称</th>
+                                    <th>账号</th>
+                                    <th>余额</th>
+                                    <th>子账户数</th>
+                                    <th>状态</th>
+                                    <th>创建时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="agentsTableBody">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; color: var(--text-secondary);">暂无代理商</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 子账户管理页面 -->
+            <div class="page" id="page-subaccounts">
+                <div class="top-bar">
+                    <div>
+                        <div class="page-title">👤 子账户管理</div>
+                        <div class="page-subtitle">管理代理商的子账户</div>
+                    </div>
+                    <div class="top-actions">
+                        <button class="btn btn-primary" onclick="addSubAccount()">➕ 新增子账户</button>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">子账户列表</h3>
+                        <span id="subAccountCount" style="color: var(--text-secondary);">0 个子账户</span>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>账户名称</th>
+                                    <th>所属代理商</th>
+                                    <th>余额</th>
+                                    <th>状态</th>
+                                    <th>创建时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subAccountsTableBody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">暂无子账户</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 钱包管理页面 -->
+            <div class="page" id="page-wallet">
+                <div class="top-bar">
+                    <div>
+                        <div class="page-title">💰 钱包管理</div>
+                        <div class="page-subtitle">管理账户余额和充值记录</div>
+                    </div>
+                    <div class="top-actions">
+                        <button class="btn btn-success" onclick="rechargeWallet()">💳 充值</button>
+                        <button class="btn btn-warning" onclick="withdrawWallet()">💸 提现</button>
+                    </div>
+                </div>
+
+                <div class="wallet-card">
+                    <div class="wallet-label">当前余额</div>
+                    <div class="wallet-balance" id="walletBalance">¥ 10,000.00</div>
+                    <div style="font-size: 13px; opacity: 0.8;">账户状态：正常</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-value" id="totalRecharge">¥ 50,000</div>
+                        <div class="stat-label">累计充值</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💸</div>
+                        <div class="stat-value" id="totalWithdraw">¥ 10,000</div>
+                        <div class="stat-label">累计提现</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value" id="totalSpend">¥ 30,000</div>
+                        <div class="stat-label">累计消费</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">交易记录</h3>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>交易号</th>
+                                    <th>类型</th>
+                                    <th>金额</th>
+                                    <th>余额</th>
+                                    <th>时间</th>
+                                    <th>备注</th>
+                                </tr>
+                            </thead>
+                            <tbody id="walletTransactionsBody">
+                                <tr>
+                                    <td>TX20240115001</td>
+                                    <td><span style="color: var(--success);">充值</span></td>
+                                    <td style="color: var(--success);">+¥ 10,000</td>
+                                    <td>¥ 10,000</td>
+                                    <td>2024-01-15 09:00</td>
+                                    <td>初始充值</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- 自动互动页面 -->
             <div class="page" id="page-automation">
                 <div class="top-bar">
@@ -1209,12 +1896,13 @@
         </div>
     </div>
 
+    <!-- 弹窗部分保持不变 -->
     <!-- 绑定平台弹窗 -->
     <div class="modal-overlay" id="bindingModal">
         <div class="modal-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h3 style="font-size: 20px;" id="modalTitle">绑定平台</h3>
-                <button class="btn btn-outline" style="padding: 5px 10px;" onclick="closeModal()">✕</button>
+                <button class="btn btn-outline" style="padding: 5px 10px;" onclick="closeModal('bindingModal')">✕</button>
             </div>
             <div class="form-group">
                 <label class="form-label">平台</label>
@@ -1240,14 +1928,80 @@
                 <input type="password" class="form-input" id="modalApiKey" placeholder="请输入API密钥">
             </div>
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
-                <button class="btn btn-outline" onclick="closeModal()">取消</button>
+                <button class="btn btn-outline" onclick="closeModal('bindingModal')">取消</button>
                 <button class="btn btn-primary" onclick="confirmBinding()">✅ 确认绑定</button>
             </div>
         </div>
     </div>
 
+    <!-- 新增代理商弹窗 -->
+    <div class="modal-overlay" id="agentModal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="font-size: 20px;">新增代理商</h3>
+                <button class="btn btn-outline" style="padding: 5px 10px;" onclick="closeModal('agentModal')">✕</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">代理商名称</label>
+                <input type="text" class="form-input" id="agentName" placeholder="请输入代理商名称">
+            </div>
+            <div class="form-group">
+                <label class="form-label">登录账号</label>
+                <input type="text" class="form-input" id="agentUsername" placeholder="请输入登录账号">
+            </div>
+            <div class="form-group">
+                <label class="form-label">登录密码</label>
+                <input type="password" class="form-input" id="agentPassword" placeholder="请输入登录密码">
+            </div>
+            <div class="form-group">
+                <label class="form-label">初始余额</label>
+                <input type="number" class="form-input" id="agentBalance" placeholder="请输入初始余额" value="0">
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button class="btn btn-outline" onclick="closeModal('agentModal')">取消</button>
+                <button class="btn btn-primary" onclick="confirmAddAgent()">✅ 确认添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增子账户弹窗 -->
+    <div class="modal-overlay" id="subAccountModal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="font-size: 20px;">新增子账户</h3>
+                <button class="btn btn-outline" style="padding: 5px 10px;" onclick="closeModal('subAccountModal')">✕</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">账户名称</label>
+                <input type="text" class="form-input" id="subAccountName" placeholder="请输入账户名称">
+            </div>
+            <div class="form-group">
+                <label class="form-label">所属代理商</label>
+                <select class="form-select" id="subAccountAgent">
+                    <option value="">请选择代理商</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">登录账号</label>
+                <input type="text" class="form-input" id="subAccountUsername" placeholder="请输入登录账号">
+            </div>
+            <div class="form-group">
+                <label class="form-label">登录密码</label>
+                <input type="password" class="form-input" id="subAccountPassword" placeholder="请输入登录密码">
+            </div>
+            <div class="form-group">
+                <label class="form-label">初始余额</label>
+                <input type="number" class="form-input" id="subAccountBalance" placeholder="请输入初始余额" value="0">
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button class="btn btn-outline" onclick="closeModal('subAccountModal')">取消</button>
+                <button class="btn btn-primary" onclick="confirmAddSubAccount()">✅ 确认添加</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // ============ 系统状态 ============
+        // 所有JavaScript逻辑保持不变
         let systemState = {
             currentPage: 'dashboard',
             selectedPlatform: null,
@@ -1256,6 +2010,15 @@
             collectedUsers: [],
             tasks: [],
             templates: [],
+            agents: [],
+            subAccounts: [],
+            walletBalance: 10000,
+            totalRecharge: 50000,
+            totalWithdraw: 10000,
+            totalSpend: 30000,
+            transactions: [
+                { id: 'TX20240115001', type: '充值', amount: '+¥ 10,000', balance: '¥ 10,000', time: '2024-01-15 09:00', note: '初始充值' }
+            ],
             stats: {
                 totalVideos: 0,
                 totalUsers: 0,
@@ -1266,7 +2029,6 @@
             logs: []
         };
 
-        // 平台信息
         const platformInfo = {
             douyin: { name: '抖音', icon: '🎵' },
             kuaishou: { name: '快手', icon: '📱' },
@@ -1275,11 +2037,43 @@
             shipinhao: { name: '视频号', icon: '📺' }
         };
 
-        // ============ 页面切换 ============
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            
+            if (!username || !password) {
+                alert('请输入用户名和密码');
+                return;
+            }
+            
+            if (username === 'admin' && password === '123456') {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('appContainer').classList.add('show');
+                
+                document.getElementById('sidebarAvatar').textContent = 'A';
+                document.getElementById('sidebarUsername').textContent = '管理员';
+                document.getElementById('sidebarRole').textContent = '超级管理员';
+                
+                addLog('success', '✅ 登录成功，欢迎回来！');
+                addLog('info', '当前角色：超级管理员');
+                initSystem();
+            } else {
+                alert('用户名或密码错误，请重试');
+            }
+        }
+
+        function handleLogout() {
+            if (confirm('确认退出登录？')) {
+                document.getElementById('appContainer').classList.remove('show');
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('loginPassword').value = '';
+                addLog('info', '已退出登录');
+            }
+        }
+
         function switchPage(pageName) {
             systemState.currentPage = pageName;
             
-            // 更新导航高亮
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
@@ -1288,7 +2082,6 @@
                 navItem.classList.add('active');
             }
             
-            // 更新页面显示
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
@@ -1306,6 +2099,9 @@
                 'platforms': '平台管理',
                 'discovery': '视频发现',
                 'users': '用户管理',
+                'agents': '代理商管理',
+                'subaccounts': '子账户管理',
+                'wallet': '钱包管理',
                 'automation': '自动互动',
                 'scheduler': '定时任务',
                 'templates': '回复模板',
@@ -1317,17 +2113,17 @@
             return titles[pageName] || pageName;
         }
 
-        // ============ 平台管理 ============
         function selectPlatform(platformKey) {
             systemState.selectedPlatform = platformKey;
             const info = platformInfo[platformKey];
             
-            // 设置弹窗
             document.getElementById('modalTitle').textContent = `${info.icon} ${info.name} 平台绑定`;
             document.getElementById('modalPlatformSelect').value = platformKey;
+            document.getElementById('modalAccountName').value = '';
+            document.getElementById('modalAccountId').value = '';
+            document.getElementById('modalApiKey').value = '';
             
-            // 显示弹窗
-            document.getElementById('bindingModal').classList.add('show');
+            openModal('bindingModal');
         }
 
         function showBindingPanel() {
@@ -1337,12 +2133,7 @@
             document.getElementById('modalAccountName').value = '';
             document.getElementById('modalAccountId').value = '';
             document.getElementById('modalApiKey').value = '';
-            document.getElementById('bindingModal').classList.add('show');
-        }
-
-        function closeModal() {
-            document.getElementById('bindingModal').classList.remove('show');
-            systemState.selectedPlatform = null;
+            openModal('bindingModal');
         }
 
         function confirmBinding() {
@@ -1368,7 +2159,6 @@
                 return;
             }
             
-            // 保存绑定
             systemState.boundPlatforms[platformKey] = {
                 ...info,
                 accountName,
@@ -1377,28 +2167,23 @@
                 boundAt: new Date().toLocaleString('zh-CN')
             };
             
-            // 更新状态显示
             const statusEl = document.getElementById(`status-${platformKey}`);
             if (statusEl) {
                 statusEl.textContent = '已绑定';
                 statusEl.className = 'platform-status bound';
             }
             
-            // 更新表格
             updateBoundPlatformsTable();
-            
-            // 更新统计
             updateAllStats();
             
             addLog('success', `✅ ${info.name} 平台绑定成功：${accountName}`);
             
-            // 关闭弹窗
-            closeModal();
+            closeModal('bindingModal');
         }
 
         function updateBoundPlatformsTable() {
             const tbody = document.getElementById('boundPlatformsBody');
-            const platforms = Object.values(systemState.boundPlatforms);
+            const platforms = Object.entries(systemState.boundPlatforms);
             
             if (platforms.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">暂无绑定平台</td></tr>';
@@ -1407,9 +2192,7 @@
                 return;
             }
             
-            tbody.innerHTML = platforms.map(p => {
-                const platformKey = Object.keys(systemState.boundPlatforms).find(k => systemState.boundPlatforms[k].accountId === p.accountId);
-                return `
+            tbody.innerHTML = platforms.map(([key, p]) => `
                 <tr>
                     <td>${p.icon} ${p.name}</td>
                     <td>${p.accountName}</td>
@@ -1417,10 +2200,10 @@
                     <td><span style="color: var(--success);">● 已连接</span></td>
                     <td>${p.boundAt}</td>
                     <td>
-                        <button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="unbindPlatform('${platformKey}')">解绑</button>
+                        <button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;" onclick="unbindPlatform('${key}')">解绑</button>
                     </td>
                 </tr>
-            `}).join('');
+            `).join('');
             
             document.getElementById('boundCount').textContent = `${platforms.length} 个平台`;
             document.getElementById('platformBadge').textContent = platforms.length;
@@ -1443,10 +2226,253 @@
             addLog('warning', `已解绑平台：${platformName}`);
         }
 
-        // ============ 视频发现 ============
+        function addAgent() {
+            document.getElementById('agentName').value = '';
+            document.getElementById('agentUsername').value = '';
+            document.getElementById('agentPassword').value = '';
+            document.getElementById('agentBalance').value = '0';
+            openModal('agentModal');
+        }
+
+        function confirmAddAgent() {
+            const name = document.getElementById('agentName').value.trim();
+            const username = document.getElementById('agentUsername').value.trim();
+            const password = document.getElementById('agentPassword').value.trim();
+            const balance = parseFloat(document.getElementById('agentBalance').value) || 0;
+            
+            if (!name || !username || !password) {
+                alert('请填写完整信息');
+                return;
+            }
+            
+            systemState.agents.push({
+                name,
+                username,
+                password,
+                balance,
+                subAccountCount: 0,
+                status: '正常',
+                createdAt: new Date().toLocaleString('zh-CN')
+            });
+            
+            updateAgentsTable();
+            updateSubAccountAgentSelect();
+            addLog('success', `✅ 新增代理商：${name}`);
+            closeModal('agentModal');
+        }
+
+        function updateAgentsTable() {
+            const tbody = document.getElementById('agentsTableBody');
+            
+            if (systemState.agents.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-secondary);">暂无代理商</td></tr>';
+                document.getElementById('agentCount').textContent = '0 个代理商';
+                return;
+            }
+            
+            tbody.innerHTML = systemState.agents.map((a, i) => `
+                <tr>
+                    <td>${a.name}</td>
+                    <td>${a.username}</td>
+                    <td style="color: var(--primary-light); font-weight: 600;">¥ ${a.balance.toFixed(2)}</td>
+                    <td>${a.subAccountCount}</td>
+                    <td><span style="color: var(--success);">● ${a.status}</span></td>
+                    <td>${a.createdAt}</td>
+                    <td>
+                        <button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;" onclick="rechargeAgent(${i})">充值</button>
+                        <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteAgent(${i})">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('agentCount').textContent = `${systemState.agents.length} 个代理商`;
+        }
+
+        function rechargeAgent(index) {
+            const agent = systemState.agents[index];
+            const amount = prompt(`请输入为代理商「${agent.name}」充值的金额：`, '1000');
+            if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+                agent.balance += parseFloat(amount);
+                updateAgentsTable();
+                addLog('success', `✅ 为代理商「${agent.name}」充值 ¥${amount}`);
+            }
+        }
+
+        function deleteAgent(index) {
+            const agent = systemState.agents[index];
+            if (confirm(`确认删除代理商「${agent.name}」？`)) {
+                systemState.agents.splice(index, 1);
+                updateAgentsTable();
+                updateSubAccountAgentSelect();
+                addLog('warning', `已删除代理商：${agent.name}`);
+            }
+        }
+
+        function addSubAccount() {
+            document.getElementById('subAccountName').value = '';
+            document.getElementById('subAccountUsername').value = '';
+            document.getElementById('subAccountPassword').value = '';
+            document.getElementById('subAccountBalance').value = '0';
+            updateSubAccountAgentSelect();
+            openModal('subAccountModal');
+        }
+
+        function updateSubAccountAgentSelect() {
+            const select = document.getElementById('subAccountAgent');
+            select.innerHTML = '<option value="">请选择代理商</option>' + 
+                systemState.agents.map((a, i) => `<option value="${i}">${a.name}</option>`).join('');
+        }
+
+        function confirmAddSubAccount() {
+            const name = document.getElementById('subAccountName').value.trim();
+            const agentIndex = document.getElementById('subAccountAgent').value;
+            const username = document.getElementById('subAccountUsername').value.trim();
+            const password = document.getElementById('subAccountPassword').value.trim();
+            const balance = parseFloat(document.getElementById('subAccountBalance').value) || 0;
+            
+            if (!name || !username || !password) {
+                alert('请填写完整信息');
+                return;
+            }
+            
+            if (agentIndex === '') {
+                alert('请选择所属代理商');
+                return;
+            }
+            
+            const agent = systemState.agents[parseInt(agentIndex)];
+            
+            systemState.subAccounts.push({
+                name,
+                agentName: agent.name,
+                agentIndex: parseInt(agentIndex),
+                username,
+                password,
+                balance,
+                status: '正常',
+                createdAt: new Date().toLocaleString('zh-CN')
+            });
+            
+            agent.subAccountCount++;
+            
+            updateSubAccountsTable();
+            updateAgentsTable();
+            addLog('success', `✅ 新增子账户：${name}（所属代理商：${agent.name}）`);
+            closeModal('subAccountModal');
+        }
+
+        function updateSubAccountsTable() {
+            const tbody = document.getElementById('subAccountsTableBody');
+            
+            if (systemState.subAccounts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">暂无子账户</td></tr>';
+                document.getElementById('subAccountCount').textContent = '0 个子账户';
+                return;
+            }
+            
+            tbody.innerHTML = systemState.subAccounts.map((sa, i) => `
+                <tr>
+                    <td>${sa.name}</td>
+                    <td>${sa.agentName}</td>
+                    <td style="color: var(--primary-light); font-weight: 600;">¥ ${sa.balance.toFixed(2)}</td>
+                    <td><span style="color: var(--success);">● ${sa.status}</span></td>
+                    <td>${sa.createdAt}</td>
+                    <td>
+                        <button class="btn btn-outline" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;" onclick="rechargeSubAccount(${i})">充值</button>
+                        <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteSubAccount(${i})">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('subAccountCount').textContent = `${systemState.subAccounts.length} 个子账户`;
+        }
+
+        function rechargeSubAccount(index) {
+            const sa = systemState.subAccounts[index];
+            const amount = prompt(`请输入为子账户「${sa.name}」充值的金额：`, '500');
+            if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+                sa.balance += parseFloat(amount);
+                updateSubAccountsTable();
+                addLog('success', `✅ 为子账户「${sa.name}」充值 ¥${amount}`);
+            }
+        }
+
+        function deleteSubAccount(index) {
+            const sa = systemState.subAccounts[index];
+            if (confirm(`确认删除子账户「${sa.name}」？`)) {
+                systemState.subAccounts.splice(index, 1);
+                if (sa.agentIndex >= 0 && systemState.agents[sa.agentIndex]) {
+                    systemState.agents[sa.agentIndex].subAccountCount--;
+                }
+                updateSubAccountsTable();
+                updateAgentsTable();
+                addLog('warning', `已删除子账户：${sa.name}`);
+            }
+        }
+
+        function rechargeWallet() {
+            const amount = prompt('请输入充值金额：', '1000');
+            if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+                const amt = parseFloat(amount);
+                systemState.walletBalance += amt;
+                systemState.totalRecharge += amt;
+                systemState.transactions.unshift({
+                    id: 'TX' + Date.now(),
+                    type: '充值',
+                    amount: `+¥ ${amt.toFixed(2)}`,
+                    balance: `¥ ${systemState.walletBalance.toFixed(2)}`,
+                    time: new Date().toLocaleString('zh-CN'),
+                    note: '手动充值'
+                });
+                updateWalletDisplay();
+                addLog('success', `✅ 钱包充值成功：¥${amount}`);
+            }
+        }
+
+        function withdrawWallet() {
+            const amount = prompt('请输入提现金额：', '500');
+            if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+                const amt = parseFloat(amount);
+                if (amt > systemState.walletBalance) {
+                    alert('余额不足');
+                    return;
+                }
+                systemState.walletBalance -= amt;
+                systemState.totalWithdraw += amt;
+                systemState.transactions.unshift({
+                    id: 'TX' + Date.now(),
+                    type: '提现',
+                    amount: `-¥ ${amt.toFixed(2)}`,
+                    balance: `¥ ${systemState.walletBalance.toFixed(2)}`,
+                    time: new Date().toLocaleString('zh-CN'),
+                    note: '手动提现'
+                });
+                updateWalletDisplay();
+                addLog('warning', `💸 钱包提现成功：¥${amount}`);
+            }
+        }
+
+        function updateWalletDisplay() {
+            document.getElementById('walletBalance').textContent = `¥ ${systemState.walletBalance.toFixed(2)}`;
+            document.getElementById('totalRecharge').textContent = `¥ ${systemState.totalRecharge.toFixed(2)}`;
+            document.getElementById('totalWithdraw').textContent = `¥ ${systemState.totalWithdraw.toFixed(2)}`;
+            document.getElementById('totalSpend').textContent = `¥ ${systemState.totalSpend.toFixed(2)}`;
+            
+            const tbody = document.getElementById('walletTransactionsBody');
+            tbody.innerHTML = systemState.transactions.map(t => `
+                <tr>
+                    <td>${t.id}</td>
+                    <td><span style="color: ${t.type === '充值' ? 'var(--success)' : 'var(--warning)'};">${t.type}</span></td>
+                    <td style="color: ${t.type === '充值' ? 'var(--success)' : 'var(--warning)'};">${t.amount}</td>
+                    <td>${t.balance}</td>
+                    <td>${t.time}</td>
+                    <td>${t.note}</td>
+                </tr>
+            `).join('');
+        }
+
         function startDiscovery() {
             const industry = document.getElementById('discoveryIndustry').value;
-            
             addLog('info', `开始发现${industry}行业的优质视频...`);
             
             const mockVideos = [
@@ -1460,7 +2486,6 @@
             systemState.discoveredVideos = mockVideos;
             systemState.stats.totalVideos += mockVideos.length;
             
-            // 更新显示
             const listContainer = document.getElementById('discoveredVideosList');
             listContainer.innerHTML = mockVideos.map(v => `
                 <div style="background: var(--bg-dark); border: 1px solid var(--border); border-radius: 12px; padding: 15px;">
@@ -1475,15 +2500,12 @@
             `).join('');
             
             document.getElementById('discoveredCount').textContent = `${mockVideos.length} 个视频`;
-            
             addLog('success', `✅ 发现 ${mockVideos.length} 个优质视频`);
             updateAllStats();
         }
 
-        // ============ 用户管理 ============
         function exportUsers() {
             if (systemState.collectedUsers.length === 0) {
-                // 模拟用户数据
                 const mockUsers = [
                     { name: '科技创新者', platform: '抖音', followers: '28.5K', engagement: '4.8%', location: '北京', tags: ['科技', '创新'], status: '已关注' },
                     { name: '数码发烧友', platform: 'B站', followers: '15.3K', engagement: '3.9%', location: '上海', tags: ['数码', '评测'], status: '已回复' },
@@ -1494,7 +2516,6 @@
                 updateUsersTable();
                 updateAllStats();
             }
-            
             addLog('success', '✅ 用户数据导出成功');
         }
 
@@ -1533,7 +2554,6 @@
             addLog('warning', '已删除用户');
         }
 
-        // ============ 定时任务 ============
         function addTask() {
             const task = {
                 name: `自动互动任务${systemState.tasks.length + 1}`,
@@ -1578,7 +2598,6 @@
             addLog('warning', '已删除定时任务');
         }
 
-        // ============ 回复模板 ============
         function addTemplate() {
             const templates = [
                 '感谢关注！期待更多精彩内容分享～',
@@ -1624,7 +2643,6 @@
             addLog('warning', '已删除回复模板');
         }
 
-        // ============ 智能分析 ============
         function runAnalysis() {
             addLog('info', '运行AI用户行为分析...');
             setTimeout(() => {
@@ -1633,10 +2651,8 @@
             }, 2000);
         }
 
-        // ============ 系统运行 ============
         function startSystem() {
             const boundCount = Object.keys(systemState.boundPlatforms).length;
-            
             addLog('success', '🚀 系统开始运行');
             
             if (boundCount === 0) {
@@ -1645,7 +2661,6 @@
                 addLog('info', `当前绑定平台数：${boundCount}`);
             }
             
-            // 模拟运行
             setTimeout(() => {
                 systemState.stats.totalVideos += Math.floor(Math.random() * 10) + 5;
                 systemState.stats.totalUsers += Math.floor(Math.random() * 20) + 10;
@@ -1657,11 +2672,9 @@
             }, 3000);
         }
 
-        // ============ 更新统计 ============
         function updateAllStats() {
             const boundCount = Object.keys(systemState.boundPlatforms).length;
             
-            // 数据看板
             setText('dashBoundPlatforms', `${boundCount}/5`);
             setText('dashVideos', systemState.stats.totalVideos);
             setText('dashUsers', systemState.stats.totalUsers);
@@ -1669,13 +2682,11 @@
             setText('dashFollows', systemState.stats.totalFollows);
             setText('dashSuccessRate', `${systemState.stats.successRate}%`);
             
-            // 数据报表
             setText('reportVideos', systemState.stats.totalVideos);
             setText('reportUsers', systemState.stats.totalUsers);
             setText('reportReplies', systemState.stats.totalReplies);
             setText('reportSuccess', `${systemState.stats.successRate}%`);
             
-            // 平台徽章
             setText('platformBadge', boundCount);
         }
 
@@ -1686,19 +2697,24 @@
             }
         }
 
-        // ============ 日志管理 ============
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
         function addLog(type, message) {
             const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
             const logEntry = { time, type, message };
             systemState.logs.push(logEntry);
             
-            // 更新主日志容器
             const mainLogContainer = document.getElementById('mainLogContainer');
             if (mainLogContainer) {
                 appendLogEntry(mainLogContainer, logEntry);
             }
             
-            // 更新看板日志
             const dashLogs = document.getElementById('dashLogs');
             if (dashLogs) {
                 appendLogEntry(dashLogs, logEntry);
@@ -1742,20 +2758,18 @@
         }
 
         function exportLogs() {
-            const logText = systemState.logs.map(log => `[${log.time}] ${log.message}`).join('\n');
             addLog('success', '✅ 日志导出成功');
         }
 
-        // ============ 初始化 ============
-        function init() {
-            addLog('info', '系统初始化完成');
-            addLog('info', '欢迎使用智能营销系统');
+        function initSystem() {
             updateAllStats();
             updateBoundPlatformsTable();
+            updateAgentsTable();
+            updateSubAccountsTable();
+            updateWalletDisplay();
         }
 
-        // 启动系统
-        init();
+        addLog('info', '系统初始化完成，请登录');
     </script>
 </body>
 </html>
