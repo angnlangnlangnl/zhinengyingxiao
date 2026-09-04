@@ -44,7 +44,6 @@
         ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* 登录页样式保持 */
         .login-page { display: flex; height: 100vh; position: relative; background: linear-gradient(135deg, #0a0e1a 0%, #111827 30%, #1a2234 60%, #0a0e1a 100%); overflow: hidden; }
         .login-left { flex: 1.2; display: flex; align-items: center; justify-content: center; padding: 60px 80px; position: relative; z-index: 1; }
         .login-left-content { max-width: 600px; width: 100%; }
@@ -79,7 +78,6 @@
         .login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
         .login-footer { text-align: center; margin-top: 30px; font-size: 12px; color: var(--text-muted); }
 
-        /* 主系统 */
         .app-container { display: none; height: 100vh; }
         .app-container.show { display: flex; }
         .sidebar { width: 260px; background: var(--bg-sidebar); border-right:1px solid var(--border); display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
@@ -177,7 +175,6 @@
         .wallet-balance { font-size: 36px; font-weight: 800; margin: 10px 0; }
         .wallet-label { font-size: 13px; opacity: 0.8; }
 
-        /* 私信会话样式 */
         .chat-container { display: flex; height: 500px; gap: 20px; }
         .chat-list { width: 280px; background: var(--bg-dark); border-radius: 12px; overflow-y: auto; border:1px solid var(--border); }
         .chat-list-item { padding: 15px; border-bottom:1px solid var(--border); cursor: pointer; transition: var(--transition); }
@@ -191,6 +188,26 @@
         .message-out { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; align-self: flex-end; margin-left: auto; }
         .chat-input-area { padding: 15px 20px; border-top:1px solid var(--border); display: flex; gap: 10px; }
         .chat-input-area .form-input { flex: 1; }
+
+        /* 视频卡片样式 */
+        .video-card-bg {
+            height: 140px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            border-radius: 12px 12px 0 0;
+        }
+        .video-score-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -230,7 +247,6 @@
 
     <!-- 主系统 -->
     <div class="app-container" id="appContainer">
-        <!-- 左侧导航 -->
         <div class="sidebar">
             <div class="sidebar-logo"><div class="logo-icon">🤖</div><div class="logo-text"><h2>智能营销系统</h2><p>AI Marketing Suite</p></div></div>
             <div class="sidebar-nav">
@@ -275,9 +291,7 @@
             <div class="sidebar-footer"><div class="user-profile"><div class="user-avatar" id="sidebarAvatar">A</div><div class="user-info"><div class="user-name" id="sidebarUsername">管理员</div><div class="user-role" id="sidebarRole">超级管理员</div></div></div></div>
         </div>
 
-        <!-- 主内容区 -->
         <div class="main-content">
-            <!-- 数据看板页面 -->
             <div class="page active" id="page-dashboard">
                 <div class="top-bar"><div><div class="page-title">📊 数据看板</div><div class="page-subtitle">系统整体运行数据概览</div></div><div class="top-actions"><div class="status-indicator"><div class="status-dot"></div><span>系统就绪</span></div><button class="btn btn-primary" onclick="startSystem()">▶️ 开始运行</button></div></div>
                 <div class="stats-grid">
@@ -291,44 +305,31 @@
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">📋 最近操作</h3></div><div class="log-container" id="dashLogs" style="height:300px;"></div></div>
             </div>
 
-            <!-- 平台管理 -->
             <div class="page" id="page-platforms">
                 <div class="top-bar"><div><div class="page-title">🔗 平台管理</div><div class="page-subtitle">管理多个短视频平台的账号绑定</div></div><div class="top-actions"><button class="btn btn-primary" onclick="showBindingPanel()">➕ 绑定新平台</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">已绑定平台</h3><span id="boundCount" style="color:var(--text-secondary);">0 个平台</span></div><div class="table-container"><table><thead><tr><th>平台</th><th>账号名称</th><th>账号ID</th><th>状态</th><th>绑定时间</th><th>操作</th></tr></thead><tbody id="boundPlatformsBody"><tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">暂无绑定平台</td></tr></tbody></table></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">可用平台</h3></div><div class="platform-grid" id="platformGrid"></div></div>
             </div>
 
-            <!-- 视频发现 -->
             <div class="page" id="page-discovery">
                 <div class="top-bar"><div><div class="page-title">🔍 视频发现</div><div class="page-subtitle">自动发现目标行业的优质视频</div></div><div class="top-actions"><button class="btn btn-primary" onclick="startDiscovery()">🔍 开始发现</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">发现设置</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;"><div class="form-group"><label class="form-label">目标行业</label><select class="form-select" id="discoveryIndustry"><option>科技数码</option><option>美食餐饮</option><option>旅游出行</option><option>美妆时尚</option><option>健康养生</option><option>教育培训</option><option>投资理财</option><option>房产家居</option></select></div><div class="form-group"><label class="form-label">最低互动率</label><select class="form-select" id="discoveryEngagement"><option value="1">1% 以上</option><option value="2" selected>2% 以上</option><option value="3">3% 以上</option><option value="5">5% 以上</option></select></div><div class="form-group"><label class="form-label">最小粉丝数</label><input type="number" class="form-input" id="discoveryFollowers" value="1000"></div></div></div>
-                <div class="panel"><div class="panel-header"><h3 class="panel-title">发现的视频</h3><span id="discoveredCount" style="color:var(--text-secondary);">0 个视频</span></div><div id="discoveredVideosList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;"><div style="text-align:center;color:var(--text-secondary);padding:40px;grid-column:1/-1;">点击"开始发现"查找优质视频</div></div></div>
+                <div class="panel"><div class="panel-header"><h3 class="panel-title">发现的视频</h3><span id="discoveredCount" style="color:var(--text-secondary);">0 个视频</span></div><div id="discoveredVideosList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px;"><div style="text-align:center;color:var(--text-secondary);padding:40px;grid-column:1/-1;">点击"开始发现"查找优质视频</div></div></div>
             </div>
 
-            <!-- 用户管理 -->
             <div class="page" id="page-users">
                 <div class="top-bar"><div><div class="page-title">👥 用户管理</div><div class="page-subtitle">管理采集到的目标用户</div></div><div class="top-actions"><button class="btn btn-outline" onclick="exportUsers()">📥 导出用户</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">目标用户列表</h3><span id="usersCount" style="color:var(--text-secondary);">0 个用户</span></div><div class="table-container"><table><thead><tr><th>用户</th><th>平台</th><th>粉丝数</th><th>互动率</th><th>地区</th><th>标签</th><th>状态</th><th>操作</th></tr></thead><tbody id="usersTableBody"><tr><td colspan="8" style="text-align:center;color:var(--text-secondary);">暂无用户数据</td></tr></tbody></table></div></div>
             </div>
 
-            <!-- 私信会话页面 -->
             <div class="page" id="page-chat">
                 <div class="top-bar"><div><div class="page-title">💬 私信会话</div><div class="page-subtitle">实时接收和回复用户私信消息</div></div><div class="top-actions"><button class="btn btn-outline" onclick="refreshChats()">🔄 刷新</button></div></div>
                 <div class="panel">
                     <div class="chat-container">
                         <div class="chat-list" id="chatList">
-                            <div class="chat-list-item active" onclick="selectChat(0)" data-index="0">
-                                <div style="font-weight:600;">用户A</div>
-                                <div style="font-size:12px;color:var(--text-secondary);">请问怎么预约？</div>
-                            </div>
-                            <div class="chat-list-item" onclick="selectChat(1)" data-index="1">
-                                <div style="font-weight:600;">用户B</div>
-                                <div style="font-size:12px;color:var(--text-secondary);">价格多少？</div>
-                            </div>
-                            <div class="chat-list-item" onclick="selectChat(2)" data-index="2">
-                                <div style="font-weight:600;">用户C</div>
-                                <div style="font-size:12px;color:var(--text-secondary);">想了解加盟</div>
-                            </div>
+                            <div class="chat-list-item active" onclick="selectChat(0)" data-index="0"><div style="font-weight:600;">用户A</div><div style="font-size:12px;color:var(--text-secondary);">请问怎么预约？</div></div>
+                            <div class="chat-list-item" onclick="selectChat(1)" data-index="1"><div style="font-weight:600;">用户B</div><div style="font-size:12px;color:var(--text-secondary);">价格多少？</div></div>
+                            <div class="chat-list-item" onclick="selectChat(2)" data-index="2"><div style="font-weight:600;">用户C</div><div style="font-size:12px;color:var(--text-secondary);">想了解加盟</div></div>
                         </div>
                         <div class="chat-messages">
                             <div class="chat-messages-header" id="chatHeader">用户A</div>
@@ -348,37 +349,31 @@
                 </div>
             </div>
 
-            <!-- 组件管理 -->
             <div class="page" id="page-components">
                 <div class="top-bar"><div><div class="page-title">🧩 组件管理</div><div class="page-subtitle">管理抖音私信组件（留资卡片、预约组件等）</div></div><div class="top-actions"><button class="btn btn-primary" onclick="refreshComponents()">🔄 刷新</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">组件列表</h3></div><div class="table-container"><table><thead><tr><th>组件名称</th><th>类型</th><th>组件ID</th><th>状态</th><th>创建时间</th><th>操作</th></tr></thead><tbody id="componentsTableBody"><tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">暂无组件数据</td></tr></tbody></table></div></div>
             </div>
 
-            <!-- 触达计划 -->
             <div class="page" id="page-touchplan">
                 <div class="top-bar"><div><div class="page-title">🎯 触达计划</div><div class="page-subtitle">用户触达计划管理（短视频评论、直播弹幕自动私信）</div></div><div class="top-actions"><button class="btn btn-primary" onclick="createTouchPlan()">➕ 新建计划</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">计划列表</h3><span id="touchPlanCount" style="color:var(--text-secondary);">0 个计划</span></div><div class="table-container"><table><thead><tr><th>计划名称</th><th>触发类型</th><th>发送内容</th><th>状态</th><th>触达人数</th><th>留资人数</th><th>操作</th></tr></thead><tbody id="touchPlanTableBody"><tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">暂无触达计划</td></tr></tbody></table></div></div>
             </div>
 
-            <!-- 线索管理 -->
             <div class="page" id="page-leads">
                 <div class="top-bar"><div><div class="page-title">📇 线索管理</div><div class="page-subtitle">管理通过私信收集的留资线索</div></div><div class="top-actions"><button class="btn btn-outline" onclick="exportLeads()">📥 导出线索</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">线索列表</h3><span id="leadsCount" style="color:var(--text-secondary);">0 条线索</span></div><div class="table-container"><table><thead><tr><th>姓名</th><th>电话(脱敏)</th><th>来源</th><th>意向</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="leadsTableBody"><tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">暂无线索数据</td></tr></tbody></table></div></div>
             </div>
 
-            <!-- 代理商管理 -->
             <div class="page" id="page-agents">
                 <div class="top-bar"><div><div class="page-title">🏢 代理商管理</div><div class="page-subtitle">管理代理商账户和权限</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addAgent()">➕ 新增代理商</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">代理商列表</h3><span id="agentCount" style="color:var(--text-secondary);">0 个代理商</span></div><div class="table-container"><table><thead><tr><th>代理商名称</th><th>账号</th><th>余额</th><th>子账户数</th><th>状态</th><th>创建时间</th><th>操作</th></tr></thead><tbody id="agentsTableBody"></tbody></table></div></div>
             </div>
 
-            <!-- 子账户管理 -->
             <div class="page" id="page-subaccounts">
                 <div class="top-bar"><div><div class="page-title">👤 子账户管理</div><div class="page-subtitle">管理代理商的子账户</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addSubAccount()">➕ 新增子账户</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">子账户列表</h3><span id="subAccountCount" style="color:var(--text-secondary);">0 个子账户</span></div><div class="table-container"><table><thead><tr><th>账户名称</th><th>所属代理商</th><th>余额</th><th>状态</th><th>创建时间</th><th>操作</th></tr></thead><tbody id="subAccountsTableBody"></tbody></table></div></div>
             </div>
 
-            <!-- 钱包管理 -->
             <div class="page" id="page-wallet">
                 <div class="top-bar"><div><div class="page-title">💰 钱包管理</div><div class="page-subtitle">管理账户余额和充值记录</div></div><div class="top-actions"><button class="btn btn-success" onclick="rechargeWallet()">💳 充值</button><button class="btn btn-warning" onclick="withdrawWallet()">💸 提现</button></div></div>
                 <div class="wallet-card"><div class="wallet-label">当前余额</div><div class="wallet-balance" id="walletBalance">¥ 10,000.00</div><div style="font-size:13px;opacity:0.8;">账户状态：正常</div></div>
@@ -386,43 +381,36 @@
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">交易记录</h3></div><div class="table-container"><table><thead><tr><th>交易号</th><th>类型</th><th>金额</th><th>余额</th><th>时间</th><th>备注</th></tr></thead><tbody id="walletTransactionsBody"></tbody></table></div></div>
             </div>
 
-            <!-- 自动互动 -->
             <div class="page" id="page-automation">
                 <div class="top-bar"><div><div class="page-title">⚡ 自动互动</div><div class="page-subtitle">配置自动化关注和回复规则</div></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">互动设置</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;"><div class="form-group"><label class="form-label">自动关注</label><label class="toggle-switch"><input type="checkbox" id="autoFollow" checked><span class="toggle-slider"></span></label></div><div class="form-group"><label class="form-label">自动回复</label><label class="toggle-switch"><input type="checkbox" id="autoReply" checked><span class="toggle-slider"></span></label></div><div class="form-group"><label class="form-label">操作间隔(秒)</label><input type="number" class="form-input" id="operationInterval" value="5"></div><div class="form-group"><label class="form-label">每日最大操作数</label><input type="number" class="form-input" id="maxOperations" value="100"></div></div></div>
             </div>
 
-            <!-- 定时任务 -->
             <div class="page" id="page-scheduler">
                 <div class="top-bar"><div><div class="page-title">⏰ 定时任务</div><div class="page-subtitle">设置定时执行的自动化任务</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addTask()">➕ 新建任务</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">任务列表</h3><span id="taskCount" style="color:var(--text-secondary);">0 个任务</span></div><div class="table-container"><table><thead><tr><th>任务名称</th><th>执行时间</th><th>平台</th><th>状态</th><th>上次执行</th><th>操作</th></tr></thead><tbody id="tasksTableBody"></tbody></table></div></div>
             </div>
 
-            <!-- 回复模板 -->
             <div class="page" id="page-templates">
                 <div class="top-bar"><div><div class="page-title">📝 回复模板</div><div class="page-subtitle">管理自动回复的消息模板</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addTemplate()">➕ 新建模板</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">模板列表</h3><span id="templateCount" style="color:var(--text-secondary);">0 个模板</span></div><div id="templatesList"></div></div>
             </div>
 
-            <!-- 数据报表 -->
             <div class="page" id="page-reports">
                 <div class="top-bar"><div><div class="page-title">📈 数据报表</div><div class="page-subtitle">查看详细的数据分析报表</div></div></div>
                 <div class="stats-grid"><div class="stat-card"><div class="stat-icon">📹</div><div class="stat-value" id="reportVideos">0</div><div class="stat-label">总视频数</div></div><div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="reportUsers">0</div><div class="stat-label">总用户数</div></div><div class="stat-card"><div class="stat-icon">💬</div><div class="stat-value" id="reportReplies">0</div><div class="stat-label">总回复数</div></div><div class="stat-card"><div class="stat-icon">📇</div><div class="stat-value" id="reportLeads">0</div><div class="stat-label">总线索数</div></div></div>
             </div>
 
-            <!-- 智能分析 -->
             <div class="page" id="page-analytics">
                 <div class="top-bar"><div><div class="page-title">🧠 智能分析</div><div class="page-subtitle">AI驱动的用户行为分析</div></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">用户画像分析</h3></div><div style="text-align:center;padding:40px;color:var(--text-secondary);">🧠 AI分析引擎运行中...<br><br><button class="btn btn-primary" onclick="runAnalysis()">🔍 运行分析</button></div></div>
             </div>
 
-            <!-- 系统配置 -->
             <div class="page" id="page-settings">
                 <div class="top-bar"><div><div class="page-title">⚙️ 系统配置</div><div class="page-subtitle">配置系统运行参数</div></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">基本设置</h3></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;"><div class="form-group"><label class="form-label">系统名称</label><input type="text" class="form-input" value="智能营销系统"></div><div class="form-group"><label class="form-label">默认行业</label><select class="form-select"><option>科技数码</option><option>美食餐饮</option><option>旅游出行</option></select></div><div class="form-group"><label class="form-label">数据刷新间隔(秒)</label><input type="number" class="form-input" value="30"></div></div></div>
             </div>
 
-            <!-- 操作日志 -->
             <div class="page" id="page-logs">
                 <div class="top-bar"><div><div class="page-title">📋 操作日志</div><div class="page-subtitle">查看系统操作记录</div></div><div class="top-actions"><button class="btn btn-outline" onclick="exportLogs()">📥 导出日志</button></div></div>
                 <div class="panel"><div class="panel-header"><h3 class="panel-title">日志记录</h3><button class="btn btn-outline" style="padding:5px 12px;font-size:12px;" onclick="clearLogs()">清空日志</button></div><div class="log-container" id="mainLogContainer" style="height:400px;"></div></div>
@@ -430,7 +418,6 @@
         </div>
     </div>
 
-    <!-- 弹窗 -->
     <div class="modal-overlay" id="bindingModal">
         <div class="modal-content">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h3 style="font-size:20px;" id="modalTitle">绑定平台</h3><button class="btn btn-outline" style="padding:5px 10px;" onclick="closeModal('bindingModal')">✕</button></div>
@@ -466,7 +453,6 @@
     </div>
 
     <script>
-        // ============ 系统状态 ============
         let systemState = {
             currentPage: 'dashboard',
             boundPlatforms: {},
@@ -483,52 +469,29 @@
             transactions: [
                 { id: 'TX20240115001', type: '充值', amount: '+¥ 10,000', balance: '¥ 10,000', time: '2024-01-15 09:00', note: '初始充值' }
             ],
-            stats: {
-                totalVideos: 0,
-                totalUsers: 0,
-                totalReplies: 0,
-                totalFollows: 0,
-                totalLeads: 0,
-                successRate: 0
-            },
+            stats: { totalVideos: 0, totalUsers: 0, totalReplies: 0, totalFollows: 0, totalLeads: 0, successRate: 0 },
             logs: [],
-            // 私信相关
             chats: [
-                { id: 1, userName: '用户A', messages: [
-                    { type: 'in', text: '你好，我想咨询一下' },
-                    { type: 'out', text: '您好，很高兴为您服务！' },
-                    { type: 'in', text: '请问怎么预约？' },
-                    { type: 'out', text: '您可以点击下方卡片进行预约哦~' }
-                ]},
-                { id: 2, userName: '用户B', messages: [
-                    { type: 'in', text: '价格多少？' },
-                    { type: 'out', text: '您好，具体价格可以查看我们的套餐详情' }
-                ]},
-                { id: 3, userName: '用户C', messages: [
-                    { type: 'in', text: '想了解加盟' },
-                    { type: 'out', text: '好的，为您发送加盟资料' }
-                ]}
+                { id: 1, userName: '用户A', messages: [{ type: 'in', text: '你好，我想咨询一下' }, { type: 'out', text: '您好，很高兴为您服务！' }, { type: 'in', text: '请问怎么预约？' }, { type: 'out', text: '您可以点击下方卡片进行预约哦~' }]},
+                { id: 2, userName: '用户B', messages: [{ type: 'in', text: '价格多少？' }, { type: 'out', text: '您好，具体价格可以查看我们的套餐详情' }]},
+                { id: 3, userName: '用户C', messages: [{ type: 'in', text: '想了解加盟' }, { type: 'out', text: '好的，为您发送加盟资料' }]}
             ],
             currentChatIndex: 0,
-            // 组件数据
             components: [
                 { name: '一键收集电话', type: '线索组件', id: 'CMP001', status: '生效', time: '2024-01-15' },
                 { name: '高级在线预约', type: '预约组件', id: 'CMP002', status: '生效', time: '2024-01-16' },
                 { name: '企业微信卡', type: '企微组件', id: 'CMP003', status: '审核中', time: '2024-01-17' }
             ],
-            // 触达计划
             touchPlans: [
                 { name: '短视频评论高意向跟进', trigger: '短视频评论', content: '您好，看到您评论，留个联系方式吧', status: '执行中', sendCnt: 128, clueCnt: 32 },
                 { name: '直播弹幕跟进', trigger: '直播弹幕', content: '您好，感谢观看直播，点击卡片领取优惠', status: '已暂停', sendCnt: 56, clueCnt: 12 }
             ],
-            // 线索
             leads: [
                 { name: '张先生', phone: '138****1234', source: '短视频评论', intent: '高', status: '待跟进', time: '2024-01-20 10:30' },
                 { name: '李女士', phone: '159****5678', source: '直播弹幕', intent: '中', status: '已联系', time: '2024-01-20 11:15' }
             ]
         };
 
-        // ============ 平台信息（使用图片图标） ============
         const platformInfo = {
             douyin: { name: '抖音', icon: 'images/dy.png' },
             kuaishou: { name: '快手', icon: 'images/ks.png' },
@@ -537,7 +500,6 @@
             shipinhao: { name: '视频号', icon: 'images/sph.png' }
         };
 
-        // ============ 登录 ============
         function handleLogin() {
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
@@ -563,7 +525,6 @@
             }
         }
 
-        // ============ 页面切换 ============
         function switchPage(pageName) {
             systemState.currentPage = pageName;
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -574,7 +535,6 @@
             if (pageElement) pageElement.classList.add('active');
         }
 
-        // ============ 平台管理 ============
         function showBindingPanel() {
             document.getElementById('modalTitle').textContent = '绑定新平台';
             document.getElementById('modalPlatformSelect').value = '';
@@ -597,11 +557,7 @@
             const accountId = document.getElementById('modalAccountId').value.trim();
             const apiKey = document.getElementById('modalApiKey').value.trim();
             if (!platformKey || !accountName || !accountId) { alert('请完整填写信息'); return; }
-            systemState.boundPlatforms[platformKey] = {
-                ...platformInfo[platformKey],
-                accountName, accountId, apiKey,
-                boundAt: new Date().toLocaleString('zh-CN')
-            };
+            systemState.boundPlatforms[platformKey] = { ...platformInfo[platformKey], accountName, accountId, apiKey, boundAt: new Date().toLocaleString('zh-CN') };
             updatePlatformUI();
             updateAllStats();
             addLog('success', `✅ ${platformInfo[platformKey].name} 平台绑定成功`);
@@ -616,17 +572,12 @@
                 card.className = 'platform-card';
                 card.onclick = () => selectPlatform(key);
                 card.innerHTML = `
-                    <div class="platform-icon">
-                        <img src="${platformInfo[key].icon}" alt="${platformInfo[key].name}" 
-                             onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-size:40px;\'>📱</span>'">
-                    </div>
+                    <div class="platform-icon"><img src="${platformInfo[key].icon}" alt="${platformInfo[key].name}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-size:40px;\'>📱</span>'"></div>
                     <div class="platform-name">${platformInfo[key].name}</div>
                     <div class="platform-status ${bound ? 'bound' : ''}">${bound ? '已绑定' : '未绑定'}</div>
                 `;
                 grid.appendChild(card);
             });
-            
-            // 更新已绑定表格
             const tbody = document.getElementById('boundPlatformsBody');
             const platforms = Object.values(systemState.boundPlatforms);
             if (platforms.length === 0) {
@@ -635,19 +586,7 @@
             } else {
                 tbody.innerHTML = platforms.map(p => {
                     const key = Object.keys(systemState.boundPlatforms).find(k => systemState.boundPlatforms[k] === p);
-                    return `
-                        <tr>
-                            <td>
-                                <img src="${p.icon}" alt="${p.name}" style="width:24px;height:24px;vertical-align:middle;border-radius:4px;margin-right:8px;" onerror="this.style.display='none'">
-                                ${p.name}
-                            </td>
-                            <td>${p.accountName}</td>
-                            <td>${p.accountId}</td>
-                            <td><span style="color:var(--success);">● 已连接</span></td>
-                            <td>${p.boundAt}</td>
-                            <td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="unbindPlatform('${key}')">解绑</button></td>
-                        </tr>
-                    `;
+                    return `<tr><td><img src="${p.icon}" alt="${p.name}" style="width:24px;height:24px;vertical-align:middle;border-radius:4px;margin-right:8px;" onerror="this.style.display='none'">${p.name}</td><td>${p.accountName}</td><td>${p.accountId}</td><td><span style="color:var(--success);">● 已连接</span></td><td>${p.boundAt}</td><td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="unbindPlatform('${key}')">解绑</button></td></tr>`;
                 }).join('');
                 document.getElementById('boundCount').textContent = `${platforms.length} 个平台`;
             }
@@ -662,23 +601,28 @@
             }
         }
 
-        // ============ 视频发现 ============
         function startDiscovery() {
             const industry = document.getElementById('discoveryIndustry').value;
             addLog('info', `开始发现${industry}行业的优质视频...`);
             const mockVideos = [
-                { title: `${industry}深度解析`, author: '专家', likes: '15.2K', comments: '2.3K', score: 95 },
-                { title: `${industry}入门指南`, author: '达人', likes: '12.8K', comments: '1.8K', score: 92 },
-                { title: `${industry}实战技巧`, author: '实战家', likes: '18.5K', comments: '3.1K', score: 96 }
+                { title: '丛林炼狱解说解析', author: '博主', likes: '15.2K', comments: '2.3K', score: 95, image: 'images/yingsi.png' },
+                { title: '清蒸大螃蟹', author: '达人', likes: '12.8K', comments: '1.8K', score: 92, image: 'images/px.png' },
+                { title: '旅游攻略', author: '达人', likes: '18.5K', comments: '3.1K', score: 96, image: 'images/ly.png' },
+                { title: '最美乡村', author: '实战家', likes: '18.5K', comments: '3.1K', score: 96, image: 'images/xc.png' },
+                { title: '豪车推荐', author: '达人', likes: '18.5K', comments: '3.1K', score: 96, image: 'images/pc.png' }
             ];
             systemState.discoveredVideos = mockVideos;
             systemState.stats.totalVideos += mockVideos.length;
             const container = document.getElementById('discoveredVideosList');
             container.innerHTML = mockVideos.map(v => `
-                <div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:12px;padding:15px;">
-                    <div style="font-weight:600;margin-bottom:10px;">${v.title}</div>
-                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">👤 ${v.author} | 👍 ${v.likes} | 💬 ${v.comments}</div>
-                    <span style="padding:3px 8px;background:rgba(16,185,129,0.2);color:#10b981;border-radius:10px;font-size:11px;">优质 ${v.score}分</span>
+                <div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+                    <div class="video-card-bg" style="background-image:url('${v.image}');" onerror="this.style.background='linear-gradient(135deg,#1e40af,#06b6d4)'">
+                        <div class="video-score-badge">优质 ${v.score}分</div>
+                    </div>
+                    <div style="padding:15px;">
+                        <div style="font-weight:600;margin-bottom:10px;">${v.title}</div>
+                        <div style="font-size:12px;color:var(--text-secondary);">👤 ${v.author} | 👍 ${v.likes} | 💬 ${v.comments}</div>
+                    </div>
                 </div>
             `).join('');
             document.getElementById('discoveredCount').textContent = `${mockVideos.length} 个视频`;
@@ -686,7 +630,6 @@
             addLog('success', `✅ 发现 ${mockVideos.length} 个优质视频`);
         }
 
-        // ============ 用户管理 ============
         function exportUsers() {
             if (systemState.collectedUsers.length === 0) {
                 systemState.collectedUsers = [
@@ -706,60 +649,40 @@
                 document.getElementById('usersCount').textContent = '0 个用户';
                 return;
             }
-            tbody.innerHTML = systemState.collectedUsers.map((u,i) => `
-                <tr><td>${u.name}</td><td>${u.platform}</td><td>${u.followers}</td><td>${u.engagement}</td><td>${u.location}</td>
-                <td>${u.tags.map(t=>`<span style="padding:2px 8px;background:rgba(37,99,235,0.2);color:#60a5fa;border-radius:10px;font-size:11px;">${t}</span>`).join(' ')}</td>
-                <td><span style="color:var(--success);">● ${u.status}</span></td>
-                <td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="deleteUser(${i})">删除</button></td></tr>
-            `).join('');
+            tbody.innerHTML = systemState.collectedUsers.map((u,i) => `<tr><td>${u.name}</td><td>${u.platform}</td><td>${u.followers}</td><td>${u.engagement}</td><td>${u.location}</td><td>${u.tags.map(t=>`<span style="padding:2px 8px;background:rgba(37,99,235,0.2);color:#60a5fa;border-radius:10px;font-size:11px;">${t}</span>`).join(' ')}</td><td><span style="color:var(--success);">● ${u.status}</span></td><td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="deleteUser(${i})">删除</button></td></tr>`).join('');
             document.getElementById('usersCount').textContent = `${systemState.collectedUsers.length} 个用户`;
         }
         function deleteUser(i) { systemState.collectedUsers.splice(i,1); updateUsersTable(); updateAllStats(); }
 
-        // ============ 私信会话 ============
         function selectChat(index) {
             systemState.currentChatIndex = index;
             document.querySelectorAll('.chat-list-item').forEach((el,i)=> el.classList.toggle('active', i===index));
             const chat = systemState.chats[index];
             document.getElementById('chatHeader').textContent = chat.userName;
-            const msgContainer = document.getElementById('chatMessages');
-            msgContainer.innerHTML = chat.messages.map(m => 
-                `<div class="message-bubble ${m.type==='in'?'message-in':'message-out'}">${m.text}</div>`
-            ).join('');
+            document.getElementById('chatMessages').innerHTML = chat.messages.map(m => `<div class="message-bubble ${m.type==='in'?'message-in':'message-out'}">${m.text}</div>`).join('');
         }
         function sendChatMessage() {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
             if (!text) return;
-            const chat = systemState.chats[systemState.currentChatIndex];
-            chat.messages.push({ type: 'out', text });
+            systemState.chats[systemState.currentChatIndex].messages.push({ type: 'out', text });
             selectChat(systemState.currentChatIndex);
             input.value = '';
             addLog('info', `发送私信：${text}`);
         }
         function sendComponentMessage() {
-            const chat = systemState.chats[systemState.currentChatIndex];
-            chat.messages.push({ type: 'out', text: '[组件消息] 一键收集电话卡片' });
+            systemState.chats[systemState.currentChatIndex].messages.push({ type: 'out', text: '[组件消息] 一键收集电话卡片' });
             selectChat(systemState.currentChatIndex);
             addLog('success', '✅ 已发送组件消息');
         }
-        function refreshChats() {
-            addLog('info', '刷新私信会话...');
-            setTimeout(()=> addLog('success', '✅ 会话列表已更新'), 1000);
-        }
+        function refreshChats() { addLog('info', '刷新私信会话...'); setTimeout(()=> addLog('success', '✅ 会话列表已更新'), 1000); }
 
-        // ============ 组件管理 ============
         function refreshComponents() {
             const tbody = document.getElementById('componentsTableBody');
-            tbody.innerHTML = systemState.components.map(c => `
-                <tr><td>${c.name}</td><td>${c.type}</td><td>${c.id}</td>
-                <td><span style="color:${c.status==='生效'?'var(--success)':'var(--warning)'};">● ${c.status}</span></td>
-                <td>${c.time}</td><td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;">使用</button></td></tr>
-            `).join('');
+            tbody.innerHTML = systemState.components.map(c => `<tr><td>${c.name}</td><td>${c.type}</td><td>${c.id}</td><td><span style="color:${c.status==='生效'?'var(--success)':'var(--warning)'};">● ${c.status}</span></td><td>${c.time}</td><td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;">使用</button></td></tr>`).join('');
             addLog('success', '✅ 组件列表已刷新');
         }
 
-        // ============ 触达计划 ============
         function createTouchPlan() {
             const name = prompt('请输入计划名称：', '短视频评论自动触达');
             if (name) {
@@ -775,20 +698,12 @@
                 document.getElementById('touchPlanCount').textContent = '0 个计划';
                 return;
             }
-            tbody.innerHTML = systemState.touchPlans.map((p,i) => `
-                <tr><td>${p.name}</td><td>${p.trigger}</td><td>${p.content}</td>
-                <td><span style="color:${p.status==='执行中'?'var(--success)':p.status==='审核中'?'var(--warning)':'var(--text-secondary)'};">● ${p.status}</span></td>
-                <td>${p.sendCnt}</td><td>${p.clueCnt}</td>
-                <td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="deleteTouchPlan(${i})">删除</button></td></tr>
-            `).join('');
+            tbody.innerHTML = systemState.touchPlans.map((p,i) => `<tr><td>${p.name}</td><td>${p.trigger}</td><td>${p.content}</td><td><span style="color:${p.status==='执行中'?'var(--success)':p.status==='审核中'?'var(--warning)':'var(--text-secondary)'};">● ${p.status}</span></td><td>${p.sendCnt}</td><td>${p.clueCnt}</td><td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="deleteTouchPlan(${i})">删除</button></td></tr>`).join('');
             document.getElementById('touchPlanCount').textContent = `${systemState.touchPlans.length} 个计划`;
         }
         function deleteTouchPlan(i) { systemState.touchPlans.splice(i,1); updateTouchPlanTable(); addLog('warning','已删除触达计划'); }
 
-        // ============ 线索管理 ============
-        function exportLeads() {
-            addLog('success', '✅ 线索数据导出成功');
-        }
+        function exportLeads() { addLog('success', '✅ 线索数据导出成功'); }
         function updateLeadsTable() {
             const tbody = document.getElementById('leadsTableBody');
             if (systemState.leads.length === 0) {
@@ -796,17 +711,12 @@
                 document.getElementById('leadsCount').textContent = '0 条线索';
                 return;
             }
-            tbody.innerHTML = systemState.leads.map((l,i) => `
-                <tr><td>${l.name}</td><td>${l.phone}</td><td>${l.source}</td><td>${l.intent}</td>
-                <td><span style="color:${l.status==='已联系'?'var(--success)':'var(--warning)'};">● ${l.status}</span></td>
-                <td>${l.time}</td><td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;">查看</button></td></tr>
-            `).join('');
+            tbody.innerHTML = systemState.leads.map((l,i) => `<tr><td>${l.name}</td><td>${l.phone}</td><td>${l.source}</td><td>${l.intent}</td><td><span style="color:${l.status==='已联系'?'var(--success)':'var(--warning)'};">● ${l.status}</span></td><td>${l.time}</td><td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;">查看</button></td></tr>`).join('');
             document.getElementById('leadsCount').textContent = `${systemState.leads.length} 条线索`;
             systemState.stats.totalLeads = systemState.leads.length;
             updateAllStats();
         }
 
-        // ============ 代理商/子账户 ============
         function addAgent() { openModal('agentModal'); }
         function confirmAddAgent() {
             const name = document.getElementById('agentName').value.trim();
@@ -826,11 +736,7 @@
                 document.getElementById('agentCount').textContent = '0 个代理商';
                 return;
             }
-            tbody.innerHTML = systemState.agents.map((a,i) => `
-                <tr><td>${a.name}</td><td>${a.username}</td><td>¥ ${a.balance.toFixed(2)}</td><td>${a.subAccountCount}</td>
-                <td><span style="color:var(--success);">● 正常</span></td><td>${a.createdAt}</td>
-                <td><button class="btn btn-danger" style="padding:5px 10px;font-size:12px;" onclick="deleteAgent(${i})">删除</button></td></tr>
-            `).join('');
+            tbody.innerHTML = systemState.agents.map((a,i) => `<tr><td>${a.name}</td><td>${a.username}</td><td>¥ ${a.balance.toFixed(2)}</td><td>${a.subAccountCount}</td><td><span style="color:var(--success);">● 正常</span></td><td>${a.createdAt}</td><td><button class="btn btn-danger" style="padding:5px 10px;font-size:12px;" onclick="deleteAgent(${i})">删除</button></td></tr>`).join('');
             document.getElementById('agentCount').textContent = `${systemState.agents.length} 个代理商`;
             updateSubAccountAgentSelect();
         }
@@ -863,16 +769,11 @@
                 document.getElementById('subAccountCount').textContent = '0 个子账户';
                 return;
             }
-            tbody.innerHTML = systemState.subAccounts.map((sa,i) => `
-                <tr><td>${sa.name}</td><td>${sa.agentName}</td><td>¥ ${sa.balance.toFixed(2)}</td>
-                <td><span style="color:var(--success);">● 正常</span></td><td>${sa.createdAt}</td>
-                <td><button class="btn btn-danger" style="padding:5px 10px;font-size:12px;" onclick="deleteSubAccount(${i})">删除</button></td></tr>
-            `).join('');
+            tbody.innerHTML = systemState.subAccounts.map((sa,i) => `<tr><td>${sa.name}</td><td>${sa.agentName}</td><td>¥ ${sa.balance.toFixed(2)}</td><td><span style="color:var(--success);">● 正常</span></td><td>${sa.createdAt}</td><td><button class="btn btn-danger" style="padding:5px 10px;font-size:12px;" onclick="deleteSubAccount(${i})">删除</button></td></tr>`).join('');
             document.getElementById('subAccountCount').textContent = `${systemState.subAccounts.length} 个子账户`;
         }
         function deleteSubAccount(i) { systemState.subAccounts.splice(i,1); updateSubAccountsTable(); }
 
-        // ============ 钱包 ============
         function rechargeWallet() {
             const amount = parseFloat(prompt('请输入充值金额：','1000'));
             if (amount > 0) {
@@ -899,16 +800,10 @@
             document.getElementById('totalWithdraw').textContent = `¥ ${systemState.totalWithdraw.toFixed(2)}`;
             document.getElementById('totalSpend').textContent = `¥ ${systemState.totalSpend.toFixed(2)}`;
             const tbody = document.getElementById('walletTransactionsBody');
-            if (systemState.transactions.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">暂无交易记录</td></tr>';
-                return;
-            }
-            tbody.innerHTML = systemState.transactions.map(t => `
-                <tr><td>${t.id}</td><td>${t.type}</td><td>${t.amount}</td><td>${t.balance}</td><td>${t.time}</td><td>${t.note}</td></tr>
-            `).join('');
+            if (systemState.transactions.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">暂无交易记录</td></tr>'; return; }
+            tbody.innerHTML = systemState.transactions.map(t => `<tr><td>${t.id}</td><td>${t.type}</td><td>${t.amount}</td><td>${t.balance}</td><td>${t.time}</td><td>${t.note}</td></tr>`).join('');
         }
 
-        // ============ 定时任务 ============
         function addTask() {
             systemState.tasks.push({ name:`自动互动任务${systemState.tasks.length+1}`, time:'每天 09:00', platform:'抖音', status:'待执行', lastRun:'-' });
             updateTasksTable();
@@ -916,21 +811,12 @@
         }
         function updateTasksTable() {
             const tbody = document.getElementById('tasksTableBody');
-            if (systemState.tasks.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">暂无定时任务</td></tr>';
-                document.getElementById('taskCount').textContent = '0 个任务';
-                return;
-            }
-            tbody.innerHTML = systemState.tasks.map((t,i) => `
-                <tr><td>${t.name}</td><td>${t.time}</td><td>${t.platform}</td>
-                <td><span style="color:var(--warning);">● ${t.status}</span></td><td>${t.lastRun}</td>
-                <td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="deleteTask(${i})">删除</button></td></tr>
-            `).join('');
+            if (systemState.tasks.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">暂无定时任务</td></tr>'; document.getElementById('taskCount').textContent = '0 个任务'; return; }
+            tbody.innerHTML = systemState.tasks.map((t,i) => `<tr><td>${t.name}</td><td>${t.time}</td><td>${t.platform}</td><td><span style="color:var(--warning);">● ${t.status}</span></td><td>${t.lastRun}</td><td><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="deleteTask(${i})">删除</button></td></tr>`).join('');
             document.getElementById('taskCount').textContent = `${systemState.tasks.length} 个任务`;
         }
         function deleteTask(i) { systemState.tasks.splice(i,1); updateTasksTable(); }
 
-        // ============ 回复模板 ============
         function addTemplate() {
             systemState.templates.push({ name:`回复模板${systemState.templates.length+1}`, content:'感谢关注！期待更多精彩内容分享～' });
             updateTemplatesList();
@@ -938,28 +824,14 @@
         }
         function updateTemplatesList() {
             const container = document.getElementById('templatesList');
-            if (systemState.templates.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:40px;">暂无回复模板</div>';
-                document.getElementById('templateCount').textContent = '0 个模板';
-                return;
-            }
-            container.innerHTML = systemState.templates.map((t,i) => `
-                <div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:10px;display:flex;justify-content:space-between;">
-                    <div><div style="font-weight:600;">${t.name}</div><div style="font-size:13px;color:var(--text-secondary);">${t.content}</div></div>
-                    <button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="deleteTemplate(${i})">删除</button>
-                </div>
-            `).join('');
+            if (systemState.templates.length === 0) { container.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:40px;">暂无回复模板</div>'; document.getElementById('templateCount').textContent = '0 个模板'; return; }
+            container.innerHTML = systemState.templates.map((t,i) => `<div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:10px;display:flex;justify-content:space-between;"><div><div style="font-weight:600;">${t.name}</div><div style="font-size:13px;color:var(--text-secondary);">${t.content}</div></div><button class="btn btn-outline" style="padding:5px 10px;font-size:12px;" onclick="deleteTemplate(${i})">删除</button></div>`).join('');
             document.getElementById('templateCount').textContent = `${systemState.templates.length} 个模板`;
         }
         function deleteTemplate(i) { systemState.templates.splice(i,1); updateTemplatesList(); }
 
-        // ============ 智能分析 ============
-        function runAnalysis() {
-            addLog('info', '运行AI用户行为分析...');
-            setTimeout(()=> { addLog('success', '✅ AI分析完成'); }, 2000);
-        }
+        function runAnalysis() { addLog('info', '运行AI用户行为分析...'); setTimeout(()=> { addLog('success', '✅ AI分析完成'); }, 2000); }
 
-        // ============ 系统运行 ============
         function startSystem() {
             addLog('success', '🚀 系统开始运行');
             setTimeout(()=> {
@@ -972,7 +844,6 @@
             }, 3000);
         }
 
-        // ============ 更新统计 ============
         function updateAllStats() {
             document.getElementById('dashBoundPlatforms').textContent = `${Object.keys(systemState.boundPlatforms).length}/5`;
             document.getElementById('dashVideos').textContent = systemState.stats.totalVideos;
@@ -986,11 +857,9 @@
             document.getElementById('reportLeads').textContent = systemState.stats.totalLeads;
         }
 
-        // ============ 弹窗 ============
         function openModal(id) { document.getElementById(id).classList.add('show'); }
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-        // ============ 日志 ============
         function addLog(type, message) {
             const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
             const logEntry = { time, type, message };
@@ -1027,7 +896,6 @@
             addLog('success', '✅ 日志导出成功');
         }
 
-        // ============ 初始化 ============
         function initSystem() {
             updatePlatformUI();
             updateUsersTable();
@@ -1043,16 +911,12 @@
             selectChat(0);
         }
 
-        // 页面加载时初始化平台网格
         document.addEventListener('DOMContentLoaded', () => {
             const grid = document.getElementById('platformGrid');
             if (grid) {
                 grid.innerHTML = Object.keys(platformInfo).map(key => `
                     <div class="platform-card" onclick="selectPlatform('${key}')">
-                        <div class="platform-icon">
-                            <img src="${platformInfo[key].icon}" alt="${platformInfo[key].name}" 
-                                 onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-size:40px;\'>📱</span>'">
-                        </div>
+                        <div class="platform-icon"><img src="${platformInfo[key].icon}" alt="${platformInfo[key].name}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-size:40px;\'>📱</span>'"></div>
                         <div class="platform-name">${platformInfo[key].name}</div>
                         <div class="platform-status">未绑定</div>
                     </div>
