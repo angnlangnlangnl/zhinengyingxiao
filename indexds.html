@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI智营 · 智能营销+电商管理一体化系统</title>
+    <title>AI智营 · 智能营销+电商管理一体化</title>
     <style>
+        /* ===== 完整样式（与之前一致，此处省略以节省空间） ===== */
+        /* 实际使用时请包含完整样式 */
         :root {
             --primary: #2563eb;
             --primary-dark: #1e40af;
@@ -169,7 +171,6 @@
         .modal-overlay.show { display: flex; }
         .modal-content { background: var(--bg-card); border-radius: var(--radius-lg); padding: 28px; width: 92%; max-width: 500px; border:1px solid var(--border); max-height: 90vh; overflow-y: auto; }
 
-        /* ===== 电商管理特有 ===== */
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 14px; }
         .product-card { background: var(--bg-dark); border-radius: 12px; padding: 14px; text-align: center; border:1px solid var(--border); transition: var(--transition); }
         .product-card:hover { border-color: var(--primary); transform: translateY(-3px); }
@@ -205,9 +206,7 @@
         .chat-input-area { padding: 12px 16px; border-top:1px solid var(--border); display: flex; gap: 10px; flex-wrap: wrap; }
         .chat-input-area .form-input { flex: 1; min-width: 120px; }
 
-        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--bg-card); color: var(--text-primary); padding: 12px 24px; border-radius: 12px; border:1px solid var(--border); box-shadow: var(--shadow-lg); display: none; z-index: 999; font-size: 14px; }
-
-        /* ========== 响应式 ========== */
+        /* ===== 响应式 ===== */
         @media (max-width: 1024px) {
             .chat-container { flex-direction: column; height: auto; }
             .chat-list { width: 100%; height: 150px; }
@@ -370,7 +369,7 @@
             <div class="panel"><div class="panel-header"><h3 class="panel-title">可用平台</h3></div><div class="platform-grid" id="platformGrid"></div></div>
         </div>
 
-        <!-- ===== 智能获客 ===== -->
+        <!-- ===== 智能获客（完整内容） ===== -->
         <div class="page" id="page-discovery">
             <div class="top-bar"><div><div class="page-title">🔍 智能获客</div><div class="page-subtitle">AI自动发现目标客户</div></div><div class="top-actions"><button class="btn btn-primary" onclick="startDiscovery()">🔍 开始发现</button></div></div>
             <div class="panel"><div class="panel-header"><h3 class="panel-title">发现设置</h3></div>
@@ -380,12 +379,14 @@
                     <div class="form-group"><label class="form-label">最小粉丝数</label><input type="number" class="form-input" id="discoveryFollowers" value="1000"></div>
                 </div>
             </div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">发现结果</h3><span id="discoveredCount" style="color:var(--text-secondary);">0 个</span></div>
-                <div id="discoveredList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;"><div style="text-align:center;color:var(--text-secondary);padding:30px;grid-column:1/-1;">点击"开始发现"获取目标客户</div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">发现结果</h3><span id="discoveredCount" style="color:var(--text-secondary);">5 个</span></div>
+                <div id="discoveredList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+                    <!-- 由JS动态渲染 -->
+                </div>
             </div>
         </div>
 
-        <!-- ===== 私信营销 ===== -->
+        <!-- ===== 私信营销（完整内容） ===== -->
         <div class="page" id="page-chat">
             <div class="top-bar"><div><div class="page-title">💬 私信营销</div><div class="page-subtitle">AI智能回复 + 组件发送</div></div><div class="top-actions"><button class="btn btn-outline" onclick="refreshChats()">🔄 刷新</button></div></div>
             <div class="panel">
@@ -398,10 +399,7 @@
                     <div class="chat-messages">
                         <div class="chat-messages-header" id="chatHeader">用户A</div>
                         <div class="chat-messages-body" id="chatMessages">
-                            <div class="message-bubble message-in">你好，我想咨询一下</div>
-                            <div class="message-bubble message-out">您好，很高兴为您服务！</div>
-                            <div class="message-bubble message-in">请问怎么预约？</div>
-                            <div class="message-bubble message-out">您可以点击下方卡片进行预约哦~</div>
+                            <!-- 由JS动态渲染 -->
                         </div>
                         <div class="chat-input-area">
                             <input type="text" class="form-input" id="chatInput" placeholder="输入回复内容...">
@@ -413,34 +411,33 @@
             </div>
         </div>
 
-        <!-- ===== 组件管理 ===== -->
+        <!-- ===== 组件管理（完整内容） ===== -->
         <div class="page" id="page-components">
             <div class="top-bar"><div><div class="page-title">🧩 组件管理</div><div class="page-subtitle">管理私信组件（留资卡片、预约组件等）</div></div><div class="top-actions"><button class="btn btn-primary" onclick="refreshComponents()">🔄 刷新</button></div></div>
             <div class="panel"><div class="panel-header"><h3 class="panel-title">组件列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="componentCount">共 3 个</span></div>
                 <div id="componentsList">
-                    <div class="component-card"><div><div style="font-weight:600;">一键收集电话</div><div style="font-size:13px;color:var(--text-secondary);">线索组件 · CMP001</div></div><div><span class="status-badge success">生效</span><span style="margin-left:12px;font-size:13px;color:var(--text-secondary);">2024-01-15</span><button class="btn btn-outline btn-sm" style="margin-left:12px;" onclick="useComponent()">使用</button></div></div>
-                    <div class="component-card"><div><div style="font-weight:600;">高级在线预约</div><div style="font-size:13px;color:var(--text-secondary);">预约组件 · CMP002</div></div><div><span class="status-badge success">生效</span><span style="margin-left:12px;font-size:13px;color:var(--text-secondary);">2024-01-16</span><button class="btn btn-outline btn-sm" style="margin-left:12px;" onclick="useComponent()">使用</button></div></div>
-                    <div class="component-card"><div><div style="font-weight:600;">企业微信卡片</div><div style="font-size:13px;color:var(--text-secondary);">企微组件 · CMP003</div></div><div><span class="status-badge warning">审核中</span><span style="margin-left:12px;font-size:13px;color:var(--text-secondary);">2024-01-17</span><button class="btn btn-outline btn-sm" style="margin-left:12px;" onclick="useComponent()">使用</button></div></div>
+                    <!-- 由JS动态渲染 -->
                 </div>
             </div>
         </div>
 
-        <!-- ===== 触达计划 ===== -->
+        <!-- ===== 触达计划（完整内容） ===== -->
         <div class="page" id="page-touchplan">
             <div class="top-bar"><div><div class="page-title">🎯 触达计划</div><div class="page-subtitle">短视频评论、直播弹幕自动私信触达</div></div><div class="top-actions"><button class="btn btn-primary" onclick="createTouchPlan()">➕ 新建计划</button></div></div>
             <div class="panel"><div class="panel-header"><h3 class="panel-title">计划列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="touchPlanCount">共 2 个</span></div>
                 <div id="touchPlanList">
-                    <div class="plan-card"><div><div style="font-weight:600;">短视频评论高意向跟进</div><div style="font-size:13px;color:var(--text-secondary);">触发: 短视频评论 | 已触达 128人 | 留资 32人</div></div><div><span class="status-badge success">执行中</span><button class="btn btn-outline btn-sm" style="margin-left:12px;" onclick="togglePlan(this)">暂停</button><button class="btn btn-danger btn-sm" style="margin-left:6px;" onclick="deletePlan(this)">删除</button></div></div>
-                    <div class="plan-card"><div><div style="font-weight:600;">直播弹幕跟进</div><div style="font-size:13px;color:var(--text-secondary);">触发: 直播弹幕 | 已触达 56人 | 留资 12人</div></div><div><span class="status-badge warning">已暂停</span><button class="btn btn-primary btn-sm" style="margin-left:12px;" onclick="togglePlan(this)">恢复</button><button class="btn btn-danger btn-sm" style="margin-left:6px;" onclick="deletePlan(this)">删除</button></div></div>
+                    <!-- 由JS动态渲染 -->
                 </div>
             </div>
         </div>
 
-        <!-- ===== 线索管理 ===== -->
+        <!-- ===== 线索管理（完整内容） ===== -->
         <div class="page" id="page-leads">
             <div class="top-bar"><div><div class="page-title">📇 线索管理</div><div class="page-subtitle">AI采集的客户线索统一管理</div></div><div class="top-actions"><button class="btn btn-outline" onclick="exportLeads()">📥 导出</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">线索列表</h3><span id="leadsCount" style="color:var(--text-secondary);">0 条</span></div>
-                <div class="table-container"><table><thead><tr><th>姓名</th><th>电话(脱敏)</th><th>来源</th><th>意向</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="leadsTableBody"></tbody></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">线索列表</h3><span id="leadsCount" style="color:var(--text-secondary);">3 条</span></div>
+                <div class="table-container"><table><thead><tr><th>姓名</th><th>电话(脱敏)</th><th>来源</th><th>意向</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="leadsTableBody">
+                    <!-- 由JS动态渲染 -->
+                </tbody></div></div>
         </div>
 
         <!-- ===== 自动互动 ===== -->
@@ -464,8 +461,8 @@
             <div class="top-bar"><div><div class="page-title">⏰ 定时任务</div><div class="page-subtitle">设置定时执行的自动化任务</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addTask()">➕ 新建任务</button></div></div>
             <div class="panel"><div class="panel-header"><h3 class="panel-title">任务列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="taskCount">共 2 个</span></div>
                 <div class="table-container"><table><thead><tr><th>任务名称</th><th>执行时间</th><th>平台</th><th>状态</th><th>上次执行</th><th>操作</th></tr></thead><tbody id="tasksTableBody">
-                    <tr><td>每日自动获客</td><td>每天 09:00</td><td>抖音</td><td><span class="status-badge success">执行中</span></td><td>2025-01-20 09:00</td><td><button class="btn btn-outline btn-sm" onclick="toggleTask(this)">暂停</button><button class="btn btn-danger btn-sm" onclick="deleteTask(this)">删除</button></td></tr>
-                    <tr><td>定时私信发送</td><td>每天 14:00</td><td>抖音</td><td><span class="status-badge warning">待执行</span></td><td>2025-01-19 14:00</td><td><button class="btn btn-outline btn-sm" onclick="toggleTask(this)">启动</button><button class="btn btn-danger btn-sm" onclick="deleteTask(this)">删除</button></td></tr>
+                    <tr><td>每日自动获客</td><td>每天 09:00</td><td>抖音</td><td><span class="status-badge success">执行中</span></td><td>2025-01-20 09:00</td><td><button class="btn btn-outline btn-sm" onclick="toggleTask(0)">暂停</button><button class="btn btn-danger btn-sm" onclick="deleteTask(0)">删除</button></td></tr>
+                    <tr><td>定时私信发送</td><td>每天 14:00</td><td>抖音</td><td><span class="status-badge warning">待执行</span></td><td>2025-01-19 14:00</td><td><button class="btn btn-outline btn-sm" onclick="toggleTask(1)">启动</button><button class="btn btn-danger btn-sm" onclick="deleteTask(1)">删除</button></td></tr>
                 </tbody></table></div>
             </div>
         </div>
@@ -473,7 +470,9 @@
         <!-- ===== 回复模板 ===== -->
         <div class="page" id="page-templates">
             <div class="top-bar"><div><div class="page-title">📝 回复模板</div><div class="page-subtitle">AI自动回复模板管理</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addTemplate()">➕ 新建模板</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">模板列表</h3><span id="templateCount" style="color:var(--text-secondary);">0 个</span></div><div id="templatesList"></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">模板列表</h3><span id="templateCount" style="color:var(--text-secondary);">2 个</span></div><div id="templatesList">
+                <!-- 由JS动态渲染 -->
+            </div></div>
         </div>
 
         <!-- ===== 系统配置 ===== -->
@@ -704,7 +703,18 @@
             { title: '美食探店Vlog', author: '美食博主', likes: '9.6K', comments: '1.8K', score: 88 }
         ];
         systemState.stats.totalVideos += systemState.discoveredVideos.length;
+        renderDiscoveredList();
+        document.getElementById('discoveredCount').textContent = `${systemState.discoveredVideos.length} 个`;
+        addLog('success', `✅ 发现 ${systemState.discoveredVideos.length} 个优质客户`);
+        showToast(`✅ 发现 ${systemState.discoveredVideos.length} 个优质客户`);
+    }
+
+    function renderDiscoveredList() {
         const container = document.getElementById('discoveredList');
+        if (systemState.discoveredVideos.length === 0) {
+            container.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:30px;grid-column:1/-1;">点击"开始发现"获取目标客户</div>';
+            return;
+        }
         container.innerHTML = systemState.discoveredVideos.map((v, i) => `
             <div style="background:var(--bg-dark);border-radius:12px;padding:14px;border:1px solid var(--border);text-align:center;transition:var(--transition);cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
                 <div style="font-size:32px;margin-bottom:4px;">🎬</div>
@@ -714,9 +724,6 @@
                 <div style="margin-top:8px;"><button class="btn btn-primary btn-sm" onclick="addLeadFromDiscovery('${v.title}','${v.author}')">➕ 添加线索</button></div>
             </div>
         `).join('');
-        document.getElementById('discoveredCount').textContent = `${systemState.discoveredVideos.length} 个`;
-        addLog('success', `✅ 发现 ${systemState.discoveredVideos.length} 个优质客户`);
-        showToast(`✅ 发现 ${systemState.discoveredVideos.length} 个优质客户`);
     }
 
     function addLeadFromDiscovery(title, author) {
@@ -750,6 +757,7 @@
     function updateLeadsTable() {
         const tbody = document.getElementById('leadsTableBody');
         if (systemState.leads.length === 0) {
+            // 初始化示例数据
             systemState.leads = [
                 { name: '张先生', phone: '138****1234', source: '抖音评论', intent: '高', status: '待跟进', time: '2025-01-20 10:30' },
                 { name: '李女士', phone: '159****5678', source: '直播弹幕', intent: '中', status: '已联系', time: '2025-01-20 11:15' },
@@ -844,6 +852,23 @@
     function useComponent() {
         sendComponent();
     }
+    function renderComponents() {
+        const container = document.getElementById('componentsList');
+        const components = [
+            { name: '一键收集电话', type: '线索组件', id: 'CMP001', status: '生效', time: '2024-01-15' },
+            { name: '高级在线预约', type: '预约组件', id: 'CMP002', status: '生效', time: '2024-01-16' },
+            { name: '企业微信卡片', type: '企微组件', id: 'CMP003', status: '审核中', time: '2024-01-17' }
+        ];
+        container.innerHTML = components.map(c => `
+            <div class="component-card">
+                <div><div style="font-weight:600;">${c.name}</div><div style="font-size:13px;color:var(--text-secondary);">${c.type} · ${c.id}</div></div>
+                <div><span class="status-badge ${c.status === '生效' ? 'success' : 'warning'}">${c.status}</span>
+                <span style="margin-left:12px;font-size:13px;color:var(--text-secondary);">${c.time}</span>
+                <button class="btn btn-outline btn-sm" style="margin-left:12px;" onclick="useComponent()">使用</button></div>
+            </div>
+        `).join('');
+        document.getElementById('componentCount').textContent = `共 ${components.length} 个`;
+    }
 
     // ============ 触达计划 ============
     function createTouchPlan() {
@@ -857,12 +882,12 @@
         const content = document.getElementById('planContent').value.trim();
         if (!name || !content) { alert('请完整填写信息'); return; }
         systemState.touchPlans.push({ name, trigger, content, status: '执行中', sendCnt: 0, clueCnt: 0 });
-        updateTouchPlanList();
+        renderTouchPlans();
         closeModal('planModal');
         addLog('success', `✅ 创建触达计划：${name}`);
         showToast(`✅ 创建触达计划：${name}`);
     }
-    function updateTouchPlanList() {
+    function renderTouchPlans() {
         const container = document.getElementById('touchPlanList');
         if (systemState.touchPlans.length === 0) {
             systemState.touchPlans = [
@@ -887,7 +912,7 @@
     }
     function togglePlan(i) {
         systemState.touchPlans[i].status = systemState.touchPlans[i].status === '执行中' ? '已暂停' : '执行中';
-        updateTouchPlanList();
+        renderTouchPlans();
         addLog('warning', `触达计划 "${systemState.touchPlans[i].name}" 已${systemState.touchPlans[i].status}`);
         showToast(`触达计划已${systemState.touchPlans[i].status}`);
     }
@@ -895,16 +920,10 @@
         if (confirm('确认删除该触达计划？')) {
             const name = systemState.touchPlans[i].name;
             systemState.touchPlans.splice(i, 1);
-            updateTouchPlanList();
+            renderTouchPlans();
             addLog('warning', `已删除触达计划：${name}`);
             showToast(`已删除：${name}`);
         }
-    }
-    function togglePlanByBtn(btn) {
-        const card = btn.closest('.plan-card');
-        const name = card.querySelector('div:first-child div:first-child')?.textContent || '';
-        const idx = systemState.touchPlans.findIndex(p => p.name === name);
-        if (idx !== -1) togglePlan(idx);
     }
 
     // ============ 回复模板 ============
@@ -918,12 +937,12 @@
         const content = document.getElementById('templateContent').value.trim();
         if (!name || !content) { alert('请完整填写模板信息'); return; }
         systemState.templates.push({ name, content });
-        updateTemplatesList();
+        renderTemplates();
         closeModal('templateModal');
         addLog('success', `✅ 创建模板：${name}`);
         showToast(`✅ 创建模板：${name}`);
     }
-    function updateTemplatesList() {
+    function renderTemplates() {
         const container = document.getElementById('templatesList');
         if (systemState.templates.length === 0) {
             systemState.templates = [
@@ -952,7 +971,7 @@
         if (confirm('确认删除该模板？')) {
             const name = systemState.templates[i].name;
             systemState.templates.splice(i, 1);
-            updateTemplatesList();
+            renderTemplates();
             addLog('warning', `已删除模板：${name}`);
             showToast(`已删除：${name}`);
         }
@@ -985,12 +1004,12 @@
         const platform = document.getElementById('taskPlatform').value;
         if (!name) { alert('请填写任务名称'); return; }
         systemState.tasks.push({ name, time, platform, status: '待执行', lastRun: '-' });
-        updateTasksTable();
+        renderTasks();
         closeModal('taskModal');
         addLog('success', `✅ 创建定时任务：${name}`);
         showToast(`✅ 创建任务：${name}`);
     }
-    function updateTasksTable() {
+    function renderTasks() {
         const tbody = document.getElementById('tasksTableBody');
         if (systemState.tasks.length === 0) {
             systemState.tasks = [
@@ -1015,21 +1034,15 @@
     }
     function toggleTask(i) {
         systemState.tasks[i].status = systemState.tasks[i].status === '执行中' ? '已暂停' : '执行中';
-        updateTasksTable();
+        renderTasks();
         addLog('warning', `任务 "${systemState.tasks[i].name}" 已${systemState.tasks[i].status}`);
         showToast(`任务已${systemState.tasks[i].status}`);
-    }
-    function toggleTaskByBtn(btn) {
-        const row = btn.closest('tr');
-        const name = row?.querySelector('td:first-child')?.textContent || '';
-        const idx = systemState.tasks.findIndex(t => t.name === name);
-        if (idx !== -1) toggleTask(idx);
     }
     function deleteTask(i) {
         if (confirm('确认删除该任务？')) {
             const name = systemState.tasks[i].name;
             systemState.tasks.splice(i, 1);
-            updateTasksTable();
+            renderTasks();
             addLog('warning', `已删除任务：${name}`);
             showToast(`已删除：${name}`);
         }
@@ -1050,7 +1063,6 @@
         if (name) {
             addLog('success', `✅ 新增商品：${name}`);
             const grid = document.getElementById('productGrid');
-            const count = document.querySelectorAll('.product-card').length + 1;
             grid.innerHTML += `
                 <div class="product-card">
                     <div class="icon">📦</div>
@@ -1172,9 +1184,11 @@
     function initSystem() {
         updatePlatformUI();
         updateLeadsTable();
-        updateTemplatesList();
-        updateTasksTable();
-        updateTouchPlanList();
+        renderTemplates();
+        renderTasks();
+        renderTouchPlans();
+        renderComponents();
+        renderDiscoveredList();
         updateAutoSetting();
         selectChat(0);
         addLog('info', '🚀 系统初始化完成，欢迎使用AI智营');
@@ -1187,6 +1201,7 @@
         document.getElementById('dashGrowth').textContent = '12.3%';
         document.getElementById('orderBadge').textContent = '23';
         document.getElementById('leadBadge').textContent = systemState.leads.length;
+        showToast('🚀 系统已就绪，所有模块已加载');
     }
 
     // 页面加载时初始化平台网格
