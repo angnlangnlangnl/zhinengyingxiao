@@ -898,6 +898,53 @@
             color: #4dabf7;
         }
 
+        /* ===== 对话记录筛选栏 ===== */
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 12px 0 16px 0;
+            border-bottom: 1px solid #e8edf4;
+            margin-bottom: 16px;
+        }
+        .filter-bar .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .filter-bar .filter-item label {
+            font-size: 13px;
+            color: #5f7d95;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .filter-bar .filter-item select,
+        .filter-bar .filter-item input {
+            padding: 6px 12px;
+            border: 1px solid #dce5ef;
+            border-radius: 8px;
+            font-size: 13px;
+            background: white;
+            color: #0a1e2f;
+            outline: none;
+            transition: 0.15s;
+            font-family: inherit;
+        }
+        .filter-bar .filter-item select:focus,
+        .filter-bar .filter-item input:focus {
+            border-color: #4dabf7;
+            box-shadow: 0 0 0 3px rgba(77,171,247,0.08);
+        }
+        .filter-bar .filter-item input {
+            width: 180px;
+        }
+        .filter-bar .filter-actions {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
         /* ===== Toast ===== */
         .toast {
             position: fixed;
@@ -953,6 +1000,9 @@
             .conv-item .conv-meta { text-align: left; width: 100%; }
             .chat-item { flex-wrap: wrap; }
             .chat-item .chat-content .chat-user .time { margin-left: 0; width: 100%; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .filter-bar .filter-item input { width: 100%; }
+            .filter-bar .filter-actions { margin-left: 0; }
         }
 
         /* ===== 统计卡片小标签 ===== */
@@ -1579,7 +1629,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- 页面9：AI 客服（含对话记录 + 修复实时会话排版） -->
+    <!-- 页面9：AI 客服（新增对话记录筛选功能） -->
     <!-- ============================================================ -->
     <div id="page-ai-service" class="page">
         <div class="topbar">
@@ -1606,17 +1656,47 @@
                 <div class="platform-card"><div class="plat-header"><div class="plat-icon" style="background:#0d7c4f;"><i class="fab fa-jd"></i></div><div><div class="plat-name">京东</div><div class="plat-status"><span class="status-dot online"></span> 已接入</div></div></div><div class="plat-stats"><span><i class="fas fa-comment-dots"></i> 会话 145</span><span><i class="fas fa-robot"></i> AI率 68%</span></div></div>
             </div>
         </div>
-        <!-- 对话记录 -->
+        <!-- 对话记录 + 筛选功能 -->
         <div class="card" style="margin-bottom:16px;">
             <div class="card-header">
                 <h3><i class="fas fa-history" style="color:#4dabf7;"></i> 与用户对话记录</h3>
                 <div class="flex" style="gap:8px;">
-                    <span class="action"><i class="fas fa-filter"></i> 全部平台</span>
                     <span class="btn-sm outline" onclick="showToast('📋 正在导出对话记录...')"><i class="fas fa-file-export"></i> 导出</span>
                 </div>
             </div>
-            <div class="conversation-list">
-                <div class="conv-item" onclick="openDialog('王*婷', '抖音', '14:32', '已读', 3)">
+            <!-- 筛选栏 -->
+            <div class="filter-bar" id="conversationFilter">
+                <div class="filter-item">
+                    <label><i class="fas fa-filter"></i> 平台</label>
+                    <select id="filterPlatform" onchange="filterConversations()">
+                        <option value="all">全部平台</option>
+                        <option value="抖音">抖音</option>
+                        <option value="淘宝">淘宝</option>
+                        <option value="拼多多">拼多多</option>
+                        <option value="京东">京东</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label><i class="fas fa-tag"></i> 状态</label>
+                    <select id="filterStatus" onchange="filterConversations()">
+                        <option value="all">全部状态</option>
+                        <option value="已解决">已解决</option>
+                        <option value="待处理">待处理</option>
+                        <option value="进行中">进行中</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label><i class="fas fa-search"></i> 关键词</label>
+                    <input type="text" id="filterKeyword" placeholder="搜索对话内容..." oninput="filterConversations()">
+                </div>
+                <div class="filter-actions">
+                    <span class="btn-sm outline" onclick="resetFilters()"><i class="fas fa-undo"></i> 重置</span>
+                    <span class="btn-sm blue" onclick="showToast('🔍 已应用筛选条件')"><i class="fas fa-check"></i> 应用</span>
+                </div>
+            </div>
+            <!-- 对话列表 -->
+            <div class="conversation-list" id="conversationList">
+                <div class="conv-item" data-platform="抖音" data-status="已解决" onclick="openDialog('王*婷', '抖音', '14:32', '已读', 3)">
                     <div class="conv-avatar" style="background:#1a5bb5;">王</div>
                     <div class="conv-info">
                         <div class="conv-name">王*婷 <span class="badge douyin">抖音</span> <span class="badge success">已解决</span></div>
@@ -1625,7 +1705,7 @@
                     </div>
                     <div class="conv-meta"><div class="msg-count">3条</div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">AI 已回复</div></div>
                 </div>
-                <div class="conv-item" onclick="openDialog('张*豪', '淘宝', '14:15', '未读', 5)">
+                <div class="conv-item" data-platform="淘宝" data-status="待处理" onclick="openDialog('张*豪', '淘宝', '14:15', '未读', 5)">
                     <div class="conv-avatar" style="background:#b55a1a;">张</div>
                     <div class="conv-info">
                         <div class="conv-name">张*豪 <span class="badge taobao">淘宝</span> <span class="badge warning">待处理</span></div>
@@ -1634,7 +1714,7 @@
                     </div>
                     <div class="conv-meta"><div class="msg-count unread">5条</div><div style="font-size:11px;color:#b55a1a;margin-top:4px;">待人工介入</div></div>
                 </div>
-                <div class="conv-item" onclick="openDialog('李*萱', '拼多多', '14:05', '已读', 2)">
+                <div class="conv-item" data-platform="拼多多" data-status="已解决" onclick="openDialog('李*萱', '拼多多', '14:05', '已读', 2)">
                     <div class="conv-avatar" style="background:#b51a3f;">李</div>
                     <div class="conv-info">
                         <div class="conv-name">李*萱 <span class="badge pdd">拼多多</span> <span class="badge success">已解决</span></div>
@@ -1643,7 +1723,7 @@
                     </div>
                     <div class="conv-meta"><div class="msg-count">2条</div><div style="font-size:11px;color:#0d7c4f;margin-top:4px;">已解决</div></div>
                 </div>
-                <div class="conv-item" onclick="openDialog('刘*阳', '京东', '13:48', '已读', 4)">
+                <div class="conv-item" data-platform="京东" data-status="进行中" onclick="openDialog('刘*阳', '京东', '13:48', '已读', 4)">
                     <div class="conv-avatar" style="background:#0d7c4f;">刘</div>
                     <div class="conv-info">
                         <div class="conv-name">刘*阳 <span class="badge jd">京东</span> <span class="badge info">进行中</span></div>
@@ -1652,7 +1732,7 @@
                     </div>
                     <div class="conv-meta"><div class="msg-count">4条</div><div style="font-size:11px;color:#4dabf7;margin-top:4px;">AI 回复中</div></div>
                 </div>
-                <div class="conv-item" onclick="openDialog('陈*瑶', '抖音', '13:20', '已读', 6)">
+                <div class="conv-item" data-platform="抖音" data-status="待处理" onclick="openDialog('陈*瑶', '抖音', '13:20', '已读', 6)">
                     <div class="conv-avatar" style="background:#1a5bb5;">陈</div>
                     <div class="conv-info">
                         <div class="conv-name">陈*瑶 <span class="badge douyin">抖音</span> <span class="badge warning">待处理</span></div>
@@ -1661,16 +1741,25 @@
                     </div>
                     <div class="conv-meta"><div class="msg-count unread">6条</div><div style="font-size:11px;color:#b55a1a;margin-top:4px;">待人工介入</div></div>
                 </div>
+                <div class="conv-item" data-platform="淘宝" data-status="已解决" onclick="openDialog('赵*琳', '淘宝', '12:50', '已读', 3)">
+                    <div class="conv-avatar" style="background:#b55a1a;">赵</div>
+                    <div class="conv-info">
+                        <div class="conv-name">赵*琳 <span class="badge taobao">淘宝</span> <span class="badge success">已解决</span></div>
+                        <div class="conv-preview">问：茶叶礼盒的保质期？ → AI：云山茶叶礼盒保质期18个月...</div>
+                        <div class="conv-time">2026-09-05 12:50</div>
+                    </div>
+                    <div class="conv-meta"><div class="msg-count">3条</div><div style="font-size:11px;color:#0d7c4f;margin-top:4px;">已解决</div></div>
+                </div>
             </div>
             <div style="margin-top:14px; padding-top:14px; border-top:1px solid #e8edf4; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                <span style="font-size:13px; color:#5f7d95;">共 1,284 条对话记录 · 显示最近6条</span>
+                <span style="font-size:13px; color:#5f7d95;" id="convCount">共 6 条对话记录</span>
                 <div style="display:flex; gap:8px;">
                     <span class="btn-sm outline" onclick="showToast('📜 加载更多对话记录...')"><i class="fas fa-chevron-down"></i> 加载更多</span>
                     <span class="btn-sm primary" onclick="showToast('📊 正在生成对话分析报告...')"><i class="fas fa-chart-bar"></i> 分析报告</span>
                 </div>
             </div>
         </div>
-        <!-- ===== 实时会话 - 修复排版 ===== -->
+        <!-- 实时会话 -->
         <div class="card" style="margin-bottom:16px;">
             <div class="card-header">
                 <h3><i class="fas fa-comment-dots" style="color:#4dabf7;"></i> 实时会话</h3>
@@ -2149,6 +2238,40 @@
             var text = item.textContent.toLowerCase();
             item.style.display = (keyword === '' || text.includes(keyword)) ? 'flex' : 'none';
         });
+    }
+
+    // ===== 对话记录筛选功能 =====
+    function filterConversations() {
+        var platform = document.getElementById('filterPlatform').value;
+        var status = document.getElementById('filterStatus').value;
+        var keyword = document.getElementById('filterKeyword').value.toLowerCase().trim();
+
+        var items = document.querySelectorAll('#conversationList .conv-item');
+        var visibleCount = 0;
+
+        items.forEach(function(item) {
+            var itemPlatform = item.dataset.platform || '';
+            var itemStatus = item.dataset.status || '';
+            var itemText = item.textContent.toLowerCase();
+
+            var match = true;
+            if (platform !== 'all' && itemPlatform !== platform) match = false;
+            if (status !== 'all' && itemStatus !== status) match = false;
+            if (keyword && !itemText.includes(keyword)) match = false;
+
+            item.style.display = match ? '' : 'none';
+            if (match) visibleCount++;
+        });
+
+        document.getElementById('convCount').textContent = '共 ' + visibleCount + ' 条对话记录';
+    }
+
+    function resetFilters() {
+        document.getElementById('filterPlatform').value = 'all';
+        document.getElementById('filterStatus').value = 'all';
+        document.getElementById('filterKeyword').value = '';
+        filterConversations();
+        showToast('🔄 已重置筛选条件');
     }
 
     // ===== 对话记录弹窗 =====
