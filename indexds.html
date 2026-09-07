@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>电商运营后台 · 科技蓝</title>
-    <!-- Font Awesome 6 (免费) -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- ECharts -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
@@ -319,6 +319,46 @@
             color: #0a1e2f;
         }
         .table-wrap tr:last-child td { border: none; }
+        .table-wrap .product-img {
+            width: 40px;
+            height: 40px;
+            background: #e8edf4;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7e9cb0;
+            font-size: 18px;
+        }
+        /* ===== 分类标签 ===== */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+        .category-tabs .cat {
+            padding: 4px 16px;
+            border-radius: 30px;
+            border: 1px solid #dce5ef;
+            font-size: 13px;
+            cursor: pointer;
+            background: white;
+            color: #5f7d95;
+            transition: 0.15s;
+        }
+        .category-tabs .cat:hover { border-color: #4dabf7; color: #2a7faa; }
+        .category-tabs .cat.active {
+            background: #0a1e2f;
+            border-color: #0a1e2f;
+            color: white;
+        }
+        .category-tabs .cat .count {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-left: 4px;
+        }
+        .category-tabs .cat.active .count { color: rgba(255,255,255,0.5); }
         /* ===== 徽章 ===== */
         .badge {
             padding: 3px 12px;
@@ -352,44 +392,6 @@
         .channel-item .name { font-weight: 500; color: #0a1e2f; font-size: 14px; }
         .channel-item .percent { font-weight: 600; color: #0a1e2f; font-size: 14px; }
         .channel-item .vol { font-size: 13px; color: #5f7d95; }
-        /* ===== 商品卡片 ===== */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-        }
-        .product-card {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 14px;
-            border: 1px solid #e8edf4;
-            text-align: center;
-            transition: 0.15s;
-        }
-        .product-card:hover { border-color: #c8d8e8; }
-        .product-card .img {
-            height: 70px;
-            background: #e8edf4;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #7e9cb0;
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-        .product-card .name {
-            font-weight: 600;
-            color: #0a1e2f;
-            font-size: 14px;
-        }
-        .product-card .price {
-            color: #b55a1a;
-            font-weight: 700;
-            font-size: 16px;
-        }
-        .product-card .status { font-size: 12px; color: #5f7d95; margin-top: 4px; }
-        .product-card .actions { margin-top: 8px; display: flex; gap: 6px; justify-content: center; }
         /* ===== AI 洞察 ===== */
         .ai-insight {
             background: #f0f7fe;
@@ -559,8 +561,7 @@
             color: #2a7faa;
         }
         .platform-selector .pl:hover { border-color: #4dabf7; }
-
-        /* ===== 新增模块样式 ===== */
+        /* ===== AI客服 & 对话样式 ===== */
         .platform-card {
             border: 1px solid #e8edf4;
             border-radius: 12px;
@@ -675,13 +676,99 @@
             border-left: 3px solid #4dabf7;
         }
 
+        /* ===== 对话详情弹窗 ===== */
+        .dialog-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+        .dialog-overlay.show { display: flex; }
+        .dialog-box {
+            background: white;
+            border-radius: 20px;
+            padding: 28px 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+            animation: dialogIn 0.25s ease;
+        }
+        @keyframes dialogIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .dialog-box .dialog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e8edf4;
+        }
+        .dialog-box .dialog-header h3 { font-size: 18px; color: #0a1e2f; }
+        .dialog-box .dialog-header .close {
+            font-size: 24px;
+            color: #94a3b8;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .dialog-box .dialog-header .close:hover { color: #0a1e2f; }
+        .dialog-box .dialog-body .conversation-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f4f9;
+        }
+        .dialog-box .dialog-body .conversation-item:last-child { border: none; }
+        .dialog-box .dialog-body .conversation-item .role {
+            font-weight: 600;
+            font-size: 13px;
+            color: #5f7d95;
+        }
+        .dialog-box .dialog-body .conversation-item .role .highlight { color: #4dabf7; }
+        .dialog-box .dialog-body .conversation-item .msg {
+            font-size: 14px;
+            color: #0a1e2f;
+            margin-top: 2px;
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+        .dialog-box .dialog-body .conversation-item .msg.ai-msg {
+            background: #f0f7fe;
+            border-left: 3px solid #4dabf7;
+        }
+        /* ===== Toast ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0a1e2f;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 999;
+            white-space: nowrap;
+        }
+        .toast.show { display: block; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        .toast i { margin-right: 8px; }
+
         /* ===== 响应式 ===== */
         @media (max-width: 1200px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .row-two { grid-template-columns: 1fr; }
             .row-three { grid-template-columns: 1fr 1fr; }
             .row-four { grid-template-columns: 1fr 1fr; }
-            .product-grid { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 768px) {
             .sidebar { width: 60px; }
@@ -701,32 +788,21 @@
             .stats-grid { grid-template-columns: 1fr; }
             .row-three { grid-template-columns: 1fr; }
             .row-four { grid-template-columns: 1fr; }
-            .product-grid { grid-template-columns: 1fr; }
             .form-row { grid-template-columns: 1fr; }
             .topbar { flex-direction: column; align-items: flex-start; }
             .product-pick-item { flex-wrap: wrap; }
             .logistics-item { flex-wrap: wrap; }
             .platform-card { padding: 12px; }
+            .dialog-box { padding: 20px; }
         }
-        /* ===== Toast 提示 ===== */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0a1e2f;
-            color: white;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-size: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            display: none;
-            z-index: 999;
-            white-space: nowrap;
+        /* ===== 统计卡片小标签 ===== */
+        .stat-tag {
+            font-size: 11px;
+            background: #f0f7fe;
+            color: #4dabf7;
+            padding: 2px 10px;
+            border-radius: 30px;
         }
-        .toast.show { display: block; animation: fadeUp 0.3s ease; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-        .toast i { margin-right: 8px; }
     </style>
 </head>
 <body>
@@ -749,9 +825,8 @@
         <div class="item" data-page="page-channels"><i class="fas fa-plug"></i><span>渠道管理</span></div>
         <div class="item" data-page="page-push"><i class="fas fa-paper-plane"></i><span>代发推单</span></div>
         <div class="item" data-page="page-sourcing"><i class="fas fa-store-alt"></i><span>1688选品铺货</span></div>
-        <!-- 新增：AI客服与物流智能管理 -->
-        <div class="item" data-page="page-ai-service"><i class="fas fa-headset"></i><span>AI 客服</span><span class="tag">NEW</span></div>
-        <div class="item" data-page="page-logistics"><i class="fas fa-truck"></i><span>智能物流</span><span class="tag">NEW</span></div>
+        <div class="item" data-page="page-ai-service"><i class="fas fa-headset"></i><span>AI 客服</span></div>
+        <div class="item" data-page="page-logistics"><i class="fas fa-truck"></i><span>智能物流</span></div>
         <div class="item" data-page="page-settings"><i class="fas fa-cog"></i><span>系统设置</span></div>
     </div>
     <div class="bottom">
@@ -846,7 +921,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- 页面3：商品管理 (保持不变) -->
+    <!-- 页面3：商品管理 (改为列表形式 + 分类筛选) -->
     <!-- ============================================================ -->
     <div id="page-products" class="page">
         <div class="topbar">
@@ -856,21 +931,150 @@
         <div class="card" style="margin-bottom:16px;">
             <div class="card-header"><h3><i class="fas fa-search"></i> 商品筛选</h3><span class="action"><i class="fas fa-undo"></i> 重置</span></div>
             <div class="form-row">
-                <div class="form-group"><label>关键词</label><input type="text" placeholder="商品名称 / SKU"></div>
-                <div class="form-group"><label>平台</label><select><option>全部</option><option>淘宝</option><option>抖音</option><option>拼多多</option><option>京东</option></select></div>
-                <div class="form-group"><label>状态</label><select><option>全部</option><option>在售</option><option>下架</option><option>待审核</option></select></div>
-                <div class="form-group"><label>分类</label><select><option>全部</option><option>茶叶</option><option>手工艺</option><option>食品</option><option>文创</option></select></div>
+                <div class="form-group"><label>关键词</label><input type="text" placeholder="商品名称 / SKU" id="productSearch" onkeyup="filterProducts()"></div>
+                <div class="form-group"><label>平台</label><select id="productPlatformFilter" onchange="filterProducts()"><option value="all">全部</option><option>淘宝</option><option>抖音</option><option>拼多多</option><option>京东</option></select></div>
+                <div class="form-group"><label>状态</label><select id="productStatusFilter" onchange="filterProducts()"><option value="all">全部</option><option>在售</option><option>下架</option><option>待审核</option></select></div>
+                <div class="form-group"><label>分类</label><select id="productCategoryFilter" onchange="filterProducts()"><option value="all">全部分类</option><option value="茶叶">茶叶</option><option value="手工艺">手工艺</option><option value="食品">食品</option><option value="文创">文创</option></select></div>
             </div>
         </div>
-        <div class="product-grid">
-            <div class="product-card"><div class="img"><i class="fas fa-leaf"></i></div><div class="name">云山茶叶礼盒</div><div class="price">¥128</div><div class="status"><span class="badge success">在售</span> 库存 234</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
-            <div class="product-card"><div class="img"><i class="fas fa-bag-shopping"></i></div><div class="name">手工竹编包</div><div class="price">¥89</div><div class="status"><span class="badge success">在售</span> 库存 187</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
-            <div class="product-card"><div class="img"><i class="fas fa-seedling"></i></div><div class="name">山核桃仁 250g</div><div class="price">¥45</div><div class="status"><span class="badge success">在售</span> 库存 156</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
-            <div class="product-card"><div class="img"><i class="fas fa-soap"></i></div><div class="name">云山手工皂套装</div><div class="price">¥79</div><div class="status"><span class="badge warning">待审核</span> 库存 89</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
-            <div class="product-card"><div class="img"><i class="fas fa-mug-saucer"></i></div><div class="name">云山陶瓷杯</div><div class="price">¥58</div><div class="status"><span class="badge success">在售</span> 库存 143</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
-            <div class="product-card"><div class="img"><i class="fas fa-scroll"></i></div><div class="name">手写书法折扇</div><div class="price">¥35</div><div class="status"><span class="badge danger">下架</span> 库存 0</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
-            <div class="product-card"><div class="img"><i class="fas fa-candy-cane"></i></div><div class="name">手工红糖姜茶</div><div class="price">¥29.9</div><div class="status"><span class="badge success">在售</span> 库存 210</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
-            <div class="product-card"><div class="img"><i class="fas fa-palette"></i></div><div class="name">云山国风丝巾</div><div class="price">¥68</div><div class="status"><span class="badge success">在售</span> 库存 76</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
+        <!-- ===== 分类快速筛选标签 ===== -->
+        <div class="card" style="margin-bottom:16px; padding:12px 20px;">
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <span style="font-weight:600; color:#0a1e2f; font-size:14px;"><i class="fas fa-tags" style="color:#4dabf7;"></i> 分类筛选：</span>
+                <div class="category-tabs" id="categoryTabs">
+                    <span class="cat active" data-cat="all" onclick="filterByCategory('all', this)">全部 <span class="count">(1,283)</span></span>
+                    <span class="cat" data-cat="茶叶" onclick="filterByCategory('茶叶', this)">🍃 茶叶 <span class="count">(342)</span></span>
+                    <span class="cat" data-cat="手工艺" onclick="filterByCategory('手工艺', this)">🎨 手工艺 <span class="count">(287)</span></span>
+                    <span class="cat" data-cat="食品" onclick="filterByCategory('食品', this)">🍜 食品 <span class="count">(456)</span></span>
+                    <span class="cat" data-cat="文创" onclick="filterByCategory('文创', this)">📚 文创 <span class="count">(198)</span></span>
+                </div>
+                <span style="margin-left:auto; font-size:13px; color:#5f7d95;" id="productCount">共 1,283 件商品</span>
+            </div>
+        </div>
+        <!-- ===== 商品列表 ===== -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-list"></i> 商品列表</h3>
+                <span class="action"><i class="fas fa-chevron-down"></i> 排序</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:40px;">#</th>
+                            <th style="width:50px;">图片</th>
+                            <th>商品名称</th>
+                            <th>分类</th>
+                            <th>平台</th>
+                            <th>价格</th>
+                            <th>库存</th>
+                            <th>状态</th>
+                            <th style="width:140px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <tr data-category="茶叶" data-platform="抖音" data-status="在售">
+                            <td>1</td>
+                            <td><div class="product-img"><i class="fas fa-leaf"></i></div></td>
+                            <td><strong>云山茶叶礼盒</strong><br><span style="font-size:12px;color:#94a3b8;">SKU: YS-2026-001</span></td>
+                            <td><span class="badge blue">茶叶</span></td>
+                            <td><span class="badge douyin">抖音</span></td>
+                            <td style="font-weight:600;color:#b55a1a;">¥128</td>
+                            <td>234</td>
+                            <td><span class="badge success">在售</span></td>
+                            <td><span class="btn-sm outline">编辑</span><span class="btn-sm blue" style="margin-left:4px;">同步</span></td>
+                        </tr>
+                        <tr data-category="手工艺" data-platform="淘宝" data-status="在售">
+                            <td>2</td>
+                            <td><div class="product-img"><i class="fas fa-bag-shopping"></i></div></td>
+                            <td><strong>手工竹编包</strong><br><span style="font-size:12px;color:#94a3b8;">SKU: ZB-2026-002</span></td>
+                            <td><span class="badge orange">手工艺</span></td>
+                            <td><span class="badge taobao">淘宝</span></td>
+                            <td style="font-weight:600;color:#b55a1a;">¥89</td>
+                            <td>187</td>
+                            <td><span class="badge success">在售</span></td>
+                            <td><span class="btn-sm outline">编辑</span><span class="btn-sm blue" style="margin-left:4px;">同步</span></td>
+                        </tr>
+                        <tr data-category="食品" data-platform="拼多多" data-status="在售">
+                            <td>3</td>
+                            <td><div class="product-img"><i class="fas fa-seedling"></i></div></td>
+                            <td><strong>山核桃仁 250g</strong><br><span style="font-size:12px;color:#94a3b8;">SKU: HT-2026-003</span></td>
+                            <td><span class="badge success">食品</span></td>
+                            <td><span class="badge pdd">拼多多</span></td>
+                            <td style="font-weight:600;color:#b55a1a;">¥45</td>
+                            <td>156</td>
+                            <td><span class="badge success">在售</span></td>
+                            <td><span class="btn-sm outline">编辑</span><span class="btn-sm blue" style="margin-left:4px;">同步</span></td>
+                        </tr>
+                        <tr data-category="文创" data-platform="京东" data-status="待审核">
+                            <td>4</td>
+                            <td><div class="product-img"><i class="fas fa-soap"></i></div></td>
+                            <td><strong>云山手工皂套装</strong><br><span style="font-size:12px;color:#94a3b8;">SKU: SZ-2026-004</span></td>
+                            <td><span class="badge info">文创</span></td>
+                            <td><span class="badge jd">京东</span></td>
+                            <td style="font-weight:600;color:#b55a1a;">¥79</td>
+                            <td>89</td>
+                            <td><span class="badge warning">待审核</span></td>
+                            <td><span class="btn-sm outline">编辑</span><span class="btn-sm blue" style="margin-left:4px;">同步</span></td>
+                        </tr>
+                        <tr data-category="手工艺" data-platform="淘宝" data-status="在售">
+                            <td>5</td>
+                            <td><div class="product-img"><i class="fas fa-mug-saucer"></i></div></td>
+                            <td><strong>云山陶瓷杯</strong><br><span style="font-size:12px;color:#94a3b8;">SKU: TC-2026-005</span></td>
+                            <td><span class="badge orange">手工艺</span></td>
+                            <td><span class="badge taobao">淘宝</span></td>
+                            <td style="font-weight:600;color:#b55a1a;">¥58</td>
+                            <td>143</td>
+                            <td><span class="badge success">在售</span></td>
+                            <td><span class="btn-sm outline">编辑</span><span class="btn-sm blue" style="margin-left:4px;">同步</span></td>
+                        </tr>
+                        <tr data-category="文创" data-platform="抖音" data-status="下架">
+                            <td>6</td>
+                            <td><div class="product-img"><i class="fas fa-scroll"></i></div></td>
+                            <td><strong>手写书法折扇</strong><br><span style="font-size:12px;color:#94a3b8;">SKU: FS-2026-006</span></td>
+                            <td><span class="badge info">文创</span></td>
+                            <td><span class="badge douyin">抖音</span></td>
+                            <td style="font-weight:600;color:#b55a1a;">¥35</td>
+                            <td>0</td>
+                            <td><span class="badge danger">下架</span></td>
+                            <td><span class="btn-sm outline">编辑</span><span class="btn-sm blue" style="margin-left:4px;">同步</span></td>
+                        </tr>
+                        <tr data-category="食品" data-platform="淘宝" data-status="在售">
+                            <td>7</td>
+                            <td><div class="product-img"><i class="fas fa-candy-cane"></i></div></td>
+                            <td><strong>手工红糖姜茶</strong><br><span style="font-size:12px;color:#94a3b8;">SKU: JC-2026-007</span></td>
+                            <td><span class="badge success">食品</span></td>
+                            <td><span class="badge taobao">淘宝</span></td>
+                            <td style="font-weight:600;color:#b55a1a;">¥29.9</td>
+                            <td>210</td>
+                            <td><span class="badge success">在售</span></td>
+                            <td><span class="btn-sm outline">编辑</span><span class="btn-sm blue" style="margin-left:4px;">同步</span></td>
+                        </tr>
+                        <tr data-category="文创" data-platform="拼多多" data-status="在售">
+                            <td>8</td>
+                            <td><div class="product-img"><i class="fas fa-palette"></i></div></td>
+                            <td><strong>云山国风丝巾</strong><br><span style="font-size:12px;color:#94a3b8;">SKU: SJ-2026-008</span></td>
+                            <td><span class="badge info">文创</span></td>
+                            <td><span class="badge pdd">拼多多</span></td>
+                            <td style="font-weight:600;color:#b55a1a;">¥68</td>
+                            <td>76</td>
+                            <td><span class="badge success">在售</span></td>
+                            <td><span class="btn-sm outline">编辑</span><span class="btn-sm blue" style="margin-left:4px;">同步</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:14px; border-top:1px solid #e8edf4; flex-wrap:wrap; gap:10px;">
+                <span style="font-size:13px; color:#5f7d95;" id="productCountFooter">共 1,283 件商品</span>
+                <div style="display:flex; gap:8px;">
+                    <span class="btn-sm outline"><i class="fas fa-chevron-left"></i> 上一页</span>
+                    <span class="btn-sm primary">1</span>
+                    <span class="btn-sm outline">2</span>
+                    <span class="btn-sm outline">3</span>
+                    <span class="btn-sm outline">...</span>
+                    <span class="btn-sm outline">下一页 <i class="fas fa-chevron-right"></i></span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -910,14 +1114,14 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- 页面5：AI 营销 (保持不变) -->
+    <!-- 页面5：AI 营销 (完善：增加客户对话面板) -->
     <!-- ============================================================ -->
     <div id="page-ai" class="page">
         <div class="topbar">
-            <div class="left"><h2><i class="fas fa-robot" style="color:#4dabf7;"></i> AI 营销</h2><p>AI驱动的经营决策 · 智能预测 · 自动建议</p></div>
+            <div class="left"><h2><i class="fas fa-robot" style="color:#4dabf7;"></i> AI 营销</h2><p>AI驱动的经营决策 · 智能预测 · 客户对话分析</p></div>
             <div class="right"><span class="btn"><i class="fas fa-microchip"></i> DeepSeek V4</span><span class="btn btn-primary"><i class="fas fa-sync-alt"></i> 重新分析</span></div>
         </div>
-        <div class="row-two">
+        <div class="row-two" style="margin-bottom:24px;">
             <div class="card">
                 <div class="card-header"><h3><i class="fas fa-brain" style="color:#4dabf7;"></i> AI 经营简报</h3><span class="action">每日 09:00</span></div>
                 <div class="ai-insight"><div class="title"><i class="fas fa-arrow-up" style="color:#0d7c4f;"></i> 抖音渠道转化率上升 12%</div><div class="desc">近3日抖音流量质量明显上升，建议加大该渠道投放预算，预计可提升整体GMV 8%。</div><span class="tag">渠道诊断</span></div>
@@ -932,8 +1136,66 @@
                 <div style="background:#f0f7fe; border-radius:10px; padding:10px 14px;"><span style="font-size:13px; color:#475569;"><i class="fas fa-info-circle" style="color:#4dabf7;"></i> 基于近3个月数据 + 行业趋势预测</span></div>
             </div>
         </div>
+        <!-- ===== 新增：客户对话分析面板 ===== -->
+        <div class="card" style="margin-bottom:24px;">
+            <div class="card-header">
+                <h3><i class="fas fa-comment-dots" style="color:#4dabf7;"></i> AI 客户对话分析</h3>
+                <span class="action"><i class="fas fa-robot"></i> AI 已分析 2,345 条对话</span>
+            </div>
+            <div class="row-three" style="margin-bottom:0;">
+                <div style="background:#f8fafc; border-radius:12px; padding:14px; border:1px solid #e8edf4;">
+                    <div style="font-weight:600; color:#0a1e2f;"><i class="fas fa-smile" style="color:#0d7c4f;"></i> 正面情绪</div>
+                    <div style="font-size:24px; font-weight:700; color:#0a1e2f; margin:4px 0;">68%</div>
+                    <div style="font-size:13px; color:#5f7d95;">较昨日 +5%</div>
+                </div>
+                <div style="background:#f8fafc; border-radius:12px; padding:14px; border:1px solid #e8edf4;">
+                    <div style="font-weight:600; color:#0a1e2f;"><i class="fas fa-meh" style="color:#b55a1a;"></i> 中性/咨询</div>
+                    <div style="font-size:24px; font-weight:700; color:#0a1e2f; margin:4px 0;">24%</div>
+                    <div style="font-size:13px; color:#5f7d95;">较昨日 -2%</div>
+                </div>
+                <div style="background:#f8fafc; border-radius:12px; padding:14px; border:1px solid #e8edf4;">
+                    <div style="font-weight:600; color:#0a1e2f;"><i class="fas fa-frown" style="color:#b51a3f;"></i> 负面情绪</div>
+                    <div style="font-size:24px; font-weight:700; color:#0a1e2f; margin:4px 0;">8%</div>
+                    <div style="font-size:13px; color:#5f7d95;">较昨日 -1%</div>
+                </div>
+            </div>
+            <div style="margin-top:14px; padding-top:14px; border-top:1px solid #e8edf4;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                    <span style="font-weight:500; font-size:14px; color:#0a1e2f;">📋 最新对话记录</span>
+                    <span class="btn-sm outline" onclick="showToast('📊 正在生成对话分析报告...')"><i class="fas fa-chart-bar"></i> 查看完整分析</span>
+                </div>
+                <div style="max-height:220px; overflow-y:auto;">
+                    <div style="display:flex; align-items:start; gap:12px; padding:10px 0; border-bottom:1px solid #f0f4f9;">
+                        <span class="badge douyin" style="flex-shrink:0;">抖音</span>
+                        <div style="flex:1; font-size:14px;"><span style="color:#0a1e2f;"><strong>买家：</strong>这款茶叶礼盒可以定制包装吗？</span><br><span style="color:#2a7faa; background:#f0f7fe; padding:2px 10px; border-radius:6px; font-size:13px; display:inline-block; margin-top:2px;"><i class="fas fa-robot"></i> AI：您好，云山茶叶礼盒支持定制包装，您可以提供logo或文字要求...</span></div>
+                        <span style="font-size:12px; color:#94a3b8; flex-shrink:0;">14:32</span>
+                    </div>
+                    <div style="display:flex; align-items:start; gap:12px; padding:10px 0; border-bottom:1px solid #f0f4f9;">
+                        <span class="badge taobao" style="flex-shrink:0;">淘宝</span>
+                        <div style="flex:1; font-size:14px;"><span style="color:#0a1e2f;"><strong>买家：</strong>陶瓷杯可以微波炉加热吗？</span><br><span style="color:#2a7faa; background:#f0f7fe; padding:2px 10px; border-radius:6px; font-size:13px; display:inline-block; margin-top:2px;"><i class="fas fa-robot"></i> AI：云山陶瓷杯采用高温烧制，可以微波炉加热，但不建议放入烤箱...</span></div>
+                        <span style="font-size:12px; color:#94a3b8; flex-shrink:0;">13:30</span>
+                    </div>
+                    <div style="display:flex; align-items:start; gap:12px; padding:10px 0; border-bottom:1px solid #f0f4f9;">
+                        <span class="badge pdd" style="flex-shrink:0;">拼多多</span>
+                        <div style="flex:1; font-size:14px;"><span style="color:#0a1e2f;"><strong>买家：</strong>山核桃仁的保质期多久？</span><br><span style="color:#2a7faa; background:#f0f7fe; padding:2px 10px; border-radius:6px; font-size:13px; display:inline-block; margin-top:2px;"><i class="fas fa-robot"></i> AI：山核桃仁保质期为6个月，生产日期见包装封口处...</span></div>
+                        <span style="font-size:12px; color:#94a3b8; flex-shrink:0;">14:05</span>
+                    </div>
+                    <div style="display:flex; align-items:start; gap:12px; padding:10px 0; border-bottom:1px solid #f0f4f9;">
+                        <span class="badge jd" style="flex-shrink:0;">京东</span>
+                        <div style="flex:1; font-size:14px;"><span style="color:#0a1e2f;"><strong>买家：</strong>手工皂套装含哪些香味？</span><br><span style="color:#2a7faa; background:#f0f7fe; padding:2px 10px; border-radius:6px; font-size:13px; display:inline-block; margin-top:2px;"><i class="fas fa-robot"></i> AI：手工皂套装包含：薰衣草、玫瑰、茶树精油三款...</span></div>
+                        <span style="font-size:12px; color:#94a3b8; flex-shrink:0;">13:48</span>
+                    </div>
+                    <div style="display:flex; align-items:start; gap:12px; padding:10px 0;">
+                        <span class="badge douyin" style="flex-shrink:0;">抖音</span>
+                        <div style="flex:1; font-size:14px;"><span style="color:#0a1e2f;"><strong>买家：</strong>竹编包能发顺丰吗？</span><br><span style="color:#2a7faa; background:#f0f7fe; padding:2px 10px; border-radius:6px; font-size:13px; display:inline-block; margin-top:2px;"><i class="fas fa-robot"></i> AI：竹编包默认发中通/圆通，如需顺丰可补差价¥10，下单时备注即可。</span></div>
+                        <span style="font-size:12px; color:#94a3b8; flex-shrink:0;">14:20</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ===== AI 待办建议 ===== -->
         <div class="card">
-            <div class="card-header"><h3><i class="fas fa-comment-dots"></i> AI 待办建议</h3><span class="action"><i class="fas fa-robot"></i> 已分析 2,345 条数据</span></div>
+            <div class="card-header"><h3><i class="fas fa-tasks"></i> AI 待办建议</h3><span class="action"><i class="fas fa-robot"></i> 基于对话分析生成</span></div>
             <div class="row-four" style="margin-bottom:0;">
                 <div style="background:#f8fafc; border-radius:12px; padding:12px; border:1px solid #e8edf4;"><div style="font-weight:600; color:#0a1e2f;"><i class="fas fa-phone" style="color:#4dabf7;"></i> 待跟进客户</div><div style="font-size:22px; font-weight:700; margin:4px 0;">89</div><div style="font-size:13px; color:#5f7d95;">高意向需今日联系</div><span class="btn-sm primary" style="margin-top:6px;">立即跟进</span></div>
                 <div style="background:#f8fafc; border-radius:12px; padding:12px; border:1px solid #e8edf4;"><div style="font-weight:600; color:#0a1e2f;"><i class="fas fa-tag" style="color:#b55a1a;"></i> 待退款处理</div><div style="font-size:22px; font-weight:700; margin:4px 0;">5</div><div style="font-size:13px; color:#5f7d95;">超24小时未处理</div><span class="btn-sm danger" style="margin-top:6px;">立即处理</span></div>
@@ -1161,7 +1423,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- 页面9：【新增】AI 客服 · 全平台对接 -->
+    <!-- 页面9：AI 客服 (保持不变) -->
     <!-- ============================================================ -->
     <div id="page-ai-service" class="page">
         <div class="topbar">
@@ -1171,14 +1433,12 @@
                 <span class="btn btn-primary" onclick="showToast('🤖 AI引擎已启动，正在分析会话...')"><i class="fas fa-robot"></i> AI 引擎</span>
             </div>
         </div>
-        <!-- 统计 -->
         <div class="stats-grid">
             <div class="stat-card"><div class="label"><i class="fas fa-comments" style="color:#4dabf7;"></i> 今日会话</div><div class="value">1,284</div><div class="sub">较昨日 +12%</div></div>
             <div class="stat-card"><div class="label"><i class="fas fa-robot" style="color:#4dabf7;"></i> AI 处理</div><div class="value">1,023</div><div class="sub">占比 79.6%</div></div>
             <div class="stat-card"><div class="label"><i class="fas fa-user" style="color:#4dabf7;"></i> 转人工</div><div class="value">261</div><div class="sub">占比 20.4%</div></div>
             <div class="stat-card"><div class="label"><i class="fas fa-clock" style="color:#4dabf7;"></i> 平均响应</div><div class="value">2.3s</div><div class="sub">行业平均 8.7s</div></div>
         </div>
-        <!-- 平台接入 -->
         <div class="card" style="margin-bottom:16px;">
             <div class="card-header"><h3><i class="fas fa-plug"></i> 客服平台接入</h3><span class="action"><i class="fas fa-plus-circle"></i> 添加平台</span></div>
             <div class="row-four">
@@ -1188,7 +1448,6 @@
                 <div class="platform-card"><div class="plat-header"><div class="plat-icon" style="background:#0d7c4f;"><i class="fab fa-jd"></i></div><div><div class="plat-name">京东</div><div class="plat-status"><span class="status-dot online"></span> 已接入</div></div></div><div class="plat-stats"><span><i class="fas fa-comment-dots"></i> 会话 145</span><span><i class="fas fa-robot"></i> AI率 68%</span></div></div>
             </div>
         </div>
-        <!-- 会话列表 & AI回复 -->
         <div class="row-two">
             <div class="card">
                 <div class="card-header"><h3><i class="fas fa-list"></i> 实时会话</h3><span class="action">共 12 个活跃会话</span></div>
@@ -1224,7 +1483,7 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- 页面10：【新增】智能物流管理 -->
+    <!-- 页面10：智能物流 (保持不变) -->
     <!-- ============================================================ -->
     <div id="page-logistics" class="page">
         <div class="topbar">
@@ -1234,14 +1493,12 @@
                 <span class="btn btn-primary" onclick="showToast('📦 正在同步所有物流数据...')"><i class="fas fa-cloud-upload-alt"></i> 同步物流</span>
             </div>
         </div>
-        <!-- 统计 -->
         <div class="stats-grid">
             <div class="stat-card"><div class="label"><i class="fas fa-boxes" style="color:#4dabf7;"></i> 在途订单</div><div class="value">156</div><div class="sub">今日 +23</div></div>
             <div class="stat-card"><div class="label"><i class="fas fa-check-circle" style="color:#0d7c4f;"></i> 已签收</div><div class="value">89</div><div class="sub">今日 +12</div></div>
             <div class="stat-card"><div class="label"><i class="fas fa-exclamation-triangle" style="color:#b55a1a;"></i> 异常包裹</div><div class="value">8</div><div class="sub"><span class="badge danger">需处理 3</span></div></div>
             <div class="stat-card"><div class="label"><i class="fas fa-clock" style="color:#4dabf7;"></i> 平均时效</div><div class="value">2.8天</div><div class="sub">较昨日 -0.3天</div></div>
         </div>
-        <!-- 物流追踪列表 -->
         <div class="card">
             <div class="card-header">
                 <h3><i class="fas fa-list"></i> 物流追踪 · 实时</h3>
@@ -1344,7 +1601,6 @@
                 </div>
             </div>
         </div>
-        <!-- 智能调度 -->
         <div class="row-two" style="margin-top:16px;">
             <div class="card">
                 <div class="card-header"><h3><i class="fas fa-robot" style="color:#4dabf7;"></i> AI 物流预测</h3><span class="action">置信度 92%</span></div>
@@ -1405,14 +1661,14 @@
 
 </div>
 
-<!-- ===== Toast 提示 ===== -->
+<!-- ===== Toast ===== -->
 <div id="toast" class="toast"></div>
 
 <!-- ============================================================ -->
 <!-- JavaScript -->
 <!-- ============================================================ -->
 <script>
-    // ===== Toast 提示 =====
+    // ===== Toast =====
     function showToast(msg) {
         var toast = document.getElementById('toast');
         toast.innerHTML = msg;
@@ -1437,7 +1693,61 @@
         t.addEventListener('click', function() { this.classList.toggle('active'); });
     });
 
-    // ===== 推单功能 =====
+    // ===== 商品管理：分类筛选 =====
+    var currentCategory = 'all';
+
+    function filterByCategory(cat, el) {
+        currentCategory = cat;
+        // 更新分类标签高亮
+        document.querySelectorAll('.category-tabs .cat').forEach(function(c) { c.classList.remove('active'); });
+        if (el) el.classList.add('active');
+        // 应用筛选
+        filterProducts();
+    }
+
+    function filterProducts() {
+        var keyword = document.getElementById('productSearch').value.toLowerCase().trim();
+        var platform = document.getElementById('productPlatformFilter').value;
+        var status = document.getElementById('productStatusFilter').value;
+        var category = currentCategory;
+
+        var rows = document.querySelectorAll('#productTableBody tr');
+        var visibleCount = 0;
+
+        rows.forEach(function(row) {
+            var rowCat = row.dataset.category || '';
+            var rowPlatform = row.dataset.platform || '';
+            var rowStatus = row.dataset.status || '';
+            var rowText = row.textContent.toLowerCase();
+
+            var match = true;
+            if (category !== 'all' && rowCat !== category) match = false;
+            if (platform !== 'all' && rowPlatform !== platform) match = false;
+            if (status !== 'all' && rowStatus !== status) match = false;
+            if (keyword && !rowText.includes(keyword)) match = false;
+
+            row.style.display = match ? '' : 'none';
+            if (match) visibleCount++;
+        });
+
+        document.getElementById('productCount').textContent = '共 ' + visibleCount + ' 件商品';
+        document.getElementById('productCountFooter').textContent = '共 ' + visibleCount + ' 件商品';
+    }
+
+    // ===== 商品管理：搜索框实时筛选 =====
+    document.getElementById('productSearch').addEventListener('input', filterProducts);
+    document.getElementById('productPlatformFilter').addEventListener('change', filterProducts);
+    document.getElementById('productStatusFilter').addEventListener('change', filterProducts);
+    document.getElementById('productCategoryFilter').addEventListener('change', function() {
+        var val = this.value;
+        var el = document.querySelector('.category-tabs .cat[data-cat="' + val + '"]');
+        if (el) {
+            filterByCategory(val, el);
+            this.value = 'all';
+        }
+    });
+
+    // ===== 代发推单 =====
     function pushOrderAction(btn) {
         var row = btn.closest('tr');
         var orderId = row ? row.querySelector('td:nth-child(2)')?.textContent || '订单' : '订单';
@@ -1468,7 +1778,6 @@
         }, 1200);
     }
 
-    // ===== 批量推单 =====
     function toggleAllPush() {
         var checked = document.getElementById('pushSelectAll').checked;
         document.querySelectorAll('.push-check').forEach(function(cb) { cb.checked = checked; });
@@ -1525,7 +1834,7 @@
         });
     }
 
-    // ===== 铺货功能 =====
+    // ===== 铺货 =====
     function togglePlat(el) { el.classList.toggle('active'); }
 
     function selectAllSourcing() {
@@ -1596,7 +1905,7 @@
         });
     }
 
-    // ===== ECharts 图表 =====
+    // ===== ECharts =====
     document.addEventListener('DOMContentLoaded', function() {
         var salesChart = echarts.init(document.getElementById('salesChart'));
         salesChart.setOption({
