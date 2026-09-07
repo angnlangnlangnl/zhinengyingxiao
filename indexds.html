@@ -3,1224 +3,1645 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI智营 · 智能营销+电商管理一体化</title>
+    <title>电商运营后台 · 科技蓝</title>
+    <!-- Font Awesome 6 (免费) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <style>
-        /* ===== 完整样式（与之前一致，此处省略以节省空间） ===== */
-        /* 实际使用时请包含完整样式 */
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --primary-light: #3b82f6;
-            --secondary: #06b6d4;
-            --accent: #8b5cf6;
-            --bg-dark: #0a0e1a;
-            --bg-card: #111827;
-            --bg-sidebar: #0d1117;
-            --bg-hover: #1a2234;
-            --text-primary: #e5e7eb;
-            --text-secondary: #9ca3af;
-            --text-muted: #6b7280;
-            --border: #1f2937;
-            --border-light: #374151;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #3b82f6;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
-            --radius: 12px;
-            --radius-lg: 20px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        /* ===== 全局重置 ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            height: 100vh;
-            overflow: hidden;
-            -webkit-font-smoothing: antialiased;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #eef2f8;
+            color: #0a1a2b;
+            display: flex;
+            min-height: 100vh;
         }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
-
-        /* ========== 登录页 ========== */
-        .login-page { display: flex; height: 100vh; background: linear-gradient(135deg, #0a0e1a 0%, #111827 30%, #1a2234 60%, #0a0e1a 100%); overflow: hidden; }
-        .login-left { flex: 1.2; display: flex; align-items: center; justify-content: center; padding: 60px 80px; position: relative; z-index: 1; }
-        .login-left-content { max-width: 600px; width: 100%; }
-        .login-logo { display: flex; align-items: center; gap: 18px; margin-bottom: 50px; }
-        .login-logo-icon { width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: 0 15px 40px rgba(37,99,235,0.5); animation: logoFloat 3s ease-in-out infinite; }
-        @keyframes logoFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-        .login-logo-text h1 { font-size: 32px; font-weight: 800; }
-        .login-logo-text p { font-size: 15px; color: var(--text-secondary); letter-spacing: 2px; }
-        .login-slogan { font-size: 48px; font-weight: 900; line-height: 1.2; margin-bottom: 25px; background: linear-gradient(135deg, #60a5fa 0%, #06b6d4 50%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .login-slogan-sub { font-size: 18px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 40px; }
-        .login-features { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
-        .login-feature { display: flex; align-items: center; gap: 15px; padding: 18px 20px; background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius: 15px; transition: var(--transition); }
-        .login-feature:hover { background: rgba(37,99,235,0.1); border-color: rgba(37,99,235,0.3); transform: translateX(5px); }
-        .login-feature-icon { font-size: 28px; width: 50px; height: 50px; background: rgba(37,99,235,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-        .login-feature-text h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-        .login-feature-text p { font-size: 13px; color: var(--text-muted); }
-        .login-right { width: 500px; display: flex; align-items: center; justify-content: center; padding: 50px; position: relative; z-index: 1; background: rgba(17,24,39,0.95); border-left:1px solid rgba(255,255,255,0.08); }
-        .login-form-container { width: 100%; max-width: 380px; }
-        .login-form-header { text-align: center; margin-bottom: 35px; }
-        .login-form-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
-        .login-form-subtitle { font-size: 14px; color: var(--text-secondary); }
-        .login-form .form-group { margin-bottom: 22px; }
-        .login-form .form-label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text-secondary); }
-        .login-form .form-input { width: 100%; padding: 15px 18px; background: var(--bg-dark); border: 1.5px solid var(--border); border-radius: 12px; color: var(--text-primary); font-size: 15px; transition: var(--transition); }
-        .login-form .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37,99,235,0.15); }
-        .login-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 700; cursor: pointer; transition: var(--transition); margin-top: 10px; letter-spacing: 2px; }
-        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(37,99,235,0.5); }
-        .login-options { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; font-size: 13px; color: var(--text-secondary); }
-        .login-options a { color: var(--primary-light); text-decoration: none; cursor: pointer; }
-        .remember-me { display: flex; align-items: center; gap: 8px; }
-
-        /* ========== 主系统 ========== */
-        .app-container { display: none; height: 100vh; }
-        .app-container.show { display: flex; }
-        .sidebar { width: 240px; background: var(--bg-sidebar); border-right:1px solid var(--border); display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
-        .sidebar-logo { padding: 20px 18px; border-bottom:1px solid var(--border); display: flex; align-items: center; gap: 12px; }
-        .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        .logo-text h2 { font-size: 16px; font-weight: 700; }
-        .logo-text p { font-size: 10px; color: var(--text-secondary); }
-        .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
-        .nav-section { margin-bottom: 20px; }
-        .nav-section-title { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; padding: 0 12px; margin-bottom: 8px; font-weight: 600; }
-        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; cursor: pointer; transition: var(--transition); color: var(--text-secondary); margin-bottom: 3px; user-select: none; font-size: 14px; }
-        .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
-        .nav-item.active { background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(6,182,212,0.2)); color: var(--primary-light); border:1px solid rgba(37,99,235,0.3); }
-        .nav-icon { font-size: 18px; width: 22px; text-align: center; }
-        .nav-badge { margin-left: auto; background: var(--primary); color: white; padding: 1px 8px; border-radius: 10px; font-size: 10px; }
-        .nav-badge.success { background: var(--success); }
-        .nav-badge.warning { background: var(--warning); }
-        .nav-badge.danger { background: var(--danger); }
-        .sidebar-footer { padding: 16px 18px; border-top:1px solid var(--border); }
-        .user-profile { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 10px; background: rgba(37,99,235,0.08); }
-        .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 14px; }
-
-        .main-content { flex: 1; margin-left: 240px; padding: 20px 24px; overflow-y: auto; height: 100vh; }
-        .page { display: none; animation: fadeIn 0.3s ease; }
+        /* ===== 左侧导航 ===== */
+        .sidebar {
+            width: 220px;
+            background: #0a1e2f;
+            color: #b8cfe0;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            box-shadow: 2px 0 20px rgba(10,30,47,0.08);
+            z-index: 100;
+            transition: 0.2s;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+        .sidebar .logo {
+            padding: 22px 20px 28px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .sidebar .logo i {
+            font-size: 26px;
+            color: #4dabf7;
+            background: rgba(77,171,247,0.12);
+            padding: 8px;
+            border-radius: 12px;
+        }
+        .sidebar .logo span {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+        .sidebar .logo .badge {
+            font-size: 10px;
+            background: #4dabf7;
+            color: #0a1e2f;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        .sidebar .nav {
+            flex: 1;
+            padding: 16px 12px 20px;
+        }
+        .sidebar .nav .section-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #5a7f99;
+            padding: 14px 12px 6px 12px;
+            font-weight: 600;
+        }
+        .sidebar .nav .item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: #9bb4cc;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-bottom: 2px;
+            position: relative;
+        }
+        .sidebar .nav .item i {
+            width: 18px;
+            font-size: 15px;
+            text-align: center;
+            color: #5a7f99;
+            transition: 0.15s;
+        }
+        .sidebar .nav .item:hover {
+            background: rgba(255,255,255,0.05);
+            color: #d4e4f0;
+        }
+        .sidebar .nav .item:hover i { color: #7aaed9; }
+        .sidebar .nav .item.active {
+            background: rgba(77,171,247,0.12);
+            color: white;
+        }
+        .sidebar .nav .item.active i {
+            color: #4dabf7;
+        }
+        .sidebar .nav .item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            height: 60%;
+            width: 3px;
+            background: #4dabf7;
+            border-radius: 0 4px 4px 0;
+        }
+        .sidebar .nav .item .tag {
+            margin-left: auto;
+            background: rgba(77,171,247,0.15);
+            color: #4dabf7;
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        .sidebar .bottom {
+            padding: 16px 20px 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+            color: #5a7f99;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar .bottom i { font-size: 16px; }
+        /* ===== 主内容 ===== */
+        .main {
+            flex: 1;
+            padding: 20px 28px 40px;
+            max-width: calc(100% - 220px);
+            min-width: 0;
+        }
+        /* ===== 顶部栏 ===== */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .topbar .left h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0a1e2f;
+        }
+        .topbar .left p {
+            font-size: 13px;
+            color: #5f7d95;
+            margin-top: 2px;
+        }
+        .topbar .right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .topbar .right .btn {
+            padding: 6px 18px;
+            border-radius: 30px;
+            border: 1px solid #dce5ef;
+            background: white;
+            font-size: 13px;
+            font-weight: 500;
+            color: #1e3a5f;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: default;
+            transition: 0.1s;
+        }
+        .topbar .right .btn-primary {
+            background: #0a1e2f;
+            border-color: #0a1e2f;
+            color: white;
+        }
+        .topbar .right .btn-primary i { color: rgba(255,255,255,0.7); }
+        .topbar .right .btn i { color: #5f7d95; }
+        .topbar .right .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #4dabf7;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        /* ===== 页面容器 ===== */
+        .page { display: none; animation: fadeIn 0.25s ease; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0.6; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        /* ===== 统计卡片 ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: white;
+            padding: 18px 20px;
+            border-radius: 16px;
+            border: 1px solid #e8edf4;
+            box-shadow: 0 2px 8px rgba(10,30,47,0.02);
+            transition: 0.15s;
+        }
+        .stat-card:hover {
+            box-shadow: 0 6px 20px rgba(10,30,47,0.06);
+            border-color: #c8d8e8;
+        }
+        .stat-card .label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #5f7d95;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a1e2f;
+            letter-spacing: -0.02em;
+        }
+        .stat-card .trend {
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 10px;
+            background: #e6f7ec;
+            color: #0d7c4f;
+            padding: 2px 10px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+        .stat-card .trend.down { background: #fde8ed; color: #b51a3f; }
+        .stat-card .sub {
+            font-size: 12px;
+            color: #5f7d95;
+            margin-top: 4px;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .stat-card .sub i { width: 14px; color: #7e9cb0; }
+        /* ===== 卡片布局 ===== */
+        .row-two { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-bottom: 24px; }
+        .row-three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 24px; }
+        .row-four { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 18px 20px;
+            border: 1px solid #e8edf4;
+            box-shadow: 0 2px 8px rgba(10,30,47,0.02);
+            transition: 0.15s;
+        }
+        .card:hover { border-color: #c8d8e8; }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .card-header h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0a1e2f;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card-header h3 i { color: #4dabf7; }
+        .card-header .action {
+            font-size: 12px;
+            color: #4dabf7;
+            font-weight: 500;
+            cursor: default;
+        }
+        .card-header .action i { margin-right: 4px; }
+        .chart-container { height: 180px; width: 100%; }
+        .chart-container-sm { height: 130px; width: 100%; }
+        /* ===== 表格 ===== */
+        .table-wrap { overflow-x: auto; }
+        .table-wrap table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .table-wrap th {
+            text-align: left;
+            padding: 10px 4px 8px 0;
+            font-weight: 600;
+            color: #5f7d95;
+            border-bottom: 1px solid #e8edf4;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .table-wrap td {
+            padding: 10px 4px 10px 0;
+            border-bottom: 1px solid #f0f4f9;
+            color: #0a1e2f;
+        }
+        .table-wrap tr:last-child td { border: none; }
+        /* ===== 徽章 ===== */
+        .badge {
+            padding: 3px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+            display: inline-block;
+        }
+        .badge.taobao { background: #fef0e6; color: #b55a1a; }
+        .badge.douyin { background: #e9f0ff; color: #1a5bb5; }
+        .badge.pdd { background: #fde8ed; color: #b51a3f; }
+        .badge.jd { background: #e6f7ec; color: #0d7c4f; }
+        .badge.success { background: #e6f7ec; color: #0d7c4f; }
+        .badge.warning { background: #fef0e6; color: #b55a1a; }
+        .badge.danger { background: #fde8ed; color: #b51a3f; }
+        .badge.info { background: #e9f0ff; color: #1a5bb5; }
+        .badge.blue { background: rgba(77,171,247,0.12); color: #2a7faa; }
+        .badge.orange { background: #fef0e6; color: #b55a1a; }
+        /* ===== 渠道项 ===== */
+        .channel-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f4f9;
+        }
+        .channel-item:last-child { border: none; }
+        .channel-item .left { display: flex; align-items: center; gap: 10px; }
+        .channel-item .dot { width: 8px; height: 8px; border-radius: 8px; display: inline-block; }
+        .channel-item .name { font-weight: 500; color: #0a1e2f; font-size: 14px; }
+        .channel-item .percent { font-weight: 600; color: #0a1e2f; font-size: 14px; }
+        .channel-item .vol { font-size: 13px; color: #5f7d95; }
+        /* ===== 商品卡片 ===== */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+        .product-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 14px;
+            border: 1px solid #e8edf4;
+            text-align: center;
+            transition: 0.15s;
+        }
+        .product-card:hover { border-color: #c8d8e8; }
+        .product-card .img {
+            height: 70px;
+            background: #e8edf4;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7e9cb0;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .product-card .name {
+            font-weight: 600;
+            color: #0a1e2f;
+            font-size: 14px;
+        }
+        .product-card .price {
+            color: #b55a1a;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .product-card .status { font-size: 12px; color: #5f7d95; margin-top: 4px; }
+        .product-card .actions { margin-top: 8px; display: flex; gap: 6px; justify-content: center; }
+        /* ===== AI 洞察 ===== */
+        .ai-insight {
+            background: #f0f7fe;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-left: 4px solid #4dabf7;
+        }
+        .ai-insight .title { font-weight: 600; color: #0a1e2f; font-size: 14px; }
+        .ai-insight .desc { color: #475569; font-size: 13px; margin-top: 4px; }
+        .ai-insight .tag {
+            font-size: 11px;
+            color: #4dabf7;
+            background: rgba(77,171,247,0.08);
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        /* ===== 切换开关 ===== */
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #f0f4f9;
+        }
+        .toggle-row:last-child { border: none; }
+        .toggle-row .desc { font-size: 14px; color: #0a1e2f; }
+        .toggle-row .desc small { color: #5f7d95; font-size: 12px; display: block; }
+        .toggle {
+            width: 40px;
+            height: 22px;
+            background: #dce5ef;
+            border-radius: 30px;
+            position: relative;
+            cursor: default;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .toggle.active { background: #4dabf7; }
+        .toggle .knob {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 16px;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: 0.2s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+        }
+        .toggle.active .knob { left: 21px; }
+        /* ===== 表单 ===== */
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #0a1e2f;
+            margin-bottom: 4px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 14px;
+            border: 1px solid #dce5ef;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fafcfe;
+            transition: 0.15s;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4dabf7;
+            box-shadow: 0 0 0 3px rgba(77,171,247,0.08);
+        }
+        .form-group textarea { min-height: 70px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        /* ===== 按钮 ===== */
+        .btn-sm {
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: none;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-sm.primary { background: #0a1e2f; color: white; }
+        .btn-sm.outline { background: transparent; border: 1px solid #dce5ef; color: #1e3a5f; }
+        .btn-sm.success { background: #e6f7ec; color: #0d7c4f; }
+        .btn-sm.danger { background: #fde8ed; color: #b51a3f; }
+        .btn-sm.blue { background: rgba(77,171,247,0.12); color: #2a7faa; }
+        .btn-sm.orange { background: #fef0e6; color: #b55a1a; }
+        .btn-sm:active { transform: scale(0.95); }
+        .settings-group {
+            border-bottom: 1px solid #e8edf4;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+        .settings-group:last-child { border: none; margin-bottom: 0; }
+        .settings-group h4 { font-size: 14px; color: #0a1e2f; margin-bottom: 10px; }
+        .status-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 7px;
+            margin-right: 4px;
+        }
+        .status-dot.online { background: #0d7c4f; }
+        .status-dot.offline { background: #b51a3f; }
+        .status-dot.warning { background: #b55a1a; }
+        .flex { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .gap-2 { gap: 6px; }
+        .mt-2 { margin-top: 10px; }
+        .text-muted { color: #5f7d95; }
+        /* ===== 铺货模块特有样式 ===== */
+        .product-pick-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f4f9;
+        }
+        .product-pick-item:last-child { border: none; }
+        .product-pick-item .thumb {
+            width: 60px;
+            height: 60px;
+            background: #e8edf4;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #7e9cb0;
+            flex-shrink: 0;
+        }
+        .product-pick-item .info { flex: 1; }
+        .product-pick-item .info .name { font-weight: 600; color: #0a1e2f; font-size: 14px; }
+        .product-pick-item .info .meta { font-size: 13px; color: #5f7d95; display: flex; gap: 12px; flex-wrap: wrap; margin-top: 2px; }
+        .product-pick-item .info .meta i { width: 14px; color: #7e9cb0; }
+        .product-pick-item .right { text-align: right; flex-shrink: 0; }
+        .product-pick-item .right .price { font-weight: 700; color: #b55a1a; font-size: 16px; }
+        .product-pick-item .right .price small { font-size: 12px; font-weight: 400; color: #5f7d95; }
+        .platform-selector { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0; }
+        .platform-selector .pl {
+            padding: 3px 12px;
+            border-radius: 30px;
+            border: 1px solid #dce5ef;
+            font-size: 12px;
+            cursor: pointer;
+            background: white;
+            transition: 0.1s;
+            color: #5f7d95;
+        }
+        .platform-selector .pl.active {
+            border-color: #4dabf7;
+            background: rgba(77,171,247,0.08);
+            color: #2a7faa;
+        }
+        .platform-selector .pl:hover { border-color: #4dabf7; }
 
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 16px 20px; background: var(--bg-card); border-radius: var(--radius-lg); border:1px solid var(--border); flex-wrap: wrap; gap: 10px; }
-        .page-title { font-size: 20px; font-weight: 700; }
-        .page-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
-        .top-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        /* ===== 新增模块样式 ===== */
+        .platform-card {
+            border: 1px solid #e8edf4;
+            border-radius: 12px;
+            padding: 14px 16px;
+            background: #fafcfe;
+            transition: 0.15s;
+        }
+        .platform-card:hover { border-color: #c8d8e8; }
+        .platform-card .plat-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .platform-card .plat-header .plat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+        }
+        .platform-card .plat-header .plat-name { font-weight: 600; color: #0a1e2f; font-size: 14px; }
+        .platform-card .plat-header .plat-status { font-size: 12px; color: #5f7d95; }
+        .platform-card .plat-stats { font-size: 13px; color: #5f7d95; display: flex; gap: 16px; flex-wrap: wrap; }
+        .platform-card .plat-stats span { display: flex; align-items: center; gap: 4px; }
 
-        .btn { padding: 8px 16px; border: none; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 4px 15px rgba(37,99,235,0.3); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
-        .btn-outline { background: transparent; color: var(--text-primary); border:1px solid var(--border-light); }
-        .btn-outline:hover { border-color: var(--primary); color: var(--primary-light); }
-        .btn-success { background: var(--success); color: white; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-warning { background: var(--warning); color: white; }
-        .btn-sm { padding: 4px 12px; font-size: 12px; border-radius: 8px; }
+        .logistics-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f4f9;
+        }
+        .logistics-item:last-child { border: none; }
+        .logistics-item .track-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f7fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4dabf7;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .logistics-item .info { flex: 1; }
+        .logistics-item .info .order { font-weight: 600; color: #0a1e2f; font-size: 14px; }
+        .logistics-item .info .detail { font-size: 13px; color: #5f7d95; display: flex; gap: 12px; flex-wrap: wrap; margin-top: 2px; }
+        .logistics-item .info .progress {
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #5f7d95;
+        }
+        .logistics-item .info .progress .bar {
+            flex: 1;
+            height: 4px;
+            background: #e8edf4;
+            border-radius: 10px;
+            overflow: hidden;
+            min-width: 80px;
+        }
+        .logistics-item .info .progress .bar .fill {
+            height: 100%;
+            border-radius: 10px;
+            background: #4dabf7;
+        }
+        .logistics-item .right { text-align: right; flex-shrink: 0; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin-bottom: 20px; }
-        .stat-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 18px 20px; border:1px solid var(--border); transition: var(--transition); }
-        .stat-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-        .stat-icon { font-size: 26px; margin-bottom: 6px; }
-        .stat-value { font-size: 26px; font-weight: 700; color: var(--primary-light); margin-bottom: 3px; }
-        .stat-label { font-size: 13px; color: var(--text-secondary); }
-
-        .panel { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; border:1px solid var(--border); margin-bottom: 20px; }
-        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom:1px solid var(--border); flex-wrap: wrap; gap: 8px; }
-        .panel-title { font-size: 16px; font-weight: 700; }
-
-        .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px 14px; text-align: left; border-bottom:1px solid var(--border); font-size: 13px; }
-        th { background: var(--bg-dark); font-weight: 600; color: var(--text-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-        tr:hover { background: var(--bg-hover); }
-
-        .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 12px; }
-        .platform-card { background: var(--bg-dark); border:2px solid var(--border); border-radius: var(--radius-lg); padding: 16px; text-align: center; cursor: pointer; transition: var(--transition); }
-        .platform-card:hover { border-color: var(--primary); transform: translateY(-3px); }
-        .platform-icon { font-size: 36px; margin-bottom: 8px; }
-        .platform-name { font-size: 14px; font-weight: 600; }
-        .platform-status { font-size: 12px; color: var(--text-secondary); }
-        .platform-status.bound { color: var(--success); }
-
-        .log-container { height: 240px; overflow-y: auto; background: var(--bg-dark); border-radius: 10px; padding: 12px 16px; font-family: 'Courier New', monospace; font-size: 12px; }
-        .log-entry { margin-bottom: 6px; padding: 6px 10px; border-radius: 6px; background: rgba(255,255,255,0.02); display: flex; gap: 8px; }
-        .log-time { color: var(--text-muted); flex-shrink: 0; }
-        .log-info { color: #60a5fa; }
-        .log-success { color: #34d399; }
-        .log-warning { color: #fbbf24; }
-        .log-error { color: #f87171; }
-
-        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-        .form-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
-        .form-input, .form-select, .form-textarea { padding: 10px 14px; background: var(--bg-dark); border:1px solid var(--border); border-radius: 10px; color: var(--text-primary); font-size: 14px; transition: var(--transition); width: 100%; }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
-        .form-textarea { min-height: 80px; resize: vertical; }
-
-        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: var(--border); transition: var(--transition); border-radius: 24px; }
-        .toggle-slider:before { content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; transition: var(--transition); border-radius: 50%; position: absolute; }
-        .toggle-switch input:checked + .toggle-slider { background: var(--primary); }
-        .toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
-
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; }
-        .modal-overlay.show { display: flex; }
-        .modal-content { background: var(--bg-card); border-radius: var(--radius-lg); padding: 28px; width: 92%; max-width: 500px; border:1px solid var(--border); max-height: 90vh; overflow-y: auto; }
-
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 14px; }
-        .product-card { background: var(--bg-dark); border-radius: 12px; padding: 14px; text-align: center; border:1px solid var(--border); transition: var(--transition); }
-        .product-card:hover { border-color: var(--primary); transform: translateY(-3px); }
-        .product-card .icon { font-size: 36px; margin-bottom: 6px; }
-        .product-card .name { font-weight: 600; font-size: 14px; }
-        .product-card .price { color: var(--primary-light); font-weight: 700; font-size: 16px; }
-        .product-card .status { font-size: 13px; margin-top: 4px; }
-        .product-card .actions { margin-top: 8px; display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-
-        .status-badge { padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; display: inline-block; }
-        .status-badge.success { background: rgba(16,185,129,0.2); color: var(--success); }
-        .status-badge.warning { background: rgba(245,158,11,0.2); color: var(--warning); }
-        .status-badge.danger { background: rgba(239,68,68,0.2); color: var(--danger); }
-        .status-badge.info { background: rgba(59,130,246,0.2); color: var(--info); }
-
-        .component-card { background: var(--bg-dark); border:1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; transition: var(--transition); flex-wrap: wrap; gap: 8px; }
-        .component-card:hover { border-color: var(--primary); }
-
-        .plan-card { background: var(--bg-dark); border:1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; transition: var(--transition); flex-wrap: wrap; gap: 8px; }
-        .plan-card:hover { border-color: var(--primary); }
-
-        .chat-container { display: flex; gap: 16px; height: 420px; }
-        .chat-list { width: 200px; background: var(--bg-dark); border-radius: 12px; overflow-y: auto; border:1px solid var(--border); flex-shrink: 0; }
-        .chat-list-item { padding: 12px 14px; border-bottom:1px solid var(--border); cursor: pointer; transition: var(--transition); }
-        .chat-list-item:hover { background: var(--bg-hover); }
-        .chat-list-item.active { background: rgba(37,99,235,0.15); border-left:3px solid var(--primary); }
-        .chat-messages { flex: 1; display: flex; flex-direction: column; background: var(--bg-dark); border-radius: 12px; border:1px solid var(--border); }
-        .chat-messages-header { padding: 12px 16px; border-bottom:1px solid var(--border); font-weight: 600; }
-        .chat-messages-body { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; }
-        .message-bubble { max-width: 70%; margin-bottom: 12px; padding: 10px 14px; border-radius: 12px; font-size: 14px; }
-        .message-in { background: var(--bg-card); align-self: flex-start; }
-        .message-out { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; align-self: flex-end; margin-left: auto; }
-        .chat-input-area { padding: 12px 16px; border-top:1px solid var(--border); display: flex; gap: 10px; flex-wrap: wrap; }
-        .chat-input-area .form-input { flex: 1; min-width: 120px; }
+        .chat-log {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .chat-log::-webkit-scrollbar { width: 4px; }
+        .chat-log::-webkit-scrollbar-track { background: #f0f4f9; border-radius: 10px; }
+        .chat-log::-webkit-scrollbar-thumb { background: #c8d8e8; border-radius: 10px; }
+        .chat-msg {
+            display: flex;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f4f9;
+        }
+        .chat-msg:last-child { border: none; }
+        .chat-msg .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            flex-shrink: 0;
+        }
+        .chat-msg .content { flex: 1; }
+        .chat-msg .content .text { font-size: 14px; color: #0a1e2f; }
+        .chat-msg .content .time { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+        .chat-msg .content .reply {
+            background: #f0f7fe;
+            padding: 6px 12px;
+            border-radius: 8px;
+            margin-top: 4px;
+            font-size: 13px;
+            color: #2a7faa;
+            border-left: 3px solid #4dabf7;
+        }
 
         /* ===== 响应式 ===== */
-        @media (max-width: 1024px) {
-            .chat-container { flex-direction: column; height: auto; }
-            .chat-list { width: 100%; height: 150px; }
-            .chat-messages { min-height: 300px; }
-        }
-        @media (max-width: 768px) {
-            .login-left { padding: 30px; }
-            .login-right { width: 100%; border-left: none; }
-            .login-slogan { font-size: 28px; }
-            .login-features { grid-template-columns: 1fr; }
-            .sidebar { width: 60px; }
-            .sidebar .logo-text, .sidebar .nav-item span, .sidebar .nav-section-title, .sidebar .user-info { display: none; }
-            .sidebar .nav-item { justify-content: center; padding: 10px; }
-            .sidebar .nav-item .nav-icon { font-size: 20px; }
-            .main-content { margin-left: 60px; padding: 14px; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .login-page { flex-direction: column; }
-            .top-bar { flex-direction: column; align-items: flex-start; }
-        }
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr; }
+        @media (max-width: 1200px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .row-two { grid-template-columns: 1fr; }
+            .row-three { grid-template-columns: 1fr 1fr; }
+            .row-four { grid-template-columns: 1fr 1fr; }
             .product-grid { grid-template-columns: 1fr 1fr; }
         }
+        @media (max-width: 768px) {
+            .sidebar { width: 60px; }
+            .sidebar .logo span,
+            .sidebar .logo .badge,
+            .sidebar .nav .item span,
+            .sidebar .nav .section-label,
+            .sidebar .bottom span,
+            .sidebar .nav .item .tag { display: none; }
+            .sidebar .logo { padding: 16px 12px; justify-content: center; }
+            .sidebar .logo i { font-size: 20px; padding: 6px; }
+            .sidebar .nav .item { justify-content: center; padding: 12px; }
+            .sidebar .nav .item i { font-size: 18px; width: auto; }
+            .sidebar .bottom { justify-content: center; }
+            .sidebar .bottom i { font-size: 18px; }
+            .main { max-width: calc(100% - 60px); padding: 14px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .row-three { grid-template-columns: 1fr; }
+            .row-four { grid-template-columns: 1fr; }
+            .product-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .topbar { flex-direction: column; align-items: flex-start; }
+            .product-pick-item { flex-wrap: wrap; }
+            .logistics-item { flex-wrap: wrap; }
+            .platform-card { padding: 12px; }
+        }
+        /* ===== Toast 提示 ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0a1e2f;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 999;
+            white-space: nowrap;
+        }
+        .toast.show { display: block; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        .toast i { margin-right: 8px; }
     </style>
 </head>
 <body>
 
-<!-- ========== 登录页 ========== -->
-<div class="login-page" id="loginPage">
-    <div class="login-left">
-        <div class="login-left-content">
-            <div class="login-logo">
-                <div class="login-logo-icon">🚀</div>
-                <div class="login-logo-text"><h1>AI智营</h1><p>智能营销 + 电商管理</p></div>
-            </div>
-            <div class="login-slogan">让营销更智能<br>让管理更高效</div>
-            <div class="login-slogan-sub">AI驱动的全链路经营平台 · 帮您赚钱，也帮您省力</div>
-            <div class="login-features">
-                <div class="login-feature"><div class="login-feature-icon">🎯</div><div class="login-feature-text"><h3>AI智能营销</h3><p>精准获客与转化</p></div></div>
-                <div class="login-feature"><div class="login-feature-icon">📦</div><div class="login-feature-text"><h3>电商全渠道管理</h3><p>多平台订单商品统一</p></div></div>
-                <div class="login-feature"><div class="login-feature-icon">🤖</div><div class="login-feature-text"><h3>AI经营助手</h3><p>数据驱动决策</p></div></div>
-                <div class="login-feature"><div class="login-feature-icon">📈</div><div class="login-feature-text"><h3>增长分析</h3><p>实时洞察商机</p></div></div>
-            </div>
-        </div>
+<!-- ===== 左侧导航 ===== -->
+<div class="sidebar">
+    <div class="logo">
+        <i class="fas fa-bolt"></i>
+        <span>智控电商</span>
+        <span class="badge">v3.0</span>
     </div>
-    <div class="login-right">
-        <div class="login-form-container">
-            <div class="login-form-header"><div class="login-form-title">欢迎登录</div><div class="login-form-subtitle">AI智营 · 一体化经营平台</div></div>
-            <div class="login-form">
-                <div class="form-group"><label class="form-label">账号</label><input type="text" class="form-input" id="loginUsername" placeholder="请输入用户名" value="admin"></div>
-                <div class="form-group"><label class="form-label">密码</label><input type="password" class="form-input" id="loginPassword" placeholder="请输入密码" value="123456"></div>
-                <div class="login-options"><label class="remember-me"><input type="checkbox" checked> 记住我</label><a onclick="alert('请联系管理员重置密码')">忘记密码？</a></div>
-                <button class="login-btn" onclick="handleLogin()">登 录</button>
-                <div class="login-options" style="justify-content:center;margin-top:16px;"><span>还没有账号？</span><a onclick="alert('请联系管理员开通账号')">立即注册</a></div>
-                <div style="text-align:center;margin-top:20px;font-size:12px;color:var(--text-muted);">© 2025 AI智营 | 智能营销+电商管理一体化</div>
-            </div>
-        </div>
+    <div class="nav">
+        <div class="section-label">核心模块</div>
+        <div class="item active" data-page="page-dashboard"><i class="fas fa-chart-pie"></i><span>数据总览</span></div>
+        <div class="item" data-page="page-orders"><i class="fas fa-shopping-cart"></i><span>订单管理</span><span class="tag">23</span></div>
+        <div class="item" data-page="page-products"><i class="fas fa-box"></i><span>商品管理</span></div>
+        <div class="item" data-page="page-customer"><i class="fas fa-users"></i><span>客资聚合</span><span class="tag">89</span></div>
+        <div class="item" data-page="page-ai"><i class="fas fa-robot"></i><span>AI 营销</span></div>
+        <div class="section-label">运营工具</div>
+        <div class="item" data-page="page-channels"><i class="fas fa-plug"></i><span>渠道管理</span></div>
+        <div class="item" data-page="page-push"><i class="fas fa-paper-plane"></i><span>代发推单</span></div>
+        <div class="item" data-page="page-sourcing"><i class="fas fa-store-alt"></i><span>1688选品铺货</span></div>
+        <!-- 新增：AI客服与物流智能管理 -->
+        <div class="item" data-page="page-ai-service"><i class="fas fa-headset"></i><span>AI 客服</span><span class="tag">NEW</span></div>
+        <div class="item" data-page="page-logistics"><i class="fas fa-truck"></i><span>智能物流</span><span class="tag">NEW</span></div>
+        <div class="item" data-page="page-settings"><i class="fas fa-cog"></i><span>系统设置</span></div>
+    </div>
+    <div class="bottom">
+        <i class="fas fa-shield-alt"></i>
+        <span>数据加密 · 安全</span>
     </div>
 </div>
 
-<!-- ========== 主系统 ========== -->
-<div class="app-container" id="appContainer">
-    <div class="sidebar">
-        <div class="sidebar-logo"><div class="logo-icon">🚀</div><div class="logo-text"><h2>AI智营</h2><p>一体化经营平台</p></div></div>
-        <div class="sidebar-nav">
-            <div class="nav-section"><div class="nav-section-title">📊 数据洞察</div>
-                <div class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard')"><span class="nav-icon">📊</span><span class="nav-label">经营看板</span></div>
-            </div>
-            <div class="nav-section"><div class="nav-section-title">📦 电商管理</div>
-                <div class="nav-item" data-page="orders" onclick="switchPage('orders')"><span class="nav-icon">📋</span><span class="nav-label">订单管理</span><span class="nav-badge success" id="orderBadge">23</span></div>
-                <div class="nav-item" data-page="products" onclick="switchPage('products')"><span class="nav-icon">📦</span><span class="nav-label">商品管理</span></div>
-                <div class="nav-item" data-page="platforms" onclick="switchPage('platforms')"><span class="nav-icon">🔗</span><span class="nav-label">平台绑定</span><span class="nav-badge" id="platformBadge">0</span></div>
-            </div>
-            <div class="nav-section"><div class="nav-section-title">🎯 AI营销</div>
-                <div class="nav-item" data-page="discovery" onclick="switchPage('discovery')"><span class="nav-icon">🔍</span><span class="nav-label">智能获客</span></div>
-                <div class="nav-item" data-page="chat" onclick="switchPage('chat')"><span class="nav-icon">💬</span><span class="nav-label">私信营销</span></div>
-                <div class="nav-item" data-page="components" onclick="switchPage('components')"><span class="nav-icon">🧩</span><span class="nav-label">组件管理</span></div>
-                <div class="nav-item" data-page="touchplan" onclick="switchPage('touchplan')"><span class="nav-icon">🎯</span><span class="nav-label">触达计划</span></div>
-                <div class="nav-item" data-page="leads" onclick="switchPage('leads')"><span class="nav-icon">📇</span><span class="nav-label">线索管理</span><span class="nav-badge success" id="leadBadge">5</span></div>
-            </div>
-            <div class="nav-section"><div class="nav-section-title">⚙️ 自动化</div>
-                <div class="nav-item" data-page="automation" onclick="switchPage('automation')"><span class="nav-icon">⚡</span><span class="nav-label">自动互动</span></div>
-                <div class="nav-item" data-page="scheduler" onclick="switchPage('scheduler')"><span class="nav-icon">⏰</span><span class="nav-label">定时任务</span></div>
-                <div class="nav-item" data-page="templates" onclick="switchPage('templates')"><span class="nav-icon">📝</span><span class="nav-label">回复模板</span></div>
-            </div>
-            <div class="nav-section"><div class="nav-section-title">🏢 系统</div>
-                <div class="nav-item" data-page="settings" onclick="switchPage('settings')"><span class="nav-icon">⚙️</span><span class="nav-label">系统配置</span></div>
-                <div class="nav-item" data-page="logs" onclick="switchPage('logs')"><span class="nav-icon">📋</span><span class="nav-label">操作日志</span></div>
-                <div class="nav-item" onclick="handleLogout()"><span class="nav-icon">🚪</span><span class="nav-label">退出登录</span></div>
+<!-- ===== 主内容 ===== -->
+<div class="main">
+
+    <!-- ============================================================ -->
+    <!-- 页面1：数据总览 (保持不变) -->
+    <!-- ============================================================ -->
+    <div id="page-dashboard" class="page active">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-chart-line" style="color:#4dabf7; margin-right:8px;"></i>数据总览</h2><p>淘宝 · 抖音 · 拼多多 · 京东 全渠道经营数据</p></div>
+            <div class="right"><span class="btn"><i class="far fa-calendar-alt"></i> 2026-09-05</span><span class="btn btn-primary"><i class="fas fa-sync-alt"></i> 刷新</span><span class="avatar">T</span></div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label"><i class="fas fa-dollar-sign" style="color:#4dabf7;"></i> 今日销售额</div><div class="value">¥18.7k <span class="trend"><i class="fas fa-arrow-up"></i> 8.7%</span></div><div class="sub"><span>订单 347</span><span>客单价 ¥53.9</span></div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-box" style="color:#4dabf7;"></i> 在售商品</div><div class="value">1,283 <span class="trend"><i class="fas fa-arrow-up"></i> +23</span></div><div class="sub"><span>昨日新增 12</span></div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-users" style="color:#4dabf7;"></i> 今日访客</div><div class="value">2,456 <span class="trend down"><i class="fas fa-arrow-down"></i> 3.2%</span></div><div class="sub"><span>转化率 4.1%</span></div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-robot" style="color:#4dabf7;"></i> AI 智能接待</div><div class="value">89% <span class="trend"><i class="fas fa-arrow-up"></i> +5%</span></div><div class="sub"><span>节省人工 12h/天</span></div></div>
+        </div>
+        <div class="row-two">
+            <div class="card"><div class="card-header"><h3><i class="fas fa-chart-line"></i> 近7日销售趋势</h3><span class="action"><i class="far fa-calendar"></i> 本周 vs 上周</span></div><div id="salesChart" class="chart-container"></div></div>
+            <div class="card"><div class="card-header"><h3><i class="fas fa-pie-chart"></i> 渠道销售占比</h3><span class="action">实时</span></div><div id="channelPie" class="chart-container-sm" style="height:140px;"></div>
+                <div><div class="channel-item"><div class="left"><span class="dot" style="background:#b55a1a;"></span><span class="name">淘宝</span></div><span class="vol">¥7.5k</span><span class="percent">40%</span></div>
+                <div class="channel-item"><div class="left"><span class="dot" style="background:#1a5bb5;"></span><span class="name">抖音</span></div><span class="vol">¥5.6k</span><span class="percent">30%</span></div>
+                <div class="channel-item"><div class="left"><span class="dot" style="background:#b51a3f;"></span><span class="name">拼多多</span></div><span class="vol">¥3.0k</span><span class="percent">16%</span></div>
+                <div class="channel-item"><div class="left"><span class="dot" style="background:#0d7c4f;"></span><span class="name">京东</span></div><span class="vol">¥2.6k</span><span class="percent">14%</span></div></div>
             </div>
         </div>
-        <div class="sidebar-footer"><div class="user-profile"><div class="user-avatar" id="sidebarAvatar">A</div><div class="user-info"><div style="font-size:14px;font-weight:600;" id="sidebarUsername">管理员</div><div style="font-size:11px;color:var(--text-secondary);" id="sidebarRole">超级管理员</div></div></div></div>
+        <div class="row-three">
+            <div class="card"><div class="card-header"><h3><i class="fas fa-store-alt"></i> 各渠道订单量</h3><span class="action">今日</span></div><div id="channelBar" class="chart-container-sm"></div>
+                <div class="flex" style="justify-content:space-between; margin-top:4px; font-size:12px;"><span><span class="badge taobao">淘宝</span> 142</span><span><span class="badge douyin">抖音</span> 98</span><span><span class="badge pdd">拼多多</span> 62</span><span><span class="badge jd">京东</span> 45</span></div>
+            </div>
+            <div class="card"><div class="card-header"><h3><i class="fas fa-tag" style="color:#f5b342;"></i> 热销商品 Top 3</h3><span class="action">实时</span></div>
+                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f4f9;"><span><span class="badge success">1</span> 云山茶叶礼盒</span><span style="font-weight:600; color:#b55a1a;">¥128</span><span>销量 234</span></div>
+                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f4f9;"><span><span class="badge info">2</span> 手工竹编包</span><span style="font-weight:600; color:#b55a1a;">¥89</span><span>销量 187</span></div>
+                <div style="display:flex; justify-content:space-between; padding:8px 0;"><span><span class="badge warning">3</span> 山核桃仁 250g</span><span style="font-weight:600; color:#b55a1a;">¥45</span><span>销量 156</span></div>
+            </div>
+            <div class="card"><div class="card-header"><h3><i class="fas fa-robot"></i> AI 经营简报</h3><span class="action">今日</span></div>
+                <div class="ai-insight"><div class="title"><i class="fas fa-arrow-up" style="color:#0d7c4f;"></i> 抖音渠道转化率提升 12%</div><div class="desc">近3日抖音流量质量上升，建议加大该渠道投放预算</div><span class="tag">渠道诊断</span></div>
+                <div class="ai-insight"><div class="title"><i class="fas fa-exclamation-triangle" style="color:#b55a1a;"></i> 拼多多退款率上升 5.2%</div><div class="desc">建议检查近期物流时效及商品描述一致性</div><span class="tag">风险预警</span></div>
+            </div>
+        </div>
+        <div class="card"><div class="card-header"><h3><i class="fas fa-list-ul"></i> 最新订单 · 实时</h3><span class="action"><i class="fas fa-filter"></i> 全部渠道</span></div>
+            <div class="table-wrap"><table><thead><tr><th>订单号</th><th>商品</th><th>渠道</th><th>金额</th><th>状态</th><th>时间</th></tr></thead><tbody>
+                <tr><td>ORD-2026-0905-001</td><td>云山茶叶礼盒</td><td><span class="badge douyin">抖音</span></td><td>¥128</td><td><span class="badge success">已支付</span></td><td>14:32</td></tr>
+                <tr><td>ORD-2026-0905-002</td><td>手工竹编包</td><td><span class="badge taobao">淘宝</span></td><td>¥89</td><td><span class="badge warning">待发货</span></td><td>14:15</td></tr>
+                <tr><td>ORD-2026-0905-003</td><td>山核桃仁 250g</td><td><span class="badge pdd">拼多多</span></td><td>¥45</td><td><span class="badge info">已发货</span></td><td>13:50</td></tr>
+                <tr><td>ORD-2026-0905-004</td><td>云山手工皂套装</td><td><span class="badge jd">京东</span></td><td>¥79</td><td><span class="badge danger">退款中</span></td><td>13:20</td></tr>
+            </tbody></table></div>
+        </div>
     </div>
 
-    <div class="main-content">
-        <!-- ===== 经营看板 ===== -->
-        <div class="page active" id="page-dashboard">
-            <div class="top-bar"><div><div class="page-title">📊 经营看板</div><div class="page-subtitle">全渠道经营数据 + AI智能分析</div></div><div class="top-actions"><button class="btn btn-primary" onclick="startSystem()">▶️ AI分析</button><button class="btn btn-outline" onclick="refreshData()">🔄 刷新</button></div></div>
-            <div class="stats-grid" id="dashStats">
-                <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" id="dashRevenue">¥18.7k</div><div class="stat-label">今日销售额 <span style="color:var(--success);">↑8.7%</span></div></div>
-                <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value" id="dashOrders">347</div><div class="stat-label">今日订单 <span style="color:var(--success);">+56</span></div></div>
-                <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-value" id="dashProducts">1,283</div><div class="stat-label">在售商品</div></div>
-                <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-value" id="dashLeads">89</div><div class="stat-label">AI识别高意向客户</div></div>
-                <div class="stat-card"><div class="stat-icon">🤖</div><div class="stat-value" id="dashAI率">79.6%</div><div class="stat-label">AI处理率</div></div>
-                <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-value" id="dashGrowth">12.3%</div><div class="stat-label">环比增长</div></div>
+    <!-- ============================================================ -->
+    <!-- 页面2：订单管理 (保持不变) -->
+    <!-- ============================================================ -->
+    <div id="page-orders" class="page">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-shopping-cart" style="color:#4dabf7;"></i> 订单管理</h2><p>全渠道订单统一管理 · 发货 · 售后</p></div>
+            <div class="right"><span class="btn"><i class="far fa-calendar-alt"></i> 今日</span><span class="btn btn-primary"><i class="fas fa-file-export"></i> 导出</span></div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label"><i class="fas fa-shopping-cart"></i> 总订单</div><div class="value">347</div><div class="sub">今日 +56</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-check-circle" style="color:#0d7c4f;"></i> 待发货</div><div class="value">89</div><div class="sub">需处理</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-truck" style="color:#4dabf7;"></i> 运输中</div><div class="value">156</div><div class="sub">正常</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-times-circle" style="color:#b51a3f;"></i> 退款/售后</div><div class="value">12</div><div class="sub">需关注 5</div></div>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+            <div class="card-header"><h3><i class="fas fa-filter"></i> 订单筛选</h3><span class="action"><i class="fas fa-undo"></i> 重置</span></div>
+            <div class="form-row">
+                <div class="form-group"><label>渠道</label><select><option>全部</option><option>淘宝</option><option>抖音</option><option>拼多多</option><option>京东</option></select></div>
+                <div class="form-group"><label>状态</label><select><option>全部</option><option>待支付</option><option>已支付</option><option>待发货</option><option>已发货</option><option>已完成</option><option>退款中</option></select></div>
+                <div class="form-group"><label>日期</label><input type="text" placeholder="2026-09-01 ~ 2026-09-05"></div>
+                <div class="form-group"><label>买家</label><input type="text" placeholder="昵称 / 手机号"></div>
             </div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">📋 AI 经营简报</h3></div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="aiBriefContainer">
-                    <div style="background:var(--bg-dark);border-radius:10px;padding:14px;border-left:3px solid var(--success);"><div style="font-weight:600;color:var(--success);">📈 抖音渠道转化率提升12%</div><div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">近3日流量质量上升，建议加大该渠道投放</div></div>
-                    <div style="background:var(--bg-dark);border-radius:10px;padding:14px;border-left:3px solid var(--warning);"><div style="font-weight:600;color:var(--warning);">⚠️ 拼多多退款率上升5.2%</div><div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">建议检查物流时效及商品描述一致性</div></div>
-                    <div style="background:var(--bg-dark);border-radius:10px;padding:14px;border-left:3px solid var(--primary);"><div style="font-weight:600;color:var(--primary-light);">⭐ 高价值客户流失预警</div><div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">8位高消费客户近45天未复购，建议触发召回</div></div>
-                    <div style="background:var(--bg-dark);border-radius:10px;padding:14px;border-left:3px solid var(--accent);"><div style="font-weight:600;color:var(--accent);">💡 套票组合优化建议</div><div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">"门票+玻璃桥"组合销量上升32%，建议推广</div></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-list"></i> 订单列表</h3><span class="action">共 347 条</span></div>
+            <div class="table-wrap"><table><thead><tr><th>订单号</th><th>买家</th><th>商品</th><th>渠道</th><th>金额</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody>
+                <tr><td>ORD-0905-001</td><td>王*婷</td><td>云山茶叶礼盒</td><td><span class="badge douyin">抖音</span></td><td>¥128</td><td><span class="badge success">已支付</span></td><td>14:32</td><td><span class="btn-sm outline">发货</span></td></tr>
+                <tr><td>ORD-0905-002</td><td>张*豪</td><td>手工竹编包</td><td><span class="badge taobao">淘宝</span></td><td>¥89</td><td><span class="badge warning">待发货</span></td><td>14:15</td><td><span class="btn-sm primary">处理</span></td></tr>
+                <tr><td>ORD-0905-003</td><td>李*萱</td><td>山核桃仁 250g</td><td><span class="badge pdd">拼多多</span></td><td>¥45</td><td><span class="badge info">已发货</span></td><td>13:50</td><td><span class="btn-sm outline">追踪</span></td></tr>
+                <tr><td>ORD-0905-004</td><td>赵*琳</td><td>云山手工皂套装</td><td><span class="badge jd">京东</span></td><td>¥79</td><td><span class="badge danger">退款中</span></td><td>13:20</td><td><span class="btn-sm danger">处理</span></td></tr>
+                <tr><td>ORD-0905-005</td><td>刘*阳</td><td>云山陶瓷杯</td><td><span class="badge taobao">淘宝</span></td><td>¥58</td><td><span class="badge success">已支付</span></td><td>12:45</td><td><span class="btn-sm outline">发货</span></td></tr>
+            </tbody></table></div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 页面3：商品管理 (保持不变) -->
+    <!-- ============================================================ -->
+    <div id="page-products" class="page">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-box" style="color:#4dabf7;"></i> 商品管理</h2><p>跨平台商品发布 · 库存同步 · 价格管理</p></div>
+            <div class="right"><span class="btn btn-primary"><i class="fas fa-plus"></i> 新增商品</span><span class="btn"><i class="fas fa-upload"></i> 批量发布</span></div>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+            <div class="card-header"><h3><i class="fas fa-search"></i> 商品筛选</h3><span class="action"><i class="fas fa-undo"></i> 重置</span></div>
+            <div class="form-row">
+                <div class="form-group"><label>关键词</label><input type="text" placeholder="商品名称 / SKU"></div>
+                <div class="form-group"><label>平台</label><select><option>全部</option><option>淘宝</option><option>抖音</option><option>拼多多</option><option>京东</option></select></div>
+                <div class="form-group"><label>状态</label><select><option>全部</option><option>在售</option><option>下架</option><option>待审核</option></select></div>
+                <div class="form-group"><label>分类</label><select><option>全部</option><option>茶叶</option><option>手工艺</option><option>食品</option><option>文创</option></select></div>
+            </div>
+        </div>
+        <div class="product-grid">
+            <div class="product-card"><div class="img"><i class="fas fa-leaf"></i></div><div class="name">云山茶叶礼盒</div><div class="price">¥128</div><div class="status"><span class="badge success">在售</span> 库存 234</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
+            <div class="product-card"><div class="img"><i class="fas fa-bag-shopping"></i></div><div class="name">手工竹编包</div><div class="price">¥89</div><div class="status"><span class="badge success">在售</span> 库存 187</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
+            <div class="product-card"><div class="img"><i class="fas fa-seedling"></i></div><div class="name">山核桃仁 250g</div><div class="price">¥45</div><div class="status"><span class="badge success">在售</span> 库存 156</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
+            <div class="product-card"><div class="img"><i class="fas fa-soap"></i></div><div class="name">云山手工皂套装</div><div class="price">¥79</div><div class="status"><span class="badge warning">待审核</span> 库存 89</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
+            <div class="product-card"><div class="img"><i class="fas fa-mug-saucer"></i></div><div class="name">云山陶瓷杯</div><div class="price">¥58</div><div class="status"><span class="badge success">在售</span> 库存 143</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
+            <div class="product-card"><div class="img"><i class="fas fa-scroll"></i></div><div class="name">手写书法折扇</div><div class="price">¥35</div><div class="status"><span class="badge danger">下架</span> 库存 0</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
+            <div class="product-card"><div class="img"><i class="fas fa-candy-cane"></i></div><div class="name">手工红糖姜茶</div><div class="price">¥29.9</div><div class="status"><span class="badge success">在售</span> 库存 210</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
+            <div class="product-card"><div class="img"><i class="fas fa-palette"></i></div><div class="name">云山国风丝巾</div><div class="price">¥68</div><div class="status"><span class="badge success">在售</span> 库存 76</div><div class="actions"><span class="btn-sm outline">编辑</span><span class="btn-sm blue">同步</span></div></div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 页面4：客资聚合 (保持不变) -->
+    <!-- ============================================================ -->
+    <div id="page-customer" class="page">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-users" style="color:#4dabf7;"></i> 客资聚合</h2><p>跨平台客户合并 · 360°画像 · 智能标签</p></div>
+            <div class="right"><span class="btn"><i class="fas fa-filter"></i> 全部渠道</span><span class="btn btn-primary"><i class="fas fa-download"></i> 导出</span></div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label"><i class="fas fa-user-plus"></i> 总客户数</div><div class="value">3,847</div><div class="sub">今日新增 89</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-merge"></i> 已合并客户</div><div class="value">2,156</div><div class="sub">跨平台识别率 56%</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-tag"></i> 智能标签</div><div class="value">1,234</div><div class="sub">高价值 342 · 复购潜力 456</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-robot"></i> AI 置信度</div><div class="value">94%</div><div class="sub">同人识别准确率</div></div>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+            <div class="card-header"><h3><i class="fas fa-search"></i> 客资搜索</h3><span class="action">高级筛选</span></div>
+            <div class="form-row">
+                <div class="form-group"><label>关键词</label><input type="text" placeholder="姓名 / 手机号 / 平台ID"></div>
+                <div class="form-group"><label>渠道来源</label><select><option>全部</option><option>淘宝</option><option>抖音</option><option>拼多多</option><option>京东</option></select></div>
+                <div class="form-group"><label>意向评分</label><select><option>全部</option><option>高意向 (80+)</option><option>中意向 (50-79)</option><option>低意向</option></select></div>
+                <div class="form-group"><label>标签</label><select><option>全部</option><option>高价值</option><option>复购潜力</option><option>新客</option><option>流失预警</option></select></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-list"></i> 客户列表 · 跨平台合并</h3><span class="action">共 3,847 条</span></div>
+            <div class="table-wrap"><table><thead><tr><th>客户</th><th>渠道来源</th><th>手机号</th><th>消费次数</th><th>总金额</th><th>意向评分</th><th>标签</th><th>操作</th></tr></thead><tbody>
+                <tr><td>王*婷</td><td><span class="badge douyin">抖音</span> <span class="badge blue">微信</span></td><td>138****2210</td><td>3次</td><td>¥1,247</td><td><span class="badge success">95分</span></td><td><span class="badge info">高价值</span></td><td><span class="btn-sm primary">查看</span></td></tr>
+                <tr><td>张*豪</td><td><span class="badge taobao">淘宝</span></td><td>159****4502</td><td>1次</td><td>¥420</td><td><span class="badge warning">88分</span></td><td><span class="badge warning">未支付</span></td><td><span class="btn-sm primary">查看</span></td></tr>
+                <tr><td>李*萱</td><td><span class="badge pdd">拼多多</span> <span class="badge douyin">抖音</span></td><td>177****8934</td><td>2次</td><td>¥376</td><td><span class="badge info">82分</span></td><td><span class="badge info">咨询过</span></td><td><span class="btn-sm primary">查看</span></td></tr>
+                <tr><td>刘*阳</td><td><span class="badge jd">京东</span></td><td>136****6721</td><td>0次</td><td>¥0</td><td><span class="badge other">76分</span></td><td><span class="badge other">浏览中</span></td><td><span class="btn-sm primary">查看</span></td></tr>
+                <tr><td>赵*琳</td><td><span class="badge taobao">淘宝</span> <span class="badge pdd">拼多多</span></td><td>158****3390</td><td>5次</td><td>¥2,856</td><td><span class="badge success">98分</span></td><td><span class="badge info">高价值</span></td><td><span class="btn-sm primary">查看</span></td></tr>
+            </tbody></table></div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 页面5：AI 营销 (保持不变) -->
+    <!-- ============================================================ -->
+    <div id="page-ai" class="page">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-robot" style="color:#4dabf7;"></i> AI 营销</h2><p>AI驱动的经营决策 · 智能预测 · 自动建议</p></div>
+            <div class="right"><span class="btn"><i class="fas fa-microchip"></i> DeepSeek V4</span><span class="btn btn-primary"><i class="fas fa-sync-alt"></i> 重新分析</span></div>
+        </div>
+        <div class="row-two">
+            <div class="card">
+                <div class="card-header"><h3><i class="fas fa-brain" style="color:#4dabf7;"></i> AI 经营简报</h3><span class="action">每日 09:00</span></div>
+                <div class="ai-insight"><div class="title"><i class="fas fa-arrow-up" style="color:#0d7c4f;"></i> 抖音渠道转化率上升 12%</div><div class="desc">近3日抖音流量质量明显上升，建议加大该渠道投放预算，预计可提升整体GMV 8%。</div><span class="tag">渠道诊断</span></div>
+                <div class="ai-insight"><div class="title"><i class="fas fa-exclamation-triangle" style="color:#b55a1a;"></i> 拼多多退款率异常上升</div><div class="desc">近7日退款率上升5.2%，主要原因为物流时效问题，建议更换合作快递或设置区域限售。</div><span class="tag">风险预警</span></div>
+                <div class="ai-insight"><div class="title"><i class="fas fa-star" style="color:#f5b342;"></i> 高价值客户流失预警</div><div class="desc">识别出 8 位高消费客户近45天未复购，建议触发专属优惠券召回。</div><span class="tag">流失预警</span></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3><i class="fas fa-chart-bar"></i> 智能预测</h3><span class="action">置信度 89%</span></div>
+                <div style="margin-bottom:14px;"><div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;"><span>下周销售额预测</span><span style="font-weight:600;">¥152k ± ¥8k</span></div><div style="background:#eef2f6; border-radius:20px; height:5px; overflow:hidden;"><div style="background:#4dabf7; width:72%; height:5px; border-radius:20px;"></div></div></div>
+                <div style="margin-bottom:14px;"><div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;"><span>转化率预测</span><span style="font-weight:600;">4.8%</span></div><div style="background:#eef2f6; border-radius:20px; height:5px; overflow:hidden;"><div style="background:#0d7c4f; width:68%; height:5px; border-radius:20px;"></div></div></div>
+                <div style="margin-bottom:14px;"><div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;"><span>退款率预测</span><span style="font-weight:600;">3.2%</span></div><div style="background:#eef2f6; border-radius:20px; height:5px; overflow:hidden;"><div style="background:#b55a1a; width:32%; height:5px; border-radius:20px;"></div></div></div>
+                <div style="background:#f0f7fe; border-radius:10px; padding:10px 14px;"><span style="font-size:13px; color:#475569;"><i class="fas fa-info-circle" style="color:#4dabf7;"></i> 基于近3个月数据 + 行业趋势预测</span></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-comment-dots"></i> AI 待办建议</h3><span class="action"><i class="fas fa-robot"></i> 已分析 2,345 条数据</span></div>
+            <div class="row-four" style="margin-bottom:0;">
+                <div style="background:#f8fafc; border-radius:12px; padding:12px; border:1px solid #e8edf4;"><div style="font-weight:600; color:#0a1e2f;"><i class="fas fa-phone" style="color:#4dabf7;"></i> 待跟进客户</div><div style="font-size:22px; font-weight:700; margin:4px 0;">89</div><div style="font-size:13px; color:#5f7d95;">高意向需今日联系</div><span class="btn-sm primary" style="margin-top:6px;">立即跟进</span></div>
+                <div style="background:#f8fafc; border-radius:12px; padding:12px; border:1px solid #e8edf4;"><div style="font-weight:600; color:#0a1e2f;"><i class="fas fa-tag" style="color:#b55a1a;"></i> 待退款处理</div><div style="font-size:22px; font-weight:700; margin:4px 0;">5</div><div style="font-size:13px; color:#5f7d95;">超24小时未处理</div><span class="btn-sm danger" style="margin-top:6px;">立即处理</span></div>
+                <div style="background:#f8fafc; border-radius:12px; padding:12px; border:1px solid #e8edf4;"><div style="font-weight:600; color:#0a1e2f;"><i class="fas fa-bullhorn" style="color:#0d7c4f;"></i> 营销机会</div><div style="font-size:22px; font-weight:700; margin:4px 0;">3</div><div style="font-size:13px; color:#5f7d95;">高复购潜力客群</div><span class="btn-sm success" style="margin-top:6px;">查看客群</span></div>
+                <div style="background:#f8fafc; border-radius:12px; padding:12px; border:1px solid #e8edf4;"><div style="font-weight:600; color:#0a1e2f;"><i class="fas fa-chart-line" style="color:#4dabf7;"></i> 库存预警</div><div style="font-size:22px; font-weight:700; margin:4px 0;">6</div><div style="font-size:13px; color:#5f7d95;">低于安全库存</div><span class="btn-sm outline" style="margin-top:6px;">查看详情</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 页面6：渠道管理 (保持不变) -->
+    <!-- ============================================================ -->
+    <div id="page-channels" class="page">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-plug" style="color:#4dabf7;"></i> 渠道管理</h2><p>平台对接 · API 状态 · 数据同步</p></div>
+            <div class="right"><span class="btn btn-primary"><i class="fas fa-plus"></i> 添加渠道</span></div>
+        </div>
+        <div class="row-four">
+            <div class="card" style="border-left:4px solid #b55a1a;"><div class="card-header"><h3><i class="fas fa-shopping-bag" style="color:#b55a1a;"></i> 淘宝</h3><span class="action"><span class="status-dot online"></span> 已连接</span></div><div style="font-size:14px; color:#475569;">今日订单 142<br>销售额 ¥7.5k<br><span style="color:#0d7c4f;">同步正常</span></div><div style="margin-top:10px;"><span class="btn-sm outline">配置</span><span class="btn-sm blue">同步</span></div></div>
+            <div class="card" style="border-left:4px solid #1a5bb5;"><div class="card-header"><h3><i class="fab fa-tiktok" style="color:#1a5bb5;"></i> 抖音</h3><span class="action"><span class="status-dot online"></span> 已连接</span></div><div style="font-size:14px; color:#475569;">今日订单 98<br>销售额 ¥5.6k<br><span style="color:#0d7c4f;">同步正常</span></div><div style="margin-top:10px;"><span class="btn-sm outline">配置</span><span class="btn-sm blue">同步</span></div></div>
+            <div class="card" style="border-left:4px solid #b51a3f;"><div class="card-header"><h3><i class="fas fa-store" style="color:#b51a3f;"></i> 拼多多</h3><span class="action"><span class="status-dot warning"></span> 延迟</span></div><div style="font-size:14px; color:#475569;">今日订单 62<br>销售额 ¥3.0k<br><span style="color:#b55a1a;">同步延迟 15min</span></div><div style="margin-top:10px;"><span class="btn-sm outline">配置</span><span class="btn-sm blue">同步</span></div></div>
+            <div class="card" style="border-left:4px solid #0d7c4f;"><div class="card-header"><h3><i class="fas fa-box" style="color:#0d7c4f;"></i> 京东</h3><span class="action"><span class="status-dot online"></span> 已连接</span></div><div style="font-size:14px; color:#475569;">今日订单 45<br>销售额 ¥2.6k<br><span style="color:#0d7c4f;">同步正常</span></div><div style="margin-top:10px;"><span class="btn-sm outline">配置</span><span class="btn-sm blue">同步</span></div></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-list"></i> API 对接状态</h3><span class="action">全部 4 个渠道</span></div>
+            <div class="table-wrap"><table><thead><tr><th>渠道</th><th>API 状态</th><th>最后同步</th><th>今日数据</th><th>操作</th></tr></thead><tbody>
+                <tr><td>淘宝</td><td><span class="badge success">正常</span></td><td>14:42</td><td>订单 142 / 销售额 ¥7.5k</td><td><span class="btn-sm outline">测试</span><span class="btn-sm outline">日志</span></td></tr>
+                <tr><td>抖音</td><td><span class="badge success">正常</span></td><td>14:40</td><td>订单 98 / 销售额 ¥5.6k</td><td><span class="btn-sm outline">测试</span><span class="btn-sm outline">日志</span></td></tr>
+                <tr><td>拼多多</td><td><span class="badge warning">延迟</span></td><td>14:25</td><td>订单 62 / 销售额 ¥3.0k</td><td><span class="btn-sm outline">测试</span><span class="btn-sm outline">日志</span></td></tr>
+                <tr><td>京东</td><td><span class="badge success">正常</span></td><td>14:38</td><td>订单 45 / 销售额 ¥2.6k</td><td><span class="btn-sm outline">测试</span><span class="btn-sm outline">日志</span></td></tr>
+            </tbody></table></div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 页面7：代发推单 (保持不变) -->
+    <!-- ============================================================ -->
+    <div id="page-push" class="page">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-paper-plane" style="color:#4dabf7;"></i> 代发推单</h2><p>一键推单到1688 · 物流自动回传 · 超时预警</p></div>
+            <div class="right"><span class="btn"><i class="fas fa-sync-alt"></i> 刷新</span><span class="btn btn-primary"><i class="fas fa-paper-plane"></i> 批量推单</span></div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label"><i class="fas fa-clock"></i> 待处理</div><div class="value">23</div><div class="sub">来自3个平台</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-check-circle" style="color:#0d7c4f;"></i> 已推单</div><div class="value">15</div><div class="sub">今日已处理</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-exclamation-triangle" style="color:#b55a1a;"></i> 待匹配供应商</div><div class="value">3</div><div class="sub">需手动匹配</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-clock" style="color:#4dabf7;"></i> 今日节省人工</div><div class="value">3.5h</div><div class="sub">相当于 ¥210 成本</div></div>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+            <div class="card-header"><h3><i class="fas fa-filter"></i> 订单筛选</h3><span class="action">显示全部</span></div>
+            <div class="form-row">
+                <div class="form-group"><label>渠道</label><select><option>全部</option><option>淘宝</option><option>抖音</option><option>小红书</option></select></div>
+                <div class="form-group"><label>状态</label><select><option>全部</option><option>待推单</option><option>已匹配</option><option>已推单</option><option>已发货</option></select></div>
+                <div class="form-group"><label>供应商</label><select><option>全部</option><option>已匹配</option><option>未匹配</option></select></div>
+                <div class="form-group"><label>搜索</label><input type="text" placeholder="订单号 / 商品名"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h3><i class="fas fa-list"></i> 待处理订单</h3><span class="action">共 23 笔</span></div>
+            <div class="table-wrap"><table><thead><tr><th style="width:30px;"><input type="checkbox" id="pushSelectAll" onclick="toggleAllPush()"></th><th>订单号</th><th>商品</th><th>渠道</th><th>买家</th><th>金额</th><th>供应商</th><th>状态</th><th>操作</th></tr></thead><tbody>
+                <tr><td><input type="checkbox" class="push-check"></td><td>ORD-0905-001</td><td>云山茶叶礼盒 ×2</td><td><span class="badge douyin">抖音</span></td><td>王*婷</td><td>¥256</td><td><span class="badge success">云山茶厂</span></td><td><span class="badge success">已匹配</span></td><td><span class="btn-sm primary" onclick="pushOrderAction(this)">推单</span></td></tr>
+                <tr><td><input type="checkbox" class="push-check"></td><td>ORD-0905-002</td><td>手工竹编包 ×1</td><td><span class="badge taobao">淘宝</span></td><td>张*豪</td><td>¥89</td><td><span class="badge warning">未匹配</span></td><td><span class="badge warning">待匹配</span></td><td><span class="btn-sm blue" onclick="matchSupplierAction(this)">匹配</span></td></tr>
+                <tr><td><input type="checkbox" class="push-check"></td><td>ORD-0905-003</td><td>山核桃仁 250g ×3</td><td><span class="badge pdd">拼多多</span></td><td>李*萱</td><td>¥135</td><td><span class="badge success">坚果源</span></td><td><span class="badge success">已匹配</span></td><td><span class="btn-sm primary" onclick="pushOrderAction(this)">推单</span></td></tr>
+                <tr><td><input type="checkbox" class="push-check"></td><td>ORD-0905-004</td><td>云山手工皂 ×2</td><td><span class="badge taobao">淘宝</span></td><td>刘*阳</td><td>¥158</td><td><span class="badge warning">未匹配</span></td><td><span class="badge warning">待匹配</span></td><td><span class="btn-sm blue" onclick="matchSupplierAction(this)">匹配</span></td></tr>
+                <tr><td><input type="checkbox" class="push-check"></td><td>ORD-0905-005</td><td>云山陶瓷杯 ×4</td><td><span class="badge douyin">抖音</span></td><td>陈*瑶</td><td>¥232</td><td><span class="badge success">陶瓷厂</span></td><td><span class="badge success">已匹配</span></td><td><span class="btn-sm primary" onclick="pushOrderAction(this)">推单</span></td></tr>
+            </tbody></table></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:14px; border-top:1px solid #e8edf4; flex-wrap:wrap; gap:10px;">
+                <span style="font-size:13px; color:#5f7d95;">已选 <strong id="pushSelectedCount">0</strong> 笔</span>
+                <div style="display:flex; gap:8px;">
+                    <span class="btn-sm outline" onclick="selectAllPush()">全选</span>
+                    <span class="btn-sm outline" onclick="clearAllPush()">取消</span>
+                    <span class="btn-sm primary" onclick="batchPushOrders()"><i class="fas fa-paper-plane"></i> 批量推单</span>
                 </div>
             </div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">📋 最近操作</h3></div><div class="log-container" id="dashLogs"></div></div>
         </div>
+        <div class="card" style="margin-top:16px;">
+            <div class="card-header"><h3><i class="fas fa-truck"></i> 物流回传 · 今日待回传 12笔</h3><span class="action"><i class="fas fa-sync-alt"></i> 自动监控</span></div>
+            <div class="table-wrap"><table><thead><tr><th>订单号</th><th>供应商</th><th>发货状态</th><th>物流单号</th><th>操作</th></tr></thead><tbody>
+                <tr><td>ORD-0905-001</td><td>云山茶厂</td><td><span class="badge success">已发货</span></td><td>SF12345678</td><td><span class="btn-sm outline">已回传</span></td></tr>
+                <tr><td>ORD-0905-003</td><td>坚果源</td><td><span class="badge warning">待发货</span></td><td>—</td><td><span class="btn-sm danger"><i class="fas fa-bell"></i> 催发货</span></td></tr>
+                <tr><td>ORD-0905-005</td><td>陶瓷厂</td><td><span class="badge success">已发货</span></td><td>YT98765432</td><td><span class="btn-sm outline">已回传</span></td></tr>
+            </tbody></table></div>
+        </div>
+    </div>
 
-        <!-- ===== 订单管理 ===== -->
-        <div class="page" id="page-orders">
-            <div class="top-bar"><div><div class="page-title">📋 订单管理</div><div class="page-subtitle">全渠道订单统一管理</div></div><div class="top-actions"><button class="btn btn-primary" onclick="syncOrders()">🔄 同步订单</button><button class="btn btn-outline" onclick="exportOrders()">📥 导出</button></div></div>
-            <div class="stats-grid" id="orderStats">
-                <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value" id="orderTotal">347</div><div class="stat-label">总订单</div></div>
-                <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" style="color:var(--warning);" id="orderPending">89</div><div class="stat-label">待发货</div></div>
-                <div class="stat-card"><div class="stat-icon">🚚</div><div class="stat-value" style="color:var(--primary-light);" id="orderShipping">156</div><div class="stat-label">运输中</div></div>
-                <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-value" style="color:var(--danger);" id="orderRefund">12</div><div class="stat-label">退款/售后</div></div>
-            </div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">订单列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="orderListCount">共 347 条</span></div>
-                <div class="table-container"><table><thead><tr><th>订单号</th><th>商品</th><th>渠道</th><th>金额</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="ordersTableBody">
-                    <tr><td>ORD-0905-001</td><td>云山茶叶礼盒</td><td><span style="color:var(--primary-light);">抖音</span></td><td>¥128</td><td><span class="status-badge success">已支付</span></td><td>14:32</td><td><button class="btn btn-primary btn-sm" onclick="handleOrderAction(this,'发货')">发货</button></td></tr>
-                    <tr><td>ORD-0905-002</td><td>手工竹编包</td><td><span style="color:#b55a1a;">淘宝</span></td><td>¥89</td><td><span class="status-badge warning">待发货</span></td><td>14:15</td><td><button class="btn btn-primary btn-sm" onclick="handleOrderAction(this,'处理')">处理</button></td></tr>
-                    <tr><td>ORD-0905-003</td><td>山核桃仁 250g</td><td><span style="color:#b51a3f;">拼多多</span></td><td>¥45</td><td><span class="status-badge info">已发货</span></td><td>13:50</td><td><button class="btn btn-outline btn-sm" onclick="handleOrderAction(this,'追踪')">追踪</button></td></tr>
-                    <tr><td>ORD-0905-004</td><td>手工皂套装</td><td><span style="color:#0d7c4f;">京东</span></td><td>¥79</td><td><span class="status-badge danger">退款中</span></td><td>13:20</td><td><button class="btn btn-danger btn-sm" onclick="handleOrderAction(this,'处理退款')">处理</button></td></tr>
-                    <tr><td>ORD-0905-005</td><td>云山陶瓷杯</td><td><span style="color:#b55a1a;">淘宝</span></td><td>¥58</td><td><span class="status-badge success">已支付</span></td><td>12:45</td><td><button class="btn btn-primary btn-sm" onclick="handleOrderAction(this,'发货')">发货</button></td></tr>
-                </tbody></table></div>
+    <!-- ============================================================ -->
+    <!-- 页面8：1688选品铺货 (保持不变) -->
+    <!-- ============================================================ -->
+    <div id="page-sourcing" class="page">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-store-alt" style="color:#4dabf7;"></i> 1688选品铺货</h2><p>1688海量货源一键选品 · 智能铺货到多平台</p></div>
+            <div class="right">
+                <span class="btn"><i class="fas fa-sync-alt"></i> 刷新</span>
+                <span class="btn btn-primary" onclick="showToast('🚀 开始智能选品...')"><i class="fas fa-robot"></i> AI 智能选品</span>
             </div>
         </div>
-
-        <!-- ===== 商品管理 ===== -->
-        <div class="page" id="page-products">
-            <div class="top-bar"><div><div class="page-title">📦 商品管理</div><div class="page-subtitle">跨平台商品统一管理</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addProduct()">➕ 新增商品</button><button class="btn btn-outline" onclick="batchPublish()">📤 批量发布</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">商品列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="productCount">共 8 件</span></div>
-                <div class="product-grid" id="productGrid">
-                    <div class="product-card"><div class="icon">🍃</div><div class="name">茶叶礼盒</div><div class="price">¥128</div><div class="status"><span class="status-badge success">在售</span> 库存234</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
-                    <div class="product-card"><div class="icon">👜</div><div class="name">竹编包</div><div class="price">¥89</div><div class="status"><span class="status-badge success">在售</span> 库存187</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
-                    <div class="product-card"><div class="icon">🌰</div><div class="name">山核桃仁</div><div class="price">¥45</div><div class="status"><span class="status-badge success">在售</span> 库存156</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
-                    <div class="product-card"><div class="icon">🧼</div><div class="name">手工皂套装</div><div class="price">¥79</div><div class="status"><span class="status-badge warning">待审核</span> 库存89</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
-                    <div class="product-card"><div class="icon">☕</div><div class="name">陶瓷杯</div><div class="price">¥58</div><div class="status"><span class="status-badge success">在售</span> 库存143</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
-                    <div class="product-card"><div class="icon">🎋</div><div class="name">书法折扇</div><div class="price">¥35</div><div class="status"><span class="status-badge danger">下架</span> 库存0</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-outline btn-sm" onclick="syncProduct()">上架</button></div></div>
-                    <div class="product-card"><div class="icon">🍯</div><div class="name">红糖姜茶</div><div class="price">¥29.9</div><div class="status"><span class="status-badge success">在售</span> 库存210</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
-                    <div class="product-card"><div class="icon">🧣</div><div class="name">国风丝巾</div><div class="price">¥68</div><div class="status"><span class="status-badge success">在售</span> 库存76</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label"><i class="fas fa-boxes" style="color:#4dabf7;"></i> 可选商品</div><div class="value">12,847</div><div class="sub">1688 海量货源</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-tag" style="color:#4dabf7;"></i> 已选商品</div><div class="value">23</div><div class="sub">待铺货</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-rocket" style="color:#4dabf7;"></i> 已铺货</div><div class="value">156</div><div class="sub">今日 +12</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-shield-alt" style="color:#4dabf7;"></i> 合规检测</div><div class="value">98%</div><div class="sub">通过率</div></div>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+            <div class="card-header"><h3><i class="fas fa-search"></i> 选品搜索</h3><span class="action"><i class="fas fa-sliders-h"></i> 高级筛选</span></div>
+            <div class="form-row">
+                <div class="form-group"><label>关键词</label><input type="text" placeholder="输入商品名称、品类..." id="sourcingSearch" onkeyup="filterSourcing()"></div>
+                <div class="form-group"><label>价格区间</label>
+                    <div style="display:flex; gap:8px;"><input type="text" placeholder="最低价" style="width:50%;"><input type="text" placeholder="最高价" style="width:50%;"></div>
+                </div>
+                <div class="form-group"><label>供应商等级</label><select><option>全部</option><option>金牌供应商</option><option>诚信通</option><option>实力商家</option></select></div>
+                <div class="form-group"><label>发货地</label><select><option>全部</option><option>浙江</option><option>广东</option><option>福建</option><option>江苏</option></select></div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;">
+                <span class="btn-sm blue" onclick="showToast('🔍 正在搜索1688货源...')"><i class="fas fa-search"></i> 搜索货源</span>
+                <span class="btn-sm outline"><i class="fas fa-undo"></i> 重置</span>
+                <span style="margin-left:auto; font-size:13px; color:#5f7d95;">共 12,847 件商品</span>
+            </div>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+            <div class="card-header"><h3><i class="fas fa-share-alt"></i> 铺货目标平台</h3><span class="action"><span class="badge blue">支持多选</span></span></div>
+            <div class="platform-selector">
+                <span class="pl active" onclick="togglePlat(this)"><i class="fab fa-taobao"></i> 淘宝</span>
+                <span class="pl" onclick="togglePlat(this)"><i class="fab fa-tiktok"></i> 抖音</span>
+                <span class="pl" onclick="togglePlat(this)"><i class="fas fa-store"></i> 拼多多</span>
+                <span class="pl" onclick="togglePlat(this)"><i class="fas fa-box"></i> 京东</span>
+                <span class="pl" onclick="togglePlat(this)"><i class="fab fa-weixin"></i> 微信小店</span>
+                <span class="pl" onclick="togglePlat(this)"><i class="fab fa-reddit-alien"></i> 小红书</span>
+            </div>
+            <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                <span class="btn-sm primary" onclick="batchShelf()"><i class="fas fa-rocket"></i> 一键铺货到选中平台</span>
+                <span class="btn-sm outline"><i class="fas fa-file-export"></i> 导出铺货清单</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-list"></i> 1688 货源列表</h3>
+                <div class="flex" style="gap:8px;">
+                    <span class="action"><i class="fas fa-check-circle" style="color:#0d7c4f;"></i> 已选 23 件</span>
+                    <span class="btn-sm outline" onclick="selectAllSourcing()">全选</span>
+                    <span class="btn-sm outline" onclick="clearAllSourcing()">取消</span>
                 </div>
             </div>
-        </div>
-
-        <!-- ===== 平台绑定 ===== -->
-        <div class="page" id="page-platforms">
-            <div class="top-bar"><div><div class="page-title">🔗 平台绑定</div><div class="page-subtitle">绑定电商平台账号，统一管理</div></div><div class="top-actions"><button class="btn btn-primary" onclick="showBindingPanel()">➕ 绑定平台</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">已绑定平台</h3><span id="boundCount" style="color:var(--text-secondary);">0 个平台</span></div>
-                <div class="table-container"><table><thead><tr><th>平台</th><th>账号名称</th><th>账号ID</th><th>状态</th><th>绑定时间</th><th>操作</th></tr></thead><tbody id="boundPlatformsBody"><tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">暂无绑定平台</td></tr></tbody></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">可用平台</h3></div><div class="platform-grid" id="platformGrid"></div></div>
-        </div>
-
-        <!-- ===== 智能获客（完整内容） ===== -->
-        <div class="page" id="page-discovery">
-            <div class="top-bar"><div><div class="page-title">🔍 智能获客</div><div class="page-subtitle">AI自动发现目标客户</div></div><div class="top-actions"><button class="btn btn-primary" onclick="startDiscovery()">🔍 开始发现</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">发现设置</h3></div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
-                    <div class="form-group"><label class="form-label">目标行业</label><select class="form-select" id="discoveryIndustry"><option>科技数码</option><option>美食餐饮</option><option selected>旅游出行</option><option>美妆时尚</option><option>健康养生</option><option>教育培训</option></select></div>
-                    <div class="form-group"><label class="form-label">最低互动率</label><select class="form-select" id="discoveryEngagement"><option value="1">1% 以上</option><option value="2" selected>2% 以上</option><option value="3">3% 以上</option><option value="5">5% 以上</option></select></div>
-                    <div class="form-group"><label class="form-label">最小粉丝数</label><input type="number" class="form-input" id="discoveryFollowers" value="1000"></div>
-                </div>
-            </div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">发现结果</h3><span id="discoveredCount" style="color:var(--text-secondary);">5 个</span></div>
-                <div id="discoveredList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
-                    <!-- 由JS动态渲染 -->
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== 私信营销（完整内容） ===== -->
-        <div class="page" id="page-chat">
-            <div class="top-bar"><div><div class="page-title">💬 私信营销</div><div class="page-subtitle">AI智能回复 + 组件发送</div></div><div class="top-actions"><button class="btn btn-outline" onclick="refreshChats()">🔄 刷新</button></div></div>
-            <div class="panel">
-                <div class="chat-container">
-                    <div class="chat-list" id="chatList">
-                        <div class="chat-list-item active" onclick="selectChat(0)"><div style="font-weight:600;">用户A</div><div style="font-size:12px;color:var(--text-secondary);">请问怎么预约？</div></div>
-                        <div class="chat-list-item" onclick="selectChat(1)"><div style="font-weight:600;">用户B</div><div style="font-size:12px;color:var(--text-secondary);">价格多少？</div></div>
-                        <div class="chat-list-item" onclick="selectChat(2)"><div style="font-weight:600;">用户C</div><div style="font-size:12px;color:var(--text-secondary);">想了解加盟</div></div>
-                    </div>
-                    <div class="chat-messages">
-                        <div class="chat-messages-header" id="chatHeader">用户A</div>
-                        <div class="chat-messages-body" id="chatMessages">
-                            <!-- 由JS动态渲染 -->
+            <div id="sourcingList">
+                <div class="product-pick-item" data-name="云山茶叶礼盒">
+                    <input type="checkbox" class="sourcing-check" onchange="updateSourcingCount()" style="width:16px;height:16px;">
+                    <div class="thumb"><i class="fas fa-leaf"></i></div>
+                    <div class="info">
+                        <div class="name">云山茶叶礼盒 · 2026春茶 特级龙井</div>
+                        <div class="meta">
+                            <span><i class="fas fa-store"></i> 云山茶厂 · 金牌供应商</span>
+                            <span><i class="fas fa-map-pin"></i> 浙江杭州</span>
+                            <span><i class="fas fa-star" style="color:#f5b342;"></i> 4.9 (2345评价)</span>
                         </div>
-                        <div class="chat-input-area">
-                            <input type="text" class="form-input" id="chatInput" placeholder="输入回复内容...">
-                            <button class="btn btn-primary" onclick="sendChatMessage()">发送</button>
-                            <button class="btn btn-outline" onclick="sendComponent()">📎 组件</button>
+                        <div class="meta">
+                            <span><i class="fas fa-tag"></i> 月销 8,234件</span>
+                            <span><i class="fas fa-check-circle" style="color:#0d7c4f;"></i> 一件代发</span>
+                            <span><i class="fas fa-shield-alt" style="color:#4dabf7;"></i> 合规检测通过</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="price">¥68.00 <small>起批</small></div>
+                        <div style="margin-top:4px;">
+                            <span class="btn-sm blue" onclick="showToast('✅ 已加入铺货清单')"><i class="fas fa-plus"></i> 选品</span>
+                            <span class="btn-sm primary" onclick="shelfSingle(this)"><i class="fas fa-rocket"></i> 铺货</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-pick-item" data-name="手工竹编包">
+                    <input type="checkbox" class="sourcing-check" onchange="updateSourcingCount()" style="width:16px;height:16px;">
+                    <div class="thumb"><i class="fas fa-bag-shopping"></i></div>
+                    <div class="info">
+                        <div class="name">手工竹编包 · 复古简约 通勤单肩</div>
+                        <div class="meta">
+                            <span><i class="fas fa-store"></i> 竹艺工坊 · 实力商家</span>
+                            <span><i class="fas fa-map-pin"></i> 浙江安吉</span>
+                            <span><i class="fas fa-star" style="color:#f5b342;"></i> 4.8 (1892评价)</span>
+                        </div>
+                        <div class="meta">
+                            <span><i class="fas fa-tag"></i> 月销 3,456件</span>
+                            <span><i class="fas fa-check-circle" style="color:#0d7c4f;"></i> 一件代发</span>
+                            <span><i class="fas fa-shield-alt" style="color:#4dabf7;"></i> 合规检测通过</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="price">¥45.00 <small>起批</small></div>
+                        <div style="margin-top:4px;">
+                            <span class="btn-sm blue" onclick="showToast('✅ 已加入铺货清单')"><i class="fas fa-plus"></i> 选品</span>
+                            <span class="btn-sm primary" onclick="shelfSingle(this)"><i class="fas fa-rocket"></i> 铺货</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-pick-item" data-name="山核桃仁 250g">
+                    <input type="checkbox" class="sourcing-check" onchange="updateSourcingCount()" style="width:16px;height:16px;">
+                    <div class="thumb"><i class="fas fa-seedling"></i></div>
+                    <div class="info">
+                        <div class="name">山核桃仁 250g · 临安特产 原味/椒盐</div>
+                        <div class="meta">
+                            <span><i class="fas fa-store"></i> 坚果源食品 · 诚信通</span>
+                            <span><i class="fas fa-map-pin"></i> 浙江临安</span>
+                            <span><i class="fas fa-star" style="color:#f5b342;"></i> 4.7 (3210评价)</span>
+                        </div>
+                        <div class="meta">
+                            <span><i class="fas fa-tag"></i> 月销 12,567件</span>
+                            <span><i class="fas fa-check-circle" style="color:#0d7c4f;"></i> 一件代发</span>
+                            <span><i class="fas fa-shield-alt" style="color:#4dabf7;"></i> 合规检测通过</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="price">¥28.00 <small>起批</small></div>
+                        <div style="margin-top:4px;">
+                            <span class="btn-sm blue" onclick="showToast('✅ 已加入铺货清单')"><i class="fas fa-plus"></i> 选品</span>
+                            <span class="btn-sm primary" onclick="shelfSingle(this)"><i class="fas fa-rocket"></i> 铺货</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- ===== 组件管理（完整内容） ===== -->
-        <div class="page" id="page-components">
-            <div class="top-bar"><div><div class="page-title">🧩 组件管理</div><div class="page-subtitle">管理私信组件（留资卡片、预约组件等）</div></div><div class="top-actions"><button class="btn btn-primary" onclick="refreshComponents()">🔄 刷新</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">组件列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="componentCount">共 3 个</span></div>
-                <div id="componentsList">
-                    <!-- 由JS动态渲染 -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:14px; border-top:1px solid #e8edf4; flex-wrap:wrap; gap:10px;">
+                <span style="font-size:13px; color:#5f7d95;">已选 <strong id="sourcingSelectedCount">0</strong> 件 · 共 6 件</span>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <span class="btn-sm outline" onclick="showToast('📋 已生成铺货清单')"><i class="fas fa-file-alt"></i> 生成清单</span>
+                    <span class="btn-sm primary" onclick="batchShelf()"><i class="fas fa-rocket"></i> 一键铺货</span>
                 </div>
             </div>
-        </div>
-
-        <!-- ===== 触达计划（完整内容） ===== -->
-        <div class="page" id="page-touchplan">
-            <div class="top-bar"><div><div class="page-title">🎯 触达计划</div><div class="page-subtitle">短视频评论、直播弹幕自动私信触达</div></div><div class="top-actions"><button class="btn btn-primary" onclick="createTouchPlan()">➕ 新建计划</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">计划列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="touchPlanCount">共 2 个</span></div>
-                <div id="touchPlanList">
-                    <!-- 由JS动态渲染 -->
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== 线索管理（完整内容） ===== -->
-        <div class="page" id="page-leads">
-            <div class="top-bar"><div><div class="page-title">📇 线索管理</div><div class="page-subtitle">AI采集的客户线索统一管理</div></div><div class="top-actions"><button class="btn btn-outline" onclick="exportLeads()">📥 导出</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">线索列表</h3><span id="leadsCount" style="color:var(--text-secondary);">3 条</span></div>
-                <div class="table-container"><table><thead><tr><th>姓名</th><th>电话(脱敏)</th><th>来源</th><th>意向</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="leadsTableBody">
-                    <!-- 由JS动态渲染 -->
-                </tbody></div></div>
-        </div>
-
-        <!-- ===== 自动互动 ===== -->
-        <div class="page" id="page-automation">
-            <div class="top-bar"><div><div class="page-title">⚡ 自动互动</div><div class="page-subtitle">配置自动化关注和回复规则</div></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">互动设置</h3></div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
-                    <div class="form-group"><label class="form-label">自动关注</label><label class="toggle-switch"><input type="checkbox" id="autoFollow" checked onchange="updateAutoSetting()"><span class="toggle-slider"></span></label></div>
-                    <div class="form-group"><label class="form-label">自动回复</label><label class="toggle-switch"><input type="checkbox" id="autoReply" checked onchange="updateAutoSetting()"><span class="toggle-slider"></span></label></div>
-                    <div class="form-group"><label class="form-label">操作间隔(秒)</label><input type="number" class="form-input" id="operationInterval" value="5" onchange="updateAutoSetting()"></div>
-                    <div class="form-group"><label class="form-label">每日最大操作数</label><input type="number" class="form-input" id="maxOperations" value="100" onchange="updateAutoSetting()"></div>
-                </div>
-                <div style="margin-top:12px;padding:12px;background:var(--bg-dark);border-radius:8px;font-size:13px;color:var(--text-secondary);">
-                    <span id="autoStatus">✅ 自动互动已开启 | 间隔 5秒 | 每日上限 100次</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== 定时任务 ===== -->
-        <div class="page" id="page-scheduler">
-            <div class="top-bar"><div><div class="page-title">⏰ 定时任务</div><div class="page-subtitle">设置定时执行的自动化任务</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addTask()">➕ 新建任务</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">任务列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="taskCount">共 2 个</span></div>
-                <div class="table-container"><table><thead><tr><th>任务名称</th><th>执行时间</th><th>平台</th><th>状态</th><th>上次执行</th><th>操作</th></tr></thead><tbody id="tasksTableBody">
-                    <tr><td>每日自动获客</td><td>每天 09:00</td><td>抖音</td><td><span class="status-badge success">执行中</span></td><td>2025-01-20 09:00</td><td><button class="btn btn-outline btn-sm" onclick="toggleTask(0)">暂停</button><button class="btn btn-danger btn-sm" onclick="deleteTask(0)">删除</button></td></tr>
-                    <tr><td>定时私信发送</td><td>每天 14:00</td><td>抖音</td><td><span class="status-badge warning">待执行</span></td><td>2025-01-19 14:00</td><td><button class="btn btn-outline btn-sm" onclick="toggleTask(1)">启动</button><button class="btn btn-danger btn-sm" onclick="deleteTask(1)">删除</button></td></tr>
-                </tbody></table></div>
-            </div>
-        </div>
-
-        <!-- ===== 回复模板 ===== -->
-        <div class="page" id="page-templates">
-            <div class="top-bar"><div><div class="page-title">📝 回复模板</div><div class="page-subtitle">AI自动回复模板管理</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addTemplate()">➕ 新建模板</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">模板列表</h3><span id="templateCount" style="color:var(--text-secondary);">2 个</span></div><div id="templatesList">
-                <!-- 由JS动态渲染 -->
-            </div></div>
-        </div>
-
-        <!-- ===== 系统配置 ===== -->
-        <div class="page" id="page-settings">
-            <div class="top-bar"><div><div class="page-title">⚙️ 系统配置</div><div class="page-subtitle">配置系统运行参数</div></div><div class="top-actions"><button class="btn btn-primary" onclick="saveSettings()">💾 保存</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">基本设置</h3></div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
-                    <div class="form-group"><label class="form-label">系统名称</label><input type="text" class="form-input" id="systemName" value="AI智营"></div>
-                    <div class="form-group"><label class="form-label">默认行业</label><select class="form-select" id="defaultIndustry"><option>旅游出行</option><option>科技数码</option><option>美食餐饮</option><option>美妆时尚</option></select></div>
-                    <div class="form-group"><label class="form-label">数据刷新间隔(秒)</label><input type="number" class="form-input" id="refreshInterval" value="30"></div>
-                </div>
-            </div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">AI配置</h3></div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                    <div class="form-group"><label class="form-label">AI模型</label><select class="form-select" id="aiModel"><option>DeepSeek V4 (推荐)</option><option>通义千问</option><option>GPT-4o</option><option>Claude 3.5</option></select></div>
-                    <div class="form-group"><label class="form-label">API Key</label><input type="password" class="form-input" id="apiKey" value="sk-xxxxxxxxxxxx"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== 操作日志 ===== -->
-        <div class="page" id="page-logs">
-            <div class="top-bar"><div><div class="page-title">📋 操作日志</div><div class="page-subtitle">系统操作记录</div></div><div class="top-actions"><button class="btn btn-outline" onclick="exportLogs()">📥 导出</button><button class="btn btn-danger" onclick="clearLogs()">🗑️ 清空</button></div></div>
-            <div class="panel"><div class="panel-header"><h3 class="panel-title">日志记录</h3></div><div class="log-container" id="mainLogContainer" style="height:400px;"></div></div>
         </div>
     </div>
-</div>
 
-<!-- ===== 弹窗 ===== -->
-<div class="modal-overlay" id="bindingModal">
-    <div class="modal-content">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;">绑定平台</h3><button class="btn btn-outline" style="padding:4px 10px;" onclick="closeModal('bindingModal')">✕</button></div>
-        <div class="form-group"><label class="form-label">平台</label><select class="form-select" id="modalPlatformSelect"><option value="">请选择平台</option><option value="douyin">抖音</option><option value="taobao">淘宝</option><option value="pdd">拼多多</option><option value="jd">京东</option></select></div>
-        <div class="form-group"><label class="form-label">账号名称</label><input type="text" class="form-input" id="modalAccountName" placeholder="请输入账号名称"></div>
-        <div class="form-group"><label class="form-label">账号ID</label><input type="text" class="form-input" id="modalAccountId" placeholder="请输入账号ID"></div>
-        <div class="form-group"><label class="form-label">API密钥/Cookie</label><input type="password" class="form-input" id="modalApiKey" placeholder="请输入API密钥"></div>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;"><button class="btn btn-outline" onclick="closeModal('bindingModal')">取消</button><button class="btn btn-primary" onclick="confirmBinding()">✅ 确认绑定</button></div>
+    <!-- ============================================================ -->
+    <!-- 页面9：【新增】AI 客服 · 全平台对接 -->
+    <!-- ============================================================ -->
+    <div id="page-ai-service" class="page">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-headset" style="color:#4dabf7;"></i> AI 智能客服</h2><p>全平台客服消息统一接入 · AI自动回复 · 人机协同</p></div>
+            <div class="right">
+                <span class="btn"><i class="fas fa-clock"></i> 实时监控</span>
+                <span class="btn btn-primary" onclick="showToast('🤖 AI引擎已启动，正在分析会话...')"><i class="fas fa-robot"></i> AI 引擎</span>
+            </div>
+        </div>
+        <!-- 统计 -->
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label"><i class="fas fa-comments" style="color:#4dabf7;"></i> 今日会话</div><div class="value">1,284</div><div class="sub">较昨日 +12%</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-robot" style="color:#4dabf7;"></i> AI 处理</div><div class="value">1,023</div><div class="sub">占比 79.6%</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-user" style="color:#4dabf7;"></i> 转人工</div><div class="value">261</div><div class="sub">占比 20.4%</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-clock" style="color:#4dabf7;"></i> 平均响应</div><div class="value">2.3s</div><div class="sub">行业平均 8.7s</div></div>
+        </div>
+        <!-- 平台接入 -->
+        <div class="card" style="margin-bottom:16px;">
+            <div class="card-header"><h3><i class="fas fa-plug"></i> 客服平台接入</h3><span class="action"><i class="fas fa-plus-circle"></i> 添加平台</span></div>
+            <div class="row-four">
+                <div class="platform-card"><div class="plat-header"><div class="plat-icon" style="background:#b55a1a;"><i class="fab fa-taobao"></i></div><div><div class="plat-name">淘宝</div><div class="plat-status"><span class="status-dot online"></span> 已接入</div></div></div><div class="plat-stats"><span><i class="fas fa-comment-dots"></i> 会话 342</span><span><i class="fas fa-robot"></i> AI率 82%</span></div></div>
+                <div class="platform-card"><div class="plat-header"><div class="plat-icon" style="background:#1a5bb5;"><i class="fab fa-tiktok"></i></div><div><div class="plat-name">抖音</div><div class="plat-status"><span class="status-dot online"></span> 已接入</div></div></div><div class="plat-stats"><span><i class="fas fa-comment-dots"></i> 会话 256</span><span><i class="fas fa-robot"></i> AI率 76%</span></div></div>
+                <div class="platform-card"><div class="plat-header"><div class="plat-icon" style="background:#b51a3f;"><i class="fas fa-store"></i></div><div><div class="plat-name">拼多多</div><div class="plat-status"><span class="status-dot online"></span> 已接入</div></div></div><div class="plat-stats"><span><i class="fas fa-comment-dots"></i> 会话 189</span><span><i class="fas fa-robot"></i> AI率 71%</span></div></div>
+                <div class="platform-card"><div class="plat-header"><div class="plat-icon" style="background:#0d7c4f;"><i class="fab fa-jd"></i></div><div><div class="plat-name">京东</div><div class="plat-status"><span class="status-dot online"></span> 已接入</div></div></div><div class="plat-stats"><span><i class="fas fa-comment-dots"></i> 会话 145</span><span><i class="fas fa-robot"></i> AI率 68%</span></div></div>
+            </div>
+        </div>
+        <!-- 会话列表 & AI回复 -->
+        <div class="row-two">
+            <div class="card">
+                <div class="card-header"><h3><i class="fas fa-list"></i> 实时会话</h3><span class="action">共 12 个活跃会话</span></div>
+                <div class="chat-log" id="chatLog">
+                    <div class="chat-msg"><div class="avatar" style="background:#b55a1a;">淘</div><div class="content"><div class="text"><strong>买家：</strong>这款茶叶礼盒可以定制包装吗？</div><div class="reply"><i class="fas fa-robot" style="color:#4dabf7;"></i> <strong>AI回复：</strong>您好，云山茶叶礼盒支持定制包装，您可以提供logo或文字要求，我们为您定制专属礼盒。请问需要定制吗？</div><div class="time">14:32 · 淘宝</div></div></div>
+                    <div class="chat-msg"><div class="avatar" style="background:#1a5bb5;">抖</div><div class="content"><div class="text"><strong>买家：</strong>竹编包能发顺丰吗？</div><div class="reply"><i class="fas fa-robot" style="color:#4dabf7;"></i> <strong>AI回复：</strong>您好，竹编包默认发中通/圆通，如需顺丰可补差价¥10，下单时备注即可。</div><div class="time">14:20 · 抖音</div></div></div>
+                    <div class="chat-msg"><div class="avatar" style="background:#b51a3f;">拼</div><div class="content"><div class="text"><strong>买家：</strong>山核桃仁的保质期多久？</div><div class="reply"><i class="fas fa-robot" style="color:#4dabf7;"></i> <strong>AI回复：</strong>山核桃仁保质期为6个月，生产日期见包装封口处，最新一批为2026年8月生产。</div><div class="time">14:05 · 拼多多</div></div></div>
+                    <div class="chat-msg"><div class="avatar" style="background:#0d7c4f;">京</div><div class="content"><div class="text"><strong>买家：</strong>手工皂套装含哪些香味？</div><div class="reply"><i class="fas fa-robot" style="color:#4dabf7;"></i> <strong>AI回复：</strong>手工皂套装包含：薰衣草、玫瑰、茶树精油三款，每块约100g，适合日常洁面沐浴。</div><div class="time">13:48 · 京东</div></div></div>
+                    <div class="chat-msg"><div class="avatar" style="background:#b55a1a;">淘</div><div class="content"><div class="text"><strong>买家：</strong>陶瓷杯可以微波炉加热吗？</div><div class="reply"><i class="fas fa-robot" style="color:#4dabf7;"></i> <strong>AI回复：</strong>云山陶瓷杯采用高温烧制，可以微波炉加热，但不建议放入烤箱或明火加热。</div><div class="time">13:30 · 淘宝</div></div></div>
+                </div>
+                <div style="margin-top:10px; padding-top:10px; border-top:1px solid #e8edf4; display:flex; gap:8px; flex-wrap:wrap;">
+                    <span class="btn-sm primary" onclick="showToast('📨 正在批量回复选中会话...')"><i class="fas fa-reply-all"></i> AI批量回复</span>
+                    <span class="btn-sm outline"><i class="fas fa-user-plus"></i> 转人工</span>
+                    <span style="margin-left:auto; font-size:12px; color:#94a3b8;"><i class="fas fa-sync-alt"></i> 自动刷新中</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3><i class="fas fa-cog"></i> AI 客服设置</h3><span class="action"><i class="fas fa-edit"></i> 编辑</span></div>
+                <div class="form-group"><label>AI 模型</label><select><option>DeepSeek V4 (推荐)</option><option>通义千问 Qwen-Plus</option><option>GPT-4o</option></select></div>
+                <div class="form-group"><label>回复风格</label><select><option>专业亲和 (当前)</option><option>简洁高效</option><option>热情活泼</option></select></div>
+                <div class="toggle-row"><div class="desc">自动回复 <small>AI自动处理常规咨询</small></div><div class="toggle active"><div class="knob"></div></div></div>
+                <div class="toggle-row"><div class="desc">转人工触发 <small>复杂问题自动转人工</small></div><div class="toggle active"><div class="knob"></div></div></div>
+                <div class="toggle-row"><div class="desc">情绪识别 <small>识别用户情绪并调整回复</small></div><div class="toggle"><div class="knob"></div></div></div>
+                <div style="margin-top:12px; display:flex; gap:8px;">
+                    <span class="btn-sm primary" onclick="showToast('✅ AI配置已保存')"><i class="fas fa-save"></i> 保存设置</span>
+                    <span class="btn-sm outline"><i class="fas fa-history"></i> 历史记录</span>
+                </div>
+                <div style="margin-top:12px; background:#f0f7fe; border-radius:8px; padding:10px 14px; font-size:13px; color:#475569;">
+                    <i class="fas fa-info-circle" style="color:#4dabf7;"></i> 已接入4个平台，今日处理1,023条会话，AI解决率79.6%
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="modal-overlay" id="templateModal">
-    <div class="modal-content">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;">新建回复模板</h3><button class="btn btn-outline" style="padding:4px 10px;" onclick="closeModal('templateModal')">✕</button></div>
-        <div class="form-group"><label class="form-label">模板名称</label><input type="text" class="form-input" id="templateName" placeholder="请输入模板名称"></div>
-        <div class="form-group"><label class="form-label">模板内容</label><textarea class="form-textarea" id="templateContent" rows="4" placeholder="请输入回复内容..."></textarea></div>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;"><button class="btn btn-outline" onclick="closeModal('templateModal')">取消</button><button class="btn btn-primary" onclick="confirmAddTemplate()">✅ 确认添加</button></div>
+    <!-- ============================================================ -->
+    <!-- 页面10：【新增】智能物流管理 -->
+    <!-- ============================================================ -->
+    <div id="page-logistics" class="page">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-truck" style="color:#4dabf7;"></i> 智能物流管理</h2><p>全链路物流追踪 · 智能调度 · 时效预测 · 异常预警</p></div>
+            <div class="right">
+                <span class="btn"><i class="fas fa-sync-alt"></i> 刷新</span>
+                <span class="btn btn-primary" onclick="showToast('📦 正在同步所有物流数据...')"><i class="fas fa-cloud-upload-alt"></i> 同步物流</span>
+            </div>
+        </div>
+        <!-- 统计 -->
+        <div class="stats-grid">
+            <div class="stat-card"><div class="label"><i class="fas fa-boxes" style="color:#4dabf7;"></i> 在途订单</div><div class="value">156</div><div class="sub">今日 +23</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-check-circle" style="color:#0d7c4f;"></i> 已签收</div><div class="value">89</div><div class="sub">今日 +12</div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-exclamation-triangle" style="color:#b55a1a;"></i> 异常包裹</div><div class="value">8</div><div class="sub"><span class="badge danger">需处理 3</span></div></div>
+            <div class="stat-card"><div class="label"><i class="fas fa-clock" style="color:#4dabf7;"></i> 平均时效</div><div class="value">2.8天</div><div class="sub">较昨日 -0.3天</div></div>
+        </div>
+        <!-- 物流追踪列表 -->
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-list"></i> 物流追踪 · 实时</h3>
+                <div class="flex" style="gap:8px;">
+                    <span class="action"><i class="fas fa-filter"></i> 全部</span>
+                    <span class="btn-sm outline" onclick="showToast('🔍 正在扫描异常物流...')"><i class="fas fa-shield-alt"></i> 异常扫描</span>
+                </div>
+            </div>
+            <div>
+                <div class="logistics-item">
+                    <div class="track-icon"><i class="fas fa-truck"></i></div>
+                    <div class="info">
+                        <div class="order">ORD-0905-001 · 云山茶叶礼盒</div>
+                        <div class="detail">
+                            <span><i class="fas fa-store"></i> 云山茶厂</span>
+                            <span><i class="fas fa-route"></i> 顺丰 SF12345678</span>
+                            <span><i class="fas fa-map-pin"></i> 已到 杭州中转站</span>
+                        </div>
+                        <div class="progress">
+                            <span>已揽收</span>
+                            <div class="bar"><div class="fill" style="width:60%;"></div></div>
+                            <span>派送中</span>
+                            <span style="color:#0d7c4f; font-weight:500;">预计 9月6日 18:00前</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <span class="badge success">运输中</span>
+                        <div style="margin-top:4px;"><span class="btn-sm outline" onclick="showToast('📍 查看完整轨迹')">追踪</span></div>
+                    </div>
+                </div>
+                <div class="logistics-item">
+                    <div class="track-icon"><i class="fas fa-box"></i></div>
+                    <div class="info">
+                        <div class="order">ORD-0905-003 · 山核桃仁 250g</div>
+                        <div class="detail">
+                            <span><i class="fas fa-store"></i> 坚果源食品</span>
+                            <span><i class="fas fa-route"></i> 中通 ZT98765432</span>
+                            <span><i class="fas fa-map-pin"></i> 已签收</span>
+                        </div>
+                        <div class="progress">
+                            <span>已揽收</span>
+                            <div class="bar"><div class="fill" style="width:100%; background:#0d7c4f;"></div></div>
+                            <span>✅ 已签收</span>
+                            <span style="color:#0d7c4f; font-weight:500;">9月5日 15:30</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <span class="badge success">已签收</span>
+                        <div style="margin-top:4px;"><span class="btn-sm outline" onclick="showToast('📋 查看签收详情')">详情</span></div>
+                    </div>
+                </div>
+                <div class="logistics-item">
+                    <div class="track-icon"><i class="fas fa-exclamation-circle" style="color:#b55a1a;"></i></div>
+                    <div class="info">
+                        <div class="order">ORD-0905-005 · 云山陶瓷杯</div>
+                        <div class="detail">
+                            <span><i class="fas fa-store"></i> 陶瓷厂</span>
+                            <span><i class="fas fa-route"></i> 圆通 YT11223344</span>
+                            <span><i class="fas fa-map-pin"></i> 物流异常 · 滞留</span>
+                        </div>
+                        <div class="progress">
+                            <span>已揽收</span>
+                            <div class="bar"><div class="fill" style="width:40%; background:#b55a1a;"></div></div>
+                            <span>滞留</span>
+                            <span style="color:#b55a1a; font-weight:500;">⚠️ 超时预警 · 已滞留24h</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <span class="badge danger">异常</span>
+                        <div style="margin-top:4px;"><span class="btn-sm danger" onclick="showToast('📞 已触发人工介入流程')">处理</span></div>
+                    </div>
+                </div>
+                <div class="logistics-item">
+                    <div class="track-icon"><i class="fas fa-truck"></i></div>
+                    <div class="info">
+                        <div class="order">ORD-0905-008 · 手工竹编包</div>
+                        <div class="detail">
+                            <span><i class="fas fa-store"></i> 竹艺工坊</span>
+                            <span><i class="fas fa-route"></i> 德邦 DB55667788</span>
+                            <span><i class="fas fa-map-pin"></i> 已到 上海分拨中心</span>
+                        </div>
+                        <div class="progress">
+                            <span>已揽收</span>
+                            <div class="bar"><div class="fill" style="width:75%;"></div></div>
+                            <span>派送中</span>
+                            <span style="color:#0d7c4f; font-weight:500;">预计 9月6日 12:00前</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <span class="badge success">运输中</span>
+                        <div style="margin-top:4px;"><span class="btn-sm outline" onclick="showToast('📍 查看完整轨迹')">追踪</span></div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:14px; padding-top:14px; border-top:1px solid #e8edf4; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                <span style="font-size:13px; color:#5f7d95;">共 156 条在途物流</span>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <span class="btn-sm outline"><i class="fas fa-file-export"></i> 导出物流报表</span>
+                    <span class="btn-sm primary" onclick="showToast('📊 正在生成智能物流分析报告...')"><i class="fas fa-chart-line"></i> AI 物流分析</span>
+                </div>
+            </div>
+        </div>
+        <!-- 智能调度 -->
+        <div class="row-two" style="margin-top:16px;">
+            <div class="card">
+                <div class="card-header"><h3><i class="fas fa-robot" style="color:#4dabf7;"></i> AI 物流预测</h3><span class="action">置信度 92%</span></div>
+                <div style="margin-bottom:12px;"><div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;"><span>今日预计签收</span><span style="font-weight:600;">102 单</span></div><div style="background:#eef2f6; border-radius:20px; height:5px; overflow:hidden;"><div style="background:#4dabf7; width:65%; height:5px; border-radius:20px;"></div></div></div>
+                <div style="margin-bottom:12px;"><div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;"><span>异常风险预测</span><span style="font-weight:600; color:#b55a1a;">3 单高风险</span></div><div style="background:#eef2f6; border-radius:20px; height:5px; overflow:hidden;"><div style="background:#b55a1a; width:8%; height:5px; border-radius:20px;"></div></div></div>
+                <div style="margin-bottom:12px;"><div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;"><span>智能调度建议</span><span style="font-weight:600; color:#0d7c4f;">已优化 45 条路线</span></div><div style="background:#eef2f6; border-radius:20px; height:5px; overflow:hidden;"><div style="background:#0d7c4f; width:78%; height:5px; border-radius:20px;"></div></div></div>
+                <div style="background:#f0f7fe; border-radius:8px; padding:10px 14px; font-size:13px; color:#475569;"><i class="fas fa-lightbulb" style="color:#f5b342;"></i> AI建议：3笔订单存在延误风险，建议优先联系物流商确认路由</div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3><i class="fas fa-tachometer-alt" style="color:#4dabf7;"></i> 快递商效能</h3><span class="action">7日平均</span></div>
+                <div class="channel-item"><div class="left"><span class="dot" style="background:#0d7c4f;"></span><span class="name">顺丰</span></div><span class="vol">时效 1.8天</span><span class="percent" style="color:#0d7c4f;">98%</span></div>
+                <div class="channel-item"><div class="left"><span class="dot" style="background:#4dabf7;"></span><span class="name">中通</span></div><span class="vol">时效 2.6天</span><span class="percent" style="color:#4dabf7;">94%</span></div>
+                <div class="channel-item"><div class="left"><span class="dot" style="background:#b55a1a;"></span><span class="name">圆通</span></div><span class="vol">时效 3.2天</span><span class="percent" style="color:#b55a1a;">87%</span></div>
+                <div class="channel-item"><div class="left"><span class="dot" style="background:#b51a3f;"></span><span class="name">德邦</span></div><span class="vol">时效 2.9天</span><span class="percent" style="color:#b51a3f;">91%</span></div>
+                <div style="margin-top:10px; padding-top:10px; border-top:1px solid #e8edf4; display:flex; gap:8px; flex-wrap:wrap;">
+                    <span class="btn-sm blue" onclick="showToast('🔄 正在智能切换最优快递...')"><i class="fas fa-sync-alt"></i> 智能切换</span>
+                    <span class="btn-sm outline"><i class="fas fa-file-alt"></i> 详细报告</span>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="modal-overlay" id="taskModal">
-    <div class="modal-content">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;">新建定时任务</h3><button class="btn btn-outline" style="padding:4px 10px;" onclick="closeModal('taskModal')">✕</button></div>
-        <div class="form-group"><label class="form-label">任务名称</label><input type="text" class="form-input" id="taskName" placeholder="请输入任务名称"></div>
-        <div class="form-group"><label class="form-label">执行时间</label><select class="form-select" id="taskTime"><option>每天 09:00</option><option>每天 14:00</option><option>每天 18:00</option><option>每天 21:00</option></select></div>
-        <div class="form-group"><label class="form-label">平台</label><select class="form-select" id="taskPlatform"><option>抖音</option><option>淘宝</option><option>拼多多</option><option>京东</option></select></div>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;"><button class="btn btn-outline" onclick="closeModal('taskModal')">取消</button><button class="btn btn-primary" onclick="confirmAddTask()">✅ 确认添加</button></div>
+    <!-- ============================================================ -->
+    <!-- 页面11：系统设置 (保持不变) -->
+    <!-- ============================================================ -->
+    <div id="page-settings" class="page">
+        <div class="topbar">
+            <div class="left"><h2><i class="fas fa-cog" style="color:#4dabf7;"></i> 系统设置</h2><p>账户 · 通知 · 同步 · AI 配置</p></div>
+            <div class="right"><span class="btn btn-primary"><i class="fas fa-save"></i> 保存</span></div>
+        </div>
+        <div class="card">
+            <div class="settings-group"><h4><i class="fas fa-user-circle" style="color:#4dabf7;"></i> 账户信息</h4>
+                <div class="form-row"><div class="form-group"><label>店铺名称</label><input type="text" value="云山好物旗舰店"></div>
+                <div class="form-group"><label>管理员邮箱</label><input type="email" value="admin@yunshan.com"></div></div>
+                <div class="form-row"><div class="form-group"><label>联系电话</label><input type="text" value="010-8888-6666"></div>
+                <div class="form-group"><label>主营类目</label><input type="text" value="食品 · 手工艺 · 文创"></div></div>
+            </div>
+            <div class="settings-group"><h4><i class="fas fa-bell" style="color:#b55a1a;"></i> 通知设置</h4>
+                <div class="toggle-row"><div class="desc">新订单提醒 <small>实时通知</small></div><div class="toggle active"><div class="knob"></div></div></div>
+                <div class="toggle-row"><div class="desc">退款/售后提醒 <small>新增退款实时通知</small></div><div class="toggle active"><div class="knob"></div></div></div>
+                <div class="toggle-row"><div class="desc">库存预警 <small>低于安全库存时通知</small></div><div class="toggle"><div class="knob"></div></div></div>
+                <div class="toggle-row"><div class="desc">每日经营简报 <small>每日 09:00 发送</small></div><div class="toggle active"><div class="knob"></div></div></div>
+            </div>
+            <div class="settings-group"><h4><i class="fas fa-sync-alt" style="color:#0d7c4f;"></i> 同步配置</h4>
+                <div class="form-row"><div class="form-group"><label>同步频率</label><select><option>实时 (推荐)</option><option>每15分钟</option><option>每1小时</option></select></div>
+                <div class="form-group"><label>历史数据</label><select><option>近30天</option><option>近90天</option><option>全部</option></select></div></div>
+                <div style="margin-top:6px;"><span class="btn-sm outline"><i class="fas fa-sync-alt"></i> 手动同步</span><span class="btn-sm outline" style="margin-left:8px;"><i class="fas fa-history"></i> 同步日志</span></div>
+            </div>
+            <div class="settings-group"><h4><i class="fas fa-robot" style="color:#4dabf7;"></i> AI 配置</h4>
+                <div class="form-row"><div class="form-group"><label>AI 模型</label><select><option>DeepSeek V4 (当前)</option><option>通义千问</option><option>GPT-4o</option></select></div>
+                <div class="form-group"><label>API Key</label><input type="password" value="sk-xxxxxxxxxxxxxxxx"></div></div>
+                <div class="toggle-row"><div class="desc">AI 自动分析客资 <small>自动识别高意向客户</small></div><div class="toggle active"><div class="knob"></div></div></div>
+                <div class="toggle-row"><div class="desc">AI 自动经营建议 <small>每日生成优化建议</small></div><div class="toggle active"><div class="knob"></div></div></div>
+                <div style="margin-top:6px;"><span class="btn-sm outline"><i class="fas fa-test"></i> 测试连接</span><span class="btn-sm outline" style="margin-left:8px;"><i class="fas fa-file-alt"></i> 用量统计</span></div>
+            </div>
+        </div>
     </div>
+
 </div>
 
-<div class="modal-overlay" id="planModal">
-    <div class="modal-content">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;">新建触达计划</h3><button class="btn btn-outline" style="padding:4px 10px;" onclick="closeModal('planModal')">✕</button></div>
-        <div class="form-group"><label class="form-label">计划名称</label><input type="text" class="form-input" id="planName" placeholder="请输入计划名称"></div>
-        <div class="form-group"><label class="form-label">触发类型</label><select class="form-select" id="planTrigger"><option>短视频评论</option><option>直播弹幕</option><option>私信互动</option></select></div>
-        <div class="form-group"><label class="form-label">发送内容</label><textarea class="form-textarea" id="planContent" rows="3" placeholder="请输入私信内容..."></textarea></div>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;"><button class="btn btn-outline" onclick="closeModal('planModal')">取消</button><button class="btn btn-primary" onclick="confirmAddPlan()">✅ 确认添加</button></div>
-    </div>
-</div>
+<!-- ===== Toast 提示 ===== -->
+<div id="toast" class="toast"></div>
 
+<!-- ============================================================ -->
+<!-- JavaScript -->
+<!-- ============================================================ -->
 <script>
-    // ============ 系统状态 ============
-    let systemState = {
-        boundPlatforms: {},
-        discoveredVideos: [],
-        leads: [],
-        templates: [],
-        tasks: [],
-        touchPlans: [],
-        components: [],
-        logs: [],
-        autoFollow: true,
-        autoReply: true,
-        operationInterval: 5,
-        maxOperations: 100,
-        currentChat: 0,
-        stats: { totalVideos: 0, totalUsers: 0, totalReplies: 0, totalLeads: 0, successRate: 0 }
-    };
-
-    const platformInfo = {
-        douyin: { name: '抖音', icon: '🎵' },
-        taobao: { name: '淘宝', icon: '🛒' },
-        pdd: { name: '拼多多', icon: '📦' },
-        jd: { name: '京东', icon: '💎' }
-    };
-
-    // 聊天数据
-    const chatData = [
-        { id: 0, name: '用户A', messages: [
-            { type: 'in', text: '你好，我想咨询一下' },
-            { type: 'out', text: '您好，很高兴为您服务！' },
-            { type: 'in', text: '请问怎么预约？' },
-            { type: 'out', text: '您可以点击下方卡片进行预约哦~' }
-        ]},
-        { id: 1, name: '用户B', messages: [
-            { type: 'in', text: '价格多少？' },
-            { type: 'out', text: '您好，具体价格可以查看我们的套餐详情' }
-        ]},
-        { id: 2, name: '用户C', messages: [
-            { type: 'in', text: '想了解加盟' },
-            { type: 'out', text: '好的，为您发送加盟资料' }
-        ]}
-    ];
-
-    // ============ Toast 提示 ============
+    // ===== Toast 提示 =====
     function showToast(msg) {
-        let toast = document.getElementById('toastMsg');
-        if (!toast) {
-            const div = document.createElement('div');
-            div.id = 'toastMsg';
-            div.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg-card);color:var(--text-primary);padding:12px 24px;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow-lg);z-index:999;font-size:14px;display:none;';
-            document.body.appendChild(div);
-            toast = div;
-        }
-        toast.textContent = msg;
-        toast.style.display = 'block';
+        var toast = document.getElementById('toast');
+        toast.innerHTML = msg;
+        toast.classList.add('show');
         clearTimeout(toast._timer);
-        toast._timer = setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        toast._timer = setTimeout(function() { toast.classList.remove('show'); }, 2500);
     }
 
-    // ============ 登录 ============
-    function handleLogin() {
-        const username = document.getElementById('loginUsername').value.trim();
-        const password = document.getElementById('loginPassword').value.trim();
-        if (!username || !password) { alert('请输入用户名和密码'); return; }
-        if (username === 'admin' && password === '123456') {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('appContainer').classList.add('show');
-            document.getElementById('sidebarAvatar').textContent = 'A';
-            document.getElementById('sidebarUsername').textContent = '管理员';
-            document.getElementById('sidebarRole').textContent = '超级管理员';
-            addLog('success', '✅ 登录成功，欢迎回来！');
-            initSystem();
-        } else { alert('用户名或密码错误'); }
-    }
-
-    function handleLogout() {
-        if (confirm('确认退出登录？')) {
-            document.getElementById('appContainer').classList.remove('show');
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('loginPassword').value = '';
-        }
-    }
-
-    // ============ 页面切换 ============
-    function switchPage(pageName) {
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        const navItem = document.querySelector(`.nav-item[data-page="${pageName}"]`);
-        if (navItem) navItem.classList.add('active');
-        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-        const pageElement = document.getElementById(`page-${pageName}`);
-        if (pageElement) pageElement.classList.add('active');
-    }
-
-    // ============ 平台管理 ============
-    function showBindingPanel() { openModal('bindingModal'); }
-    function selectPlatform(key) {
-        document.getElementById('modalPlatformSelect').value = key;
-        openModal('bindingModal');
-    }
-    function confirmBinding() {
-        const platformKey = document.getElementById('modalPlatformSelect').value;
-        const accountName = document.getElementById('modalAccountName').value.trim();
-        const accountId = document.getElementById('modalAccountId').value.trim();
-        if (!platformKey || !accountName || !accountId) { alert('请完整填写信息'); return; }
-        systemState.boundPlatforms[platformKey] = { ...platformInfo[platformKey], accountName, accountId, boundAt: new Date().toLocaleString('zh-CN') };
-        updatePlatformUI();
-        addLog('success', `✅ ${platformInfo[platformKey].name} 平台绑定成功`);
-        closeModal('bindingModal');
-        document.getElementById('modalAccountName').value = '';
-        document.getElementById('modalAccountId').value = '';
-        document.getElementById('modalApiKey').value = '';
-        showToast(`✅ ${platformInfo[platformKey].name} 绑定成功`);
-    }
-    function updatePlatformUI() {
-        const grid = document.getElementById('platformGrid');
-        grid.innerHTML = Object.keys(platformInfo).map(key => {
-            const bound = systemState.boundPlatforms[key];
-            return `<div class="platform-card" onclick="selectPlatform('${key}')">
-                <div class="platform-icon">${platformInfo[key].icon}</div>
-                <div class="platform-name">${platformInfo[key].name}</div>
-                <div class="platform-status ${bound?'bound':''}">${bound?'✅ 已绑定':'未绑定'}</div>
-            </div>`;
-        }).join('');
-        const tbody = document.getElementById('boundPlatformsBody');
-        const platforms = Object.values(systemState.boundPlatforms);
-        if (platforms.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">暂无绑定平台</td></tr>';
-            document.getElementById('boundCount').textContent = '0 个平台';
-        } else {
-            tbody.innerHTML = platforms.map(p => {
-                const key = Object.keys(systemState.boundPlatforms).find(k => systemState.boundPlatforms[k] === p);
-                return `<tr><td>${p.icon} ${p.name}</td><td>${p.accountName}</td><td>${p.accountId}</td><td><span class="status-badge success">已连接</span></td><td>${p.boundAt}</td><td><button class="btn btn-danger btn-sm" onclick="unbindPlatform('${key}')">解绑</button></td></tr>`;
-            }).join('');
-            document.getElementById('boundCount').textContent = `${platforms.length} 个平台`;
-        }
-        document.getElementById('platformBadge').textContent = platforms.length;
-    }
-    function unbindPlatform(key) {
-        if (confirm(`确认解绑 ${platformInfo[key]?.name || key} 平台？`)) {
-            delete systemState.boundPlatforms[key];
-            updatePlatformUI();
-            addLog('warning', `已解绑 ${platformInfo[key]?.name || key} 平台`);
-            showToast(`已解绑 ${platformInfo[key]?.name || key}`);
-        }
-    }
-
-    // ============ 智能获客 ============
-    function startDiscovery() {
-        const industry = document.getElementById('discoveryIndustry').value;
-        const engagement = document.getElementById('discoveryEngagement').value;
-        const followers = document.getElementById('discoveryFollowers').value;
-        addLog('info', `🔍 开始发现${industry}行业的优质客户... (互动率≥${engagement}%, 粉丝≥${followers})`);
-        systemState.discoveredVideos = [
-            { title: '旅游攻略大全', author: '旅游达人', likes: '18.5K', comments: '3.2K', score: 96 },
-            { title: '最美乡村风景', author: '实战家', likes: '15.2K', comments: '2.8K', score: 94 },
-            { title: '高端酒店推荐', author: '探店博主', likes: '12.8K', comments: '2.1K', score: 92 },
-            { title: '自驾游路线分享', author: '自驾达人', likes: '22.3K', comments: '4.5K', score: 98 },
-            { title: '美食探店Vlog', author: '美食博主', likes: '9.6K', comments: '1.8K', score: 88 }
-        ];
-        systemState.stats.totalVideos += systemState.discoveredVideos.length;
-        renderDiscoveredList();
-        document.getElementById('discoveredCount').textContent = `${systemState.discoveredVideos.length} 个`;
-        addLog('success', `✅ 发现 ${systemState.discoveredVideos.length} 个优质客户`);
-        showToast(`✅ 发现 ${systemState.discoveredVideos.length} 个优质客户`);
-    }
-
-    function renderDiscoveredList() {
-        const container = document.getElementById('discoveredList');
-        if (systemState.discoveredVideos.length === 0) {
-            container.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:30px;grid-column:1/-1;">点击"开始发现"获取目标客户</div>';
-            return;
-        }
-        container.innerHTML = systemState.discoveredVideos.map((v, i) => `
-            <div style="background:var(--bg-dark);border-radius:12px;padding:14px;border:1px solid var(--border);text-align:center;transition:var(--transition);cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-                <div style="font-size:32px;margin-bottom:4px;">🎬</div>
-                <div style="font-weight:600;font-size:14px;">${v.title}</div>
-                <div style="font-size:13px;color:var(--text-secondary);">👤 ${v.author} | 👍 ${v.likes}</div>
-                <div style="margin-top:6px;"><span class="status-badge success">优质 ${v.score}分</span></div>
-                <div style="margin-top:8px;"><button class="btn btn-primary btn-sm" onclick="addLeadFromDiscovery('${v.title}','${v.author}')">➕ 添加线索</button></div>
-            </div>
-        `).join('');
-    }
-
-    function addLeadFromDiscovery(title, author) {
-        const phones = ['138****1234', '159****5678', '177****9012', '136****3344', '152****7788'];
-        systemState.leads.push({
-            name: author,
-            phone: phones[Math.floor(Math.random() * phones.length)],
-            source: title,
-            intent: ['高','中','低'][Math.floor(Math.random() * 3)],
-            status: '待跟进',
-            time: new Date().toLocaleString('zh-CN')
+    // ===== 页面切换 =====
+    document.querySelectorAll('.sidebar .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.sidebar .item').forEach(function(i) { i.classList.remove('active'); });
+            this.classList.add('active');
+            var pageId = this.dataset.page;
+            document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+            document.getElementById(pageId).classList.add('active');
         });
-        updateLeadsTable();
-        addLog('success', `✅ 添加线索：${author} (来自 ${title})`);
-        document.getElementById('leadBadge').textContent = systemState.leads.length;
-        showToast(`✅ 已添加线索：${author}`);
+    });
+
+    // ===== 开关切换 =====
+    document.querySelectorAll('.toggle').forEach(function(t) {
+        t.addEventListener('click', function() { this.classList.toggle('active'); });
+    });
+
+    // ===== 推单功能 =====
+    function pushOrderAction(btn) {
+        var row = btn.closest('tr');
+        var orderId = row ? row.querySelector('td:nth-child(2)')?.textContent || '订单' : '订单';
+        btn.textContent = '已推单';
+        btn.className = 'btn-sm outline';
+        btn.style.color = '#0d7c4f';
+        btn.onclick = null;
+        showToast('✅ ' + orderId + ' 已推单到1688！');
     }
 
-    // ============ 线索管理 ============
-    function exportLeads() {
-        if (systemState.leads.length === 0) { alert('暂无线索可导出'); return; }
-        const text = systemState.leads.map(l => `${l.name},${l.phone},${l.source},${l.intent},${l.status},${l.time}`).join('\n');
-        const blob = new Blob(['姓名,电话,来源,意向,状态,时间\n' + text], {type:'text/csv'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = 'leads.csv'; a.click();
-        URL.revokeObjectURL(url);
-        addLog('success', '✅ 线索导出成功');
-        showToast('✅ 线索导出成功');
-    }
-    function updateLeadsTable() {
-        const tbody = document.getElementById('leadsTableBody');
-        if (systemState.leads.length === 0) {
-            // 初始化示例数据
-            systemState.leads = [
-                { name: '张先生', phone: '138****1234', source: '抖音评论', intent: '高', status: '待跟进', time: '2025-01-20 10:30' },
-                { name: '李女士', phone: '159****5678', source: '直播弹幕', intent: '中', status: '已联系', time: '2025-01-20 11:15' },
-                { name: '王先生', phone: '177****9012', source: '短视频互动', intent: '高', status: '待跟进', time: '2025-01-20 12:00' }
-            ];
-            systemState.stats.totalLeads = systemState.leads.length;
-        }
-        tbody.innerHTML = systemState.leads.map((l, i) => `
-            <tr>
-                <td>${l.name}</td>
-                <td>${l.phone}</td>
-                <td>${l.source}</td>
-                <td><span class="status-badge ${l.intent === '高' ? 'danger' : l.intent === '中' ? 'warning' : 'info'}">${l.intent}</span></td>
-                <td><span class="status-badge ${l.status === '已联系' ? 'success' : 'warning'}">${l.status}</span></td>
-                <td>${l.time}</td>
-                <td>
-                    <button class="btn btn-success btn-sm" onclick="markLeadContacted(${i})">联系</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteLead(${i})">删除</button>
-                </td>
-            </tr>
-        `).join('');
-        document.getElementById('leadsCount').textContent = `${systemState.leads.length} 条`;
-        document.getElementById('leadBadge').textContent = systemState.leads.length;
-        document.getElementById('dashLeads').textContent = systemState.leads.length;
-    }
-    function markLeadContacted(i) {
-        systemState.leads[i].status = '已联系';
-        updateLeadsTable();
-        addLog('success', `✅ 已联系 ${systemState.leads[i].name}`);
-        showToast(`✅ 已联系 ${systemState.leads[i].name}`);
-    }
-    function deleteLead(i) {
-        if (confirm('确认删除该线索？')) {
-            const name = systemState.leads[i].name;
-            systemState.leads.splice(i, 1);
-            updateLeadsTable();
-            addLog('warning', `已删除线索：${name}`);
-            showToast(`已删除线索：${name}`);
-        }
-    }
-
-    // ============ 私信营销 ============
-    function selectChat(index) {
-        systemState.currentChat = index;
-        document.querySelectorAll('.chat-list-item').forEach((el, i) => el.classList.toggle('active', i === index));
-        const chat = chatData[index];
-        document.getElementById('chatHeader').textContent = chat.name;
-        document.getElementById('chatMessages').innerHTML = chat.messages.map(m =>
-            `<div class="message-bubble ${m.type === 'in' ? 'message-in' : 'message-out'}">${m.text}</div>`
-        ).join('');
-    }
-
-    function sendChatMessage() {
-        const input = document.getElementById('chatInput');
-        const text = input.value.trim();
-        if (!text) { showToast('⚠️ 请输入内容'); return; }
-        const chat = chatData[systemState.currentChat];
-        chat.messages.push({ type: 'out', text });
-        selectChat(systemState.currentChat);
-        input.value = '';
-        addLog('info', `💬 发送私信：${text}`);
-        showToast(`✅ 已发送私信`);
-        // 模拟AI回复
-        setTimeout(() => {
-            const replies = ['好的，收到您的问题，我会尽快处理', '感谢您的咨询，请问还有其他问题吗？', '已收到您的消息，正在为您查询', '您好，这个问题我来帮您解答'];
-            const reply = replies[Math.floor(Math.random() * replies.length)];
-            chat.messages.push({ type: 'in', text: reply });
-            selectChat(systemState.currentChat);
-            addLog('info', `🤖 AI自动回复：${reply}`);
-            showToast(`🤖 AI回复：${reply.slice(0, 20)}...`);
+    function matchSupplierAction(btn) {
+        var row = btn.closest('tr');
+        btn.textContent = '匹配中...';
+        btn.className = 'btn-sm warning';
+        setTimeout(function() {
+            var supplierCell = row ? row.querySelector('td:nth-child(7)') : null;
+            var statusCell = row ? row.querySelector('td:nth-child(8)') : null;
+            if (supplierCell) {
+                supplierCell.innerHTML = '<span class="badge success">' + ['云山茶厂','竹艺工坊','山货直供','陶瓷源头厂'][Math.floor(Math.random() * 4)] + '</span>';
+            }
+            if (statusCell) {
+                statusCell.innerHTML = '<span class="badge success">已匹配</span>';
+            }
+            btn.textContent = '已匹配';
+            btn.className = 'btn-sm success';
+            btn.onclick = null;
+            showToast('✅ 供应商匹配成功！');
         }, 1200);
     }
 
-    function sendComponent() {
-        const chat = chatData[systemState.currentChat];
-        chat.messages.push({ type: 'out', text: '📎 [组件] 一键收集电话卡片' });
-        selectChat(systemState.currentChat);
-        addLog('success', '✅ 已发送组件消息');
-        showToast('✅ 组件消息已发送');
+    // ===== 批量推单 =====
+    function toggleAllPush() {
+        var checked = document.getElementById('pushSelectAll').checked;
+        document.querySelectorAll('.push-check').forEach(function(cb) { cb.checked = checked; });
+        updatePushSelected();
     }
 
-    function refreshChats() {
-        addLog('info', '🔄 刷新私信会话...');
-        setTimeout(() => { addLog('success', '✅ 会话列表已更新'); showToast('✅ 会话已刷新'); }, 1000);
+    function selectAllPush() {
+        document.querySelectorAll('.push-check').forEach(function(cb) { cb.checked = true; });
+        document.getElementById('pushSelectAll').checked = true;
+        updatePushSelected();
     }
 
-    // ============ 组件管理 ============
-    function refreshComponents() {
-        addLog('success', '✅ 组件列表已刷新');
-        showToast('✅ 组件已刷新');
-    }
-    function useComponent() {
-        sendComponent();
-    }
-    function renderComponents() {
-        const container = document.getElementById('componentsList');
-        const components = [
-            { name: '一键收集电话', type: '线索组件', id: 'CMP001', status: '生效', time: '2024-01-15' },
-            { name: '高级在线预约', type: '预约组件', id: 'CMP002', status: '生效', time: '2024-01-16' },
-            { name: '企业微信卡片', type: '企微组件', id: 'CMP003', status: '审核中', time: '2024-01-17' }
-        ];
-        container.innerHTML = components.map(c => `
-            <div class="component-card">
-                <div><div style="font-weight:600;">${c.name}</div><div style="font-size:13px;color:var(--text-secondary);">${c.type} · ${c.id}</div></div>
-                <div><span class="status-badge ${c.status === '生效' ? 'success' : 'warning'}">${c.status}</span>
-                <span style="margin-left:12px;font-size:13px;color:var(--text-secondary);">${c.time}</span>
-                <button class="btn btn-outline btn-sm" style="margin-left:12px;" onclick="useComponent()">使用</button></div>
-            </div>
-        `).join('');
-        document.getElementById('componentCount').textContent = `共 ${components.length} 个`;
+    function clearAllPush() {
+        document.querySelectorAll('.push-check').forEach(function(cb) { cb.checked = false; });
+        document.getElementById('pushSelectAll').checked = false;
+        updatePushSelected();
     }
 
-    // ============ 触达计划 ============
-    function createTouchPlan() {
-        document.getElementById('planName').value = '';
-        document.getElementById('planContent').value = '';
-        openModal('planModal');
+    function updatePushSelected() {
+        var count = document.querySelectorAll('.push-check:checked').length;
+        document.getElementById('pushSelectedCount').textContent = count;
     }
-    function confirmAddPlan() {
-        const name = document.getElementById('planName').value.trim();
-        const trigger = document.getElementById('planTrigger').value;
-        const content = document.getElementById('planContent').value.trim();
-        if (!name || !content) { alert('请完整填写信息'); return; }
-        systemState.touchPlans.push({ name, trigger, content, status: '执行中', sendCnt: 0, clueCnt: 0 });
-        renderTouchPlans();
-        closeModal('planModal');
-        addLog('success', `✅ 创建触达计划：${name}`);
-        showToast(`✅ 创建触达计划：${name}`);
-    }
-    function renderTouchPlans() {
-        const container = document.getElementById('touchPlanList');
-        if (systemState.touchPlans.length === 0) {
-            systemState.touchPlans = [
-                { name: '短视频评论高意向跟进', trigger: '短视频评论', content: '您好，看到您评论，留个联系方式吧', status: '执行中', sendCnt: 128, clueCnt: 32 },
-                { name: '直播弹幕跟进', trigger: '直播弹幕', content: '您好，感谢观看直播，点击卡片领取优惠', status: '已暂停', sendCnt: 56, clueCnt: 12 }
-            ];
+
+    document.querySelectorAll('.push-check').forEach(function(cb) {
+        cb.addEventListener('change', updatePushSelected);
+    });
+
+    function batchPushOrders() {
+        var checked = document.querySelectorAll('.push-check:checked');
+        if (checked.length === 0) {
+            showToast('⚠️ 请至少选择一笔订单');
+            return;
         }
-        container.innerHTML = systemState.touchPlans.map((p, i) => `
-            <div class="plan-card">
-                <div>
-                    <div style="font-weight:600;">${p.name}</div>
-                    <div style="font-size:13px;color:var(--text-secondary);">触发: ${p.trigger} | 已触达 ${p.sendCnt}人 | 留资 ${p.clueCnt}人</div>
-                </div>
-                <div>
-                    <span class="status-badge ${p.status === '执行中' ? 'success' : 'warning'}">${p.status}</span>
-                    <button class="btn ${p.status === '执行中' ? 'btn-outline' : 'btn-primary'} btn-sm" style="margin-left:8px;" onclick="togglePlan(${i})">${p.status === '执行中' ? '暂停' : '恢复'}</button>
-                    <button class="btn btn-danger btn-sm" style="margin-left:4px;" onclick="deletePlan(${i})">删除</button>
-                </div>
-            </div>
-        `).join('');
-        document.getElementById('touchPlanCount').textContent = `共 ${systemState.touchPlans.length} 个`;
-    }
-    function togglePlan(i) {
-        systemState.touchPlans[i].status = systemState.touchPlans[i].status === '执行中' ? '已暂停' : '执行中';
-        renderTouchPlans();
-        addLog('warning', `触达计划 "${systemState.touchPlans[i].name}" 已${systemState.touchPlans[i].status}`);
-        showToast(`触达计划已${systemState.touchPlans[i].status}`);
-    }
-    function deletePlan(i) {
-        if (confirm('确认删除该触达计划？')) {
-            const name = systemState.touchPlans[i].name;
-            systemState.touchPlans.splice(i, 1);
-            renderTouchPlans();
-            addLog('warning', `已删除触达计划：${name}`);
-            showToast(`已删除：${name}`);
+        var hasUnmatched = false;
+        checked.forEach(function(cb) {
+            var row = cb.closest('tr');
+            var status = row ? row.querySelector('td:nth-child(8)')?.textContent?.trim() : '';
+            if (status && status.includes('待匹配')) hasUnmatched = true;
+        });
+        if (hasUnmatched) {
+            showToast('⚠️ 部分订单未匹配供应商，请先匹配再推单');
+            return;
         }
+        showToast('✅ 已批量推单 ' + checked.length + ' 笔订单！');
+        checked.forEach(function(cb) {
+            var row = cb.closest('tr');
+            var btn = row ? row.querySelector('.btn-sm.primary') : null;
+            if (btn && btn.textContent === '推单') {
+                btn.textContent = '已推单';
+                btn.className = 'btn-sm outline';
+                btn.style.color = '#0d7c4f';
+                btn.onclick = null;
+            }
+        });
     }
 
-    // ============ 回复模板 ============
-    function addTemplate() {
-        document.getElementById('templateName').value = '';
-        document.getElementById('templateContent').value = '';
-        openModal('templateModal');
+    // ===== 铺货功能 =====
+    function togglePlat(el) { el.classList.toggle('active'); }
+
+    function selectAllSourcing() {
+        document.querySelectorAll('.sourcing-check').forEach(function(cb) { cb.checked = true; });
+        updateSourcingCount();
     }
-    function confirmAddTemplate() {
-        const name = document.getElementById('templateName').value.trim();
-        const content = document.getElementById('templateContent').value.trim();
-        if (!name || !content) { alert('请完整填写模板信息'); return; }
-        systemState.templates.push({ name, content });
-        renderTemplates();
-        closeModal('templateModal');
-        addLog('success', `✅ 创建模板：${name}`);
-        showToast(`✅ 创建模板：${name}`);
+
+    function clearAllSourcing() {
+        document.querySelectorAll('.sourcing-check').forEach(function(cb) { cb.checked = false; });
+        updateSourcingCount();
     }
-    function renderTemplates() {
-        const container = document.getElementById('templatesList');
-        if (systemState.templates.length === 0) {
-            systemState.templates = [
-                { name: '感谢关注', content: '感谢您的关注！期待更多精彩内容分享～' },
-                { name: '产品咨询', content: '您好，您咨询的产品目前有优惠活动，详情请点击链接查看' }
-            ];
+
+    function updateSourcingCount() {
+        var count = document.querySelectorAll('.sourcing-check:checked').length;
+        document.getElementById('sourcingSelectedCount').textContent = count;
+    }
+
+    document.querySelectorAll('.sourcing-check').forEach(function(cb) {
+        cb.addEventListener('change', updateSourcingCount);
+    });
+
+    function shelfSingle(btn) {
+        var item = btn.closest('.product-pick-item');
+        var name = item ? item.dataset.name || '商品' : '商品';
+        btn.textContent = '铺货中...';
+        btn.className = 'btn-sm warning';
+        setTimeout(function() {
+            btn.textContent = '✅ 已铺货';
+            btn.className = 'btn-sm success';
+            btn.onclick = null;
+            showToast('✅ "' + name + '" 已铺货到选中平台！');
+        }, 1500);
+    }
+
+    function batchShelf() {
+        var checked = document.querySelectorAll('.sourcing-check:checked');
+        if (checked.length === 0) {
+            showToast('⚠️ 请至少选择一件商品');
+            return;
         }
-        container.innerHTML = systemState.templates.map((t, i) => `
-            <div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                <div><div style="font-weight:600;">${t.name}</div><div style="font-size:13px;color:var(--text-secondary);">${t.content}</div></div>
-                <div>
-                    <button class="btn btn-primary btn-sm" onclick="useTemplate(${i})">使用</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteTemplate(${i})">删除</button>
-                </div>
-            </div>
-        `).join('');
-        document.getElementById('templateCount').textContent = `${systemState.templates.length} 个`;
-    }
-    function useTemplate(i) {
-        const content = systemState.templates[i].content;
-        document.getElementById('chatInput').value = content;
-        addLog('success', `✅ 已加载模板：${systemState.templates[i].name}`);
-        showToast(`✅ 已加载模板：${systemState.templates[i].name}`);
-    }
-    function deleteTemplate(i) {
-        if (confirm('确认删除该模板？')) {
-            const name = systemState.templates[i].name;
-            systemState.templates.splice(i, 1);
-            renderTemplates();
-            addLog('warning', `已删除模板：${name}`);
-            showToast(`已删除：${name}`);
+        var platCount = document.querySelectorAll('.platform-selector .pl.active').length;
+        if (platCount === 0) {
+            showToast('⚠️ 请至少选择一个铺货平台');
+            return;
         }
+        showToast('🚀 正在铺货 ' + checked.length + ' 件商品到 ' + platCount + ' 个平台...');
+        checked.forEach(function(cb) {
+            var item = cb.closest('.product-pick-item');
+            var btn = item ? item.querySelector('.btn-sm.primary') : null;
+            if (btn && btn.textContent === '铺货') {
+                setTimeout(function() {
+                    btn.textContent = '✅ 已铺货';
+                    btn.className = 'btn-sm success';
+                    btn.onclick = null;
+                }, 800);
+            }
+        });
+        setTimeout(function() {
+            showToast('✅ 铺货完成！共 ' + checked.length + ' 件商品已上架');
+        }, 1800);
     }
 
-    // ============ 自动互动 ============
-    function updateAutoSetting() {
-        const follow = document.getElementById('autoFollow').checked;
-        const reply = document.getElementById('autoReply').checked;
-        const interval = document.getElementById('operationInterval').value;
-        const maxOps = document.getElementById('maxOperations').value;
-        systemState.autoFollow = follow;
-        systemState.autoReply = reply;
-        systemState.operationInterval = parseInt(interval) || 5;
-        systemState.maxOperations = parseInt(maxOps) || 100;
-        document.getElementById('autoStatus').textContent =
-            `${follow && reply ? '✅' : '⚠️'} 自动互动 ${follow && reply ? '已开启' : '部分关闭'} | 间隔 ${systemState.operationInterval}秒 | 每日上限 ${systemState.maxOperations}次`;
-        addLog('info', `⚡ 自动互动设置已更新`);
-        showToast('⚡ 自动互动设置已保存');
+    function filterSourcing() {
+        var keyword = document.getElementById('sourcingSearch').value.toLowerCase().trim();
+        document.querySelectorAll('.product-pick-item').forEach(function(item) {
+            var text = item.textContent.toLowerCase();
+            item.style.display = (keyword === '' || text.includes(keyword)) ? 'flex' : 'none';
+        });
     }
 
-    // ============ 定时任务 ============
-    function addTask() {
-        document.getElementById('taskName').value = '';
-        openModal('taskModal');
-    }
-    function confirmAddTask() {
-        const name = document.getElementById('taskName').value.trim();
-        const time = document.getElementById('taskTime').value;
-        const platform = document.getElementById('taskPlatform').value;
-        if (!name) { alert('请填写任务名称'); return; }
-        systemState.tasks.push({ name, time, platform, status: '待执行', lastRun: '-' });
-        renderTasks();
-        closeModal('taskModal');
-        addLog('success', `✅ 创建定时任务：${name}`);
-        showToast(`✅ 创建任务：${name}`);
-    }
-    function renderTasks() {
-        const tbody = document.getElementById('tasksTableBody');
-        if (systemState.tasks.length === 0) {
-            systemState.tasks = [
-                { name: '每日自动获客', time: '每天 09:00', platform: '抖音', status: '执行中', lastRun: '2025-01-20 09:00' },
-                { name: '定时私信发送', time: '每天 14:00', platform: '抖音', status: '待执行', lastRun: '2025-01-19 14:00' }
-            ];
-        }
-        tbody.innerHTML = systemState.tasks.map((t, i) => `
-            <tr>
-                <td>${t.name}</td>
-                <td>${t.time}</td>
-                <td>${t.platform}</td>
-                <td><span class="status-badge ${t.status === '执行中' ? 'success' : 'warning'}">${t.status}</span></td>
-                <td>${t.lastRun}</td>
-                <td>
-                    <button class="btn btn-outline btn-sm" onclick="toggleTask(${i})">${t.status === '执行中' ? '暂停' : '启动'}</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteTask(${i})">删除</button>
-                </td>
-            </tr>
-        `).join('');
-        document.getElementById('taskCount').textContent = `共 ${systemState.tasks.length} 个`;
-    }
-    function toggleTask(i) {
-        systemState.tasks[i].status = systemState.tasks[i].status === '执行中' ? '已暂停' : '执行中';
-        renderTasks();
-        addLog('warning', `任务 "${systemState.tasks[i].name}" 已${systemState.tasks[i].status}`);
-        showToast(`任务已${systemState.tasks[i].status}`);
-    }
-    function deleteTask(i) {
-        if (confirm('确认删除该任务？')) {
-            const name = systemState.tasks[i].name;
-            systemState.tasks.splice(i, 1);
-            renderTasks();
-            addLog('warning', `已删除任务：${name}`);
-            showToast(`已删除：${name}`);
-        }
-    }
-
-    // ============ 订单/商品操作 ============
-    function syncOrders() {
-        addLog('success', '✅ 订单同步完成，更新 23 笔');
-        document.getElementById('orderBadge').textContent = '23';
-        showToast('✅ 订单同步完成，更新23笔');
-    }
-    function exportOrders() {
-        addLog('success', '✅ 订单导出成功');
-        showToast('✅ 订单导出成功');
-    }
-    function addProduct() {
-        const name = prompt('请输入商品名称：', `新品${document.querySelectorAll('.product-card').length + 1}`);
-        if (name) {
-            addLog('success', `✅ 新增商品：${name}`);
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML += `
-                <div class="product-card">
-                    <div class="icon">📦</div>
-                    <div class="name">${name}</div>
-                    <div class="price">¥0</div>
-                    <div class="status"><span class="status-badge warning">草稿</span> 库存0</div>
-                    <div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div>
-                </div>
-            `;
-            document.getElementById('productCount').textContent = `共 ${document.querySelectorAll('.product-card').length} 件`;
-            showToast(`✅ 新增商品：${name}`);
-        }
-    }
-    function batchPublish() {
-        addLog('success', '✅ 批量发布到抖音、淘宝、拼多多、京东');
-        showToast('✅ 批量发布成功');
-    }
-    function editProduct() {
-        addLog('info', '📝 打开商品编辑');
-        showToast('📝 打开商品编辑');
-    }
-    function syncProduct() {
-        addLog('success', '✅ 商品同步到所有平台');
-        showToast('✅ 商品同步成功');
-    }
-    function handleOrderAction(btn, action) {
-        const row = btn.closest('tr');
-        const orderId = row ? row.querySelector('td:first-child').textContent : '订单';
-        addLog('success', `✅ ${orderId} ${action}成功`);
-        btn.textContent = '已完成';
-        btn.className = 'btn btn-outline btn-sm';
-        btn.disabled = true;
-        showToast(`✅ ${orderId} ${action}成功`);
-    }
-
-    // ============ 系统操作 ============
-    function startSystem() {
-        addLog('success', '🚀 AI分析引擎启动...');
-        showToast('🚀 AI分析引擎启动...');
-        setTimeout(() => {
-            addLog('success', '✅ 分析完成，发现3条增长建议');
-            const container = document.getElementById('aiBriefContainer');
-            container.innerHTML += `
-                <div style="background:var(--bg-dark);border-radius:10px;padding:14px;border-left:3px solid var(--primary);grid-column:1/2;">
-                    <div style="font-weight:600;color:var(--primary-light);">📊 新发现：抖音渠道ROI提升15%</div>
-                    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">建议增加抖音投放预算，预计可提升整体GMV 8%</div>
-                </div>
-            `;
-            showToast('✅ AI分析完成，发现3条增长建议');
-        }, 2000);
-    }
-    function refreshData() {
-        addLog('info', '🔄 数据刷新中...');
-        showToast('🔄 数据刷新中...');
-        setTimeout(() => {
-            addLog('success', '✅ 数据已更新');
-            const orders = 347 + Math.floor(Math.random() * 20);
-            document.getElementById('dashOrders').textContent = orders;
-            document.getElementById('dashRevenue').textContent = '¥' + (18.7 + Math.random() * 1.5).toFixed(1) + 'k';
-            showToast('✅ 数据已更新');
-        }, 1000);
-    }
-    function saveSettings() {
-        const name = document.getElementById('systemName').value;
-        const interval = document.getElementById('refreshInterval').value;
-        addLog('success', `✅ 配置已保存：系统名称=${name}，刷新间隔=${interval}秒`);
-        showToast('✅ 配置已保存');
-    }
-
-    // ============ 弹窗 ============
-    function openModal(id) { document.getElementById(id).classList.add('show'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-
-    // ============ 日志 ============
-    function addLog(type, message) {
-        const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
-        const logEntry = { time, type, message };
-        systemState.logs.push(logEntry);
-        const mainContainer = document.getElementById('mainLogContainer');
-        const dashContainer = document.getElementById('dashLogs');
-        if (mainContainer) appendLogEntry(mainContainer, logEntry);
-        if (dashContainer) appendLogEntry(dashContainer, logEntry);
-    }
-    function appendLogEntry(container, entry) {
-        const div = document.createElement('div');
-        div.className = 'log-entry';
-        let cls = 'log-info';
-        if (entry.type === 'success') cls = 'log-success';
-        else if (entry.type === 'warning') cls = 'log-warning';
-        else if (entry.type === 'error') cls = 'log-error';
-        div.innerHTML = `<span class="log-time">[${entry.time}]</span><span class="${cls}">${entry.message}</span>`;
-        container.appendChild(div);
-        container.scrollTop = container.scrollHeight;
-    }
-    function clearLogs() {
-        if (confirm('确认清空所有日志？')) {
-            systemState.logs = [];
-            document.getElementById('mainLogContainer').innerHTML = '';
-            document.getElementById('dashLogs').innerHTML = '';
-            addLog('info', '🗑️ 日志已清空');
-            showToast('🗑️ 日志已清空');
-        }
-    }
-    function exportLogs() {
-        if (systemState.logs.length === 0) { alert('暂无日志可导出'); return; }
-        const text = systemState.logs.map(l => `[${l.time}] ${l.message}`).join('\n');
-        const blob = new Blob([text], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `logs_${new Date().toISOString().slice(0,10)}.txt`;
-        a.click();
-        URL.revokeObjectURL(url);
-        addLog('success', '✅ 日志导出成功');
-        showToast('✅ 日志导出成功');
-    }
-
-    // ============ 初始化 ============
-    function initSystem() {
-        updatePlatformUI();
-        updateLeadsTable();
-        renderTemplates();
-        renderTasks();
-        renderTouchPlans();
-        renderComponents();
-        renderDiscoveredList();
-        updateAutoSetting();
-        selectChat(0);
-        addLog('info', '🚀 系统初始化完成，欢迎使用AI智营');
-        // 更新统计数据
-        document.getElementById('dashOrders').textContent = '347';
-        document.getElementById('dashRevenue').textContent = '¥18.7k';
-        document.getElementById('dashProducts').textContent = '1,283';
-        document.getElementById('dashLeads').textContent = systemState.leads.length;
-        document.getElementById('dashAI率').textContent = '79.6%';
-        document.getElementById('dashGrowth').textContent = '12.3%';
-        document.getElementById('orderBadge').textContent = '23';
-        document.getElementById('leadBadge').textContent = systemState.leads.length;
-        showToast('🚀 系统已就绪，所有模块已加载');
-    }
-
-    // 页面加载时初始化平台网格
-    document.addEventListener('DOMContentLoaded', () => {
-        const grid = document.getElementById('platformGrid');
-        if (grid) {
-            grid.innerHTML = Object.keys(platformInfo).map(key => `
-                <div class="platform-card" onclick="selectPlatform('${key}')">
-                    <div class="platform-icon">${platformInfo[key].icon}</div>
-                    <div class="platform-name">${platformInfo[key].name}</div>
-                    <div class="platform-status">未绑定</div>
-                </div>
-            `).join('');
-        }
-        // 初始化日志容器
-        const mainLog = document.getElementById('mainLogContainer');
-        if (mainLog) mainLog.innerHTML = '';
-        const dashLog = document.getElementById('dashLogs');
-        if (dashLog) dashLog.innerHTML = '';
+    // ===== ECharts 图表 =====
+    document.addEventListener('DOMContentLoaded', function() {
+        var salesChart = echarts.init(document.getElementById('salesChart'));
+        salesChart.setOption({
+            tooltip: { trigger: 'axis' },
+            legend: { data: ['销售额', '订单量'], bottom: 0, icon: 'circle', itemWidth: 8, itemHeight: 8 },
+            grid: { left: '3%', right: '4%', bottom: '20%', top: '6%', containLabel: true },
+            xAxis: { type: 'category', data: ['08/30', '08/31', '09/01', '09/02', '09/03', '09/04', '今日'], axisLine: { lineStyle: { color: '#dce5ef' } } },
+            yAxis: [
+                { type: 'value', name: '销售额 (千元)', nameTextStyle: { color: '#94a3b8', fontSize: 11 }, splitLine: { lineStyle: { color: '#eef2f6', type: 'dashed' } } },
+                { type: 'value', name: '订单量', nameTextStyle: { color: '#94a3b8', fontSize: 11 }, splitLine: { show: false } }
+            ],
+            series: [
+                { name: '销售额', type: 'bar', data: [8.6, 11.2, 14.8, 13.5, 16.2, 17.8, 18.7], itemStyle: { color: '#4dabf7', borderRadius: [4,4,0,0] }, barWidth: '35%' },
+                { name: '订单量', type: 'line', yAxisIndex: 1, data: [156, 212, 278, 256, 312, 328, 347], smooth: true, symbol: 'circle', symbolSize: 6, lineStyle: { color: '#b55a1a', width: 2 }, itemStyle: { color: '#b55a1a' } }
+            ]
+        });
+        var pieChart = echarts.init(document.getElementById('channelPie'));
+        pieChart.setOption({
+            tooltip: { trigger: 'item' },
+            legend: { show: false },
+            series: [{
+                type: 'pie', radius: ['45%', '72%'], avoidLabelOverlap: false,
+                itemStyle: { borderRadius: 5, borderColor: '#fff', borderWidth: 2 },
+                label: { show: false }, emphasis: { scale: false },
+                data: [
+                    { value: 40, name: '淘宝', itemStyle: { color: '#b55a1a' } },
+                    { value: 30, name: '抖音', itemStyle: { color: '#1a5bb5' } },
+                    { value: 16, name: '拼多多', itemStyle: { color: '#b51a3f' } },
+                    { value: 14, name: '京东', itemStyle: { color: '#0d7c4f' } }
+                ]
+            }]
+        });
+        var barChart = echarts.init(document.getElementById('channelBar'));
+        barChart.setOption({
+            tooltip: { trigger: 'axis' },
+            grid: { left: '5%', right: '5%', bottom: '8%', top: '5%', containLabel: true },
+            xAxis: { type: 'category', data: ['淘宝', '抖音', '拼多多', '京东'], axisLine: { show: false }, axisTick: { show: false } },
+            yAxis: { type: 'value', show: false },
+            series: [{
+                type: 'bar', data: [142, 98, 62, 45], barWidth: '45%',
+                itemStyle: { color: function(p) { var colors = ['#b55a1a','#1a5bb5','#b51a3f','#0d7c4f']; return colors[p.dataIndex]; }, borderRadius: [4,4,0,0] }
+            }]
+        });
+        window.addEventListener('resize', function() { salesChart.resize(); pieChart.resize(); barChart.resize(); });
+        updateSourcingCount();
     });
 </script>
 </body>
