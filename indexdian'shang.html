@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智营 · 智能营销+电商管理一体化系统</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #06b6d4;
+            --accent: #8b5cf6;
+            --bg-dark: #0a0e1a;
+            --bg-card: #111827;
+            --bg-sidebar: #0d1117;
+            --bg-hover: #1a2234;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border: #1f2937;
+            --border-light: #374151;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        /* ========== 登录页 ========== */
+        .login-page { display: flex; height: 100vh; background: linear-gradient(135deg, #0a0e1a 0%, #111827 30%, #1a2234 60%, #0a0e1a 100%); overflow: hidden; }
+        .login-left { flex: 1.2; display: flex; align-items: center; justify-content: center; padding: 60px 80px; position: relative; z-index: 1; }
+        .login-left-content { max-width: 600px; width: 100%; }
+        .login-logo { display: flex; align-items: center; gap: 18px; margin-bottom: 50px; }
+        .login-logo-icon { width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: 0 15px 40px rgba(37,99,235,0.5); animation: logoFloat 3s ease-in-out infinite; }
+        @keyframes logoFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        .login-logo-text h1 { font-size: 32px; font-weight: 800; }
+        .login-logo-text p { font-size: 15px; color: var(--text-secondary); letter-spacing: 2px; }
+        .login-slogan { font-size: 48px; font-weight: 900; line-height: 1.2; margin-bottom: 25px; background: linear-gradient(135deg, #60a5fa 0%, #06b6d4 50%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .login-slogan-sub { font-size: 18px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 40px; }
+        .login-features { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+        .login-feature { display: flex; align-items: center; gap: 15px; padding: 18px 20px; background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius: 15px; transition: var(--transition); }
+        .login-feature:hover { background: rgba(37,99,235,0.1); border-color: rgba(37,99,235,0.3); transform: translateX(5px); }
+        .login-feature-icon { font-size: 28px; width: 50px; height: 50px; background: rgba(37,99,235,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .login-feature-text h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .login-feature-text p { font-size: 13px; color: var(--text-muted); }
+        .login-right { width: 500px; display: flex; align-items: center; justify-content: center; padding: 50px; position: relative; z-index: 1; background: rgba(17,24,39,0.95); border-left:1px solid rgba(255,255,255,0.08); }
+        .login-form-container { width: 100%; max-width: 380px; }
+        .login-form-header { text-align: center; margin-bottom: 35px; }
+        .login-form-title { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+        .login-form-subtitle { font-size: 14px; color: var(--text-secondary); }
+        .login-form .form-group { margin-bottom: 22px; }
+        .login-form .form-label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+        .login-form .form-input { width: 100%; padding: 15px 18px; background: var(--bg-dark); border: 1.5px solid var(--border); border-radius: 12px; color: var(--text-primary); font-size: 15px; transition: var(--transition); }
+        .login-form .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37,99,235,0.15); }
+        .login-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-size: 17px; font-weight: 700; cursor: pointer; transition: var(--transition); margin-top: 10px; letter-spacing: 2px; }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(37,99,235,0.5); }
+        .login-options { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; font-size: 13px; color: var(--text-secondary); }
+        .login-options a { color: var(--primary-light); text-decoration: none; cursor: pointer; }
+        .remember-me { display: flex; align-items: center; gap: 8px; }
+
+        /* ========== 主系统 ========== */
+        .app-container { display: none; height: 100vh; }
+        .app-container.show { display: flex; }
+        .sidebar { width: 240px; background: var(--bg-sidebar); border-right:1px solid var(--border); display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
+        .sidebar-logo { padding: 20px 18px; border-bottom:1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .logo-text h2 { font-size: 16px; font-weight: 700; }
+        .logo-text p { font-size: 10px; color: var(--text-secondary); }
+        .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
+        .nav-section { margin-bottom: 20px; }
+        .nav-section-title { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; padding: 0 12px; margin-bottom: 8px; font-weight: 600; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; cursor: pointer; transition: var(--transition); color: var(--text-secondary); margin-bottom: 3px; user-select: none; font-size: 14px; }
+        .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .nav-item.active { background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(6,182,212,0.2)); color: var(--primary-light); border:1px solid rgba(37,99,235,0.3); }
+        .nav-icon { font-size: 18px; width: 22px; text-align: center; }
+        .nav-badge { margin-left: auto; background: var(--primary); color: white; padding: 1px 8px; border-radius: 10px; font-size: 10px; }
+        .nav-badge.success { background: var(--success); }
+        .nav-badge.warning { background: var(--warning); }
+        .nav-badge.danger { background: var(--danger); }
+        .sidebar-footer { padding: 16px 18px; border-top:1px solid var(--border); }
+        .user-profile { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 10px; background: rgba(37,99,235,0.08); }
+        .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 14px; }
+
+        .main-content { flex: 1; margin-left: 240px; padding: 20px 24px; overflow-y: auto; height: 100vh; }
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 16px 20px; background: var(--bg-card); border-radius: var(--radius-lg); border:1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+        .page-title { font-size: 20px; font-weight: 700; }
+        .page-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+        .top-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+        .btn { padding: 8px 16px; border: none; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 4px 15px rgba(37,99,235,0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+        .btn-outline { background: transparent; color: var(--text-primary); border:1px solid var(--border-light); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary-light); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-sm { padding: 4px 12px; font-size: 12px; border-radius: 8px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 16px; margin-bottom: 20px; }
+        .stat-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 18px 20px; border:1px solid var(--border); transition: var(--transition); }
+        .stat-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .stat-icon { font-size: 26px; margin-bottom: 6px; }
+        .stat-value { font-size: 26px; font-weight: 700; color: var(--primary-light); margin-bottom: 3px; }
+        .stat-label { font-size: 13px; color: var(--text-secondary); }
+
+        .panel { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; border:1px solid var(--border); margin-bottom: 20px; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom:1px solid var(--border); flex-wrap: wrap; gap: 8px; }
+        .panel-title { font-size: 16px; font-weight: 700; }
+
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom:1px solid var(--border); font-size: 13px; }
+        th { background: var(--bg-dark); font-weight: 600; color: var(--text-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        tr:hover { background: var(--bg-hover); }
+
+        .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 12px; }
+        .platform-card { background: var(--bg-dark); border:2px solid var(--border); border-radius: var(--radius-lg); padding: 16px; text-align: center; cursor: pointer; transition: var(--transition); }
+        .platform-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+        .platform-icon { font-size: 36px; margin-bottom: 8px; }
+        .platform-name { font-size: 14px; font-weight: 600; }
+        .platform-status { font-size: 12px; color: var(--text-secondary); }
+        .platform-status.bound { color: var(--success); }
+
+        .log-container { height: 240px; overflow-y: auto; background: var(--bg-dark); border-radius: 10px; padding: 12px 16px; font-family: 'Courier New', monospace; font-size: 12px; }
+        .log-entry { margin-bottom: 6px; padding: 6px 10px; border-radius: 6px; background: rgba(255,255,255,0.02); display: flex; gap: 8px; }
+        .log-time { color: var(--text-muted); flex-shrink: 0; }
+        .log-info { color: #60a5fa; }
+        .log-success { color: #34d399; }
+        .log-warning { color: #fbbf24; }
+        .log-error { color: #f87171; }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .form-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+        .form-input, .form-select, .form-textarea { padding: 10px 14px; background: var(--bg-dark); border:1px solid var(--border); border-radius: 10px; color: var(--text-primary); font-size: 14px; transition: var(--transition); width: 100%; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        .form-textarea { min-height: 80px; resize: vertical; }
+
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: var(--border); transition: var(--transition); border-radius: 24px; }
+        .toggle-slider:before { content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; transition: var(--transition); border-radius: 50%; position: absolute; }
+        .toggle-switch input:checked + .toggle-slider { background: var(--primary); }
+        .toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; }
+        .modal-overlay.show { display: flex; }
+        .modal-content { background: var(--bg-card); border-radius: var(--radius-lg); padding: 28px; width: 92%; max-width: 500px; border:1px solid var(--border); max-height: 90vh; overflow-y: auto; }
+
+        /* ===== 电商管理特有 ===== */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 14px; }
+        .product-card { background: var(--bg-dark); border-radius: 12px; padding: 14px; text-align: center; border:1px solid var(--border); transition: var(--transition); }
+        .product-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+        .product-card .icon { font-size: 36px; margin-bottom: 6px; }
+        .product-card .name { font-weight: 600; font-size: 14px; }
+        .product-card .price { color: var(--primary-light); font-weight: 700; font-size: 16px; }
+        .product-card .status { font-size: 13px; margin-top: 4px; }
+        .product-card .actions { margin-top: 8px; display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+
+        .status-badge { padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; display: inline-block; }
+        .status-badge.success { background: rgba(16,185,129,0.2); color: var(--success); }
+        .status-badge.warning { background: rgba(245,158,11,0.2); color: var(--warning); }
+        .status-badge.danger { background: rgba(239,68,68,0.2); color: var(--danger); }
+        .status-badge.info { background: rgba(59,130,246,0.2); color: var(--info); }
+
+        .component-card { background: var(--bg-dark); border:1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; transition: var(--transition); flex-wrap: wrap; gap: 8px; }
+        .component-card:hover { border-color: var(--primary); }
+
+        .plan-card { background: var(--bg-dark); border:1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; transition: var(--transition); flex-wrap: wrap; gap: 8px; }
+        .plan-card:hover { border-color: var(--primary); }
+
+        .chat-container { display: flex; gap: 16px; height: 420px; }
+        .chat-list { width: 200px; background: var(--bg-dark); border-radius: 12px; overflow-y: auto; border:1px solid var(--border); flex-shrink: 0; }
+        .chat-list-item { padding: 12px 14px; border-bottom:1px solid var(--border); cursor: pointer; transition: var(--transition); }
+        .chat-list-item:hover { background: var(--bg-hover); }
+        .chat-list-item.active { background: rgba(37,99,235,0.15); border-left:3px solid var(--primary); }
+        .chat-messages { flex: 1; display: flex; flex-direction: column; background: var(--bg-dark); border-radius: 12px; border:1px solid var(--border); }
+        .chat-messages-header { padding: 12px 16px; border-bottom:1px solid var(--border); font-weight: 600; }
+        .chat-messages-body { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; }
+        .message-bubble { max-width: 70%; margin-bottom: 12px; padding: 10px 14px; border-radius: 12px; font-size: 14px; }
+        .message-in { background: var(--bg-card); align-self: flex-start; }
+        .message-out { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; align-self: flex-end; margin-left: auto; }
+        .chat-input-area { padding: 12px 16px; border-top:1px solid var(--border); display: flex; gap: 10px; flex-wrap: wrap; }
+        .chat-input-area .form-input { flex: 1; min-width: 120px; }
+
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--bg-card); color: var(--text-primary); padding: 12px 24px; border-radius: 12px; border:1px solid var(--border); box-shadow: var(--shadow-lg); display: none; z-index: 999; font-size: 14px; }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 1024px) {
+            .chat-container { flex-direction: column; height: auto; }
+            .chat-list { width: 100%; height: 150px; }
+            .chat-messages { min-height: 300px; }
+        }
+        @media (max-width: 768px) {
+            .login-left { padding: 30px; }
+            .login-right { width: 100%; border-left: none; }
+            .login-slogan { font-size: 28px; }
+            .login-features { grid-template-columns: 1fr; }
+            .sidebar { width: 60px; }
+            .sidebar .logo-text, .sidebar .nav-item span, .sidebar .nav-section-title, .sidebar .user-info { display: none; }
+            .sidebar .nav-item { justify-content: center; padding: 10px; }
+            .sidebar .nav-item .nav-icon { font-size: 20px; }
+            .main-content { margin-left: 60px; padding: 14px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .login-page { flex-direction: column; }
+            .top-bar { flex-direction: column; align-items: flex-start; }
+        }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .product-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========== 登录页 ========== -->
+<div class="login-page" id="loginPage">
+    <div class="login-left">
+        <div class="login-left-content">
+            <div class="login-logo">
+                <div class="login-logo-icon">🚀</div>
+                <div class="login-logo-text"><h1>AI智营</h1><p>智能营销 + 电商管理</p></div>
+            </div>
+            <div class="login-slogan">让营销更智能<br>让管理更高效</div>
+            <div class="login-slogan-sub">AI驱动的全链路经营平台 · 帮您赚钱，也帮您省力</div>
+            <div class="login-features">
+                <div class="login-feature"><div class="login-feature-icon">🎯</div><div class="login-feature-text"><h3>AI智能营销</h3><p>精准获客与转化</p></div></div>
+                <div class="login-feature"><div class="login-feature-icon">📦</div><div class="login-feature-text"><h3>电商全渠道管理</h3><p>多平台订单商品统一</p></div></div>
+                <div class="login-feature"><div class="login-feature-icon">🤖</div><div class="login-feature-text"><h3>AI经营助手</h3><p>数据驱动决策</p></div></div>
+                <div class="login-feature"><div class="login-feature-icon">📈</div><div class="login-feature-text"><h3>增长分析</h3><p>实时洞察商机</p></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="login-right">
+        <div class="login-form-container">
+            <div class="login-form-header"><div class="login-form-title">欢迎登录</div><div class="login-form-subtitle">AI智营 · 一体化经营平台</div></div>
+            <div class="login-form">
+                <div class="form-group"><label class="form-label">账号</label><input type="text" class="form-input" id="loginUsername" placeholder="请输入用户名" value="admin"></div>
+                <div class="form-group"><label class="form-label">密码</label><input type="password" class="form-input" id="loginPassword" placeholder="请输入密码" value="123456"></div>
+                <div class="login-options"><label class="remember-me"><input type="checkbox" checked> 记住我</label><a onclick="alert('请联系管理员重置密码')">忘记密码？</a></div>
+                <button class="login-btn" onclick="handleLogin()">登 录</button>
+                <div class="login-options" style="justify-content:center;margin-top:16px;"><span>还没有账号？</span><a onclick="alert('请联系管理员开通账号')">立即注册</a></div>
+                <div style="text-align:center;margin-top:20px;font-size:12px;color:var(--text-muted);">© 2025 AI智营 | 智能营销+电商管理一体化</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== 主系统 ========== -->
+<div class="app-container" id="appContainer">
+    <div class="sidebar">
+        <div class="sidebar-logo"><div class="logo-icon">🚀</div><div class="logo-text"><h2>AI智营</h2><p>一体化经营平台</p></div></div>
+        <div class="sidebar-nav">
+            <div class="nav-section"><div class="nav-section-title">📊 数据洞察</div>
+                <div class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard')"><span class="nav-icon">📊</span><span class="nav-label">经营看板</span></div>
+            </div>
+            <div class="nav-section"><div class="nav-section-title">📦 电商管理</div>
+                <div class="nav-item" data-page="orders" onclick="switchPage('orders')"><span class="nav-icon">📋</span><span class="nav-label">订单管理</span><span class="nav-badge success" id="orderBadge">23</span></div>
+                <div class="nav-item" data-page="products" onclick="switchPage('products')"><span class="nav-icon">📦</span><span class="nav-label">商品管理</span></div>
+                <div class="nav-item" data-page="platforms" onclick="switchPage('platforms')"><span class="nav-icon">🔗</span><span class="nav-label">平台绑定</span><span class="nav-badge" id="platformBadge">0</span></div>
+            </div>
+            <div class="nav-section"><div class="nav-section-title">🎯 AI营销</div>
+                <div class="nav-item" data-page="discovery" onclick="switchPage('discovery')"><span class="nav-icon">🔍</span><span class="nav-label">智能获客</span></div>
+                <div class="nav-item" data-page="chat" onclick="switchPage('chat')"><span class="nav-icon">💬</span><span class="nav-label">私信营销</span></div>
+                <div class="nav-item" data-page="components" onclick="switchPage('components')"><span class="nav-icon">🧩</span><span class="nav-label">组件管理</span></div>
+                <div class="nav-item" data-page="touchplan" onclick="switchPage('touchplan')"><span class="nav-icon">🎯</span><span class="nav-label">触达计划</span></div>
+                <div class="nav-item" data-page="leads" onclick="switchPage('leads')"><span class="nav-icon">📇</span><span class="nav-label">线索管理</span><span class="nav-badge success" id="leadBadge">5</span></div>
+            </div>
+            <div class="nav-section"><div class="nav-section-title">⚙️ 自动化</div>
+                <div class="nav-item" data-page="automation" onclick="switchPage('automation')"><span class="nav-icon">⚡</span><span class="nav-label">自动互动</span></div>
+                <div class="nav-item" data-page="scheduler" onclick="switchPage('scheduler')"><span class="nav-icon">⏰</span><span class="nav-label">定时任务</span></div>
+                <div class="nav-item" data-page="templates" onclick="switchPage('templates')"><span class="nav-icon">📝</span><span class="nav-label">回复模板</span></div>
+            </div>
+            <div class="nav-section"><div class="nav-section-title">🏢 系统</div>
+                <div class="nav-item" data-page="settings" onclick="switchPage('settings')"><span class="nav-icon">⚙️</span><span class="nav-label">系统配置</span></div>
+                <div class="nav-item" data-page="logs" onclick="switchPage('logs')"><span class="nav-icon">📋</span><span class="nav-label">操作日志</span></div>
+                <div class="nav-item" onclick="handleLogout()"><span class="nav-icon">🚪</span><span class="nav-label">退出登录</span></div>
+            </div>
+        </div>
+        <div class="sidebar-footer"><div class="user-profile"><div class="user-avatar" id="sidebarAvatar">A</div><div class="user-info"><div style="font-size:14px;font-weight:600;" id="sidebarUsername">管理员</div><div style="font-size:11px;color:var(--text-secondary);" id="sidebarRole">超级管理员</div></div></div></div>
+    </div>
+
+    <div class="main-content">
+        <!-- ===== 经营看板 ===== -->
+        <div class="page active" id="page-dashboard">
+            <div class="top-bar"><div><div class="page-title">📊 经营看板</div><div class="page-subtitle">全渠道经营数据 + AI智能分析</div></div><div class="top-actions"><button class="btn btn-primary" onclick="startSystem()">▶️ AI分析</button><button class="btn btn-outline" onclick="refreshData()">🔄 刷新</button></div></div>
+            <div class="stats-grid" id="dashStats">
+                <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" id="dashRevenue">¥18.7k</div><div class="stat-label">今日销售额 <span style="color:var(--success);">↑8.7%</span></div></div>
+                <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value" id="dashOrders">347</div><div class="stat-label">今日订单 <span style="color:var(--success);">+56</span></div></div>
+                <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-value" id="dashProducts">1,283</div><div class="stat-label">在售商品</div></div>
+                <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-value" id="dashLeads">89</div><div class="stat-label">AI识别高意向客户</div></div>
+                <div class="stat-card"><div class="stat-icon">🤖</div><div class="stat-value" id="dashAI率">79.6%</div><div class="stat-label">AI处理率</div></div>
+                <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-value" id="dashGrowth">12.3%</div><div class="stat-label">环比增长</div></div>
+            </div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">📋 AI 经营简报</h3></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="aiBriefContainer">
+                    <div style="background:var(--bg-dark);border-radius:10px;padding:14px;border-left:3px solid var(--success);"><div style="font-weight:600;color:var(--success);">📈 抖音渠道转化率提升12%</div><div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">近3日流量质量上升，建议加大该渠道投放</div></div>
+                    <div style="background:var(--bg-dark);border-radius:10px;padding:14px;border-left:3px solid var(--warning);"><div style="font-weight:600;color:var(--warning);">⚠️ 拼多多退款率上升5.2%</div><div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">建议检查物流时效及商品描述一致性</div></div>
+                    <div style="background:var(--bg-dark);border-radius:10px;padding:14px;border-left:3px solid var(--primary);"><div style="font-weight:600;color:var(--primary-light);">⭐ 高价值客户流失预警</div><div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">8位高消费客户近45天未复购，建议触发召回</div></div>
+                    <div style="background:var(--bg-dark);border-radius:10px;padding:14px;border-left:3px solid var(--accent);"><div style="font-weight:600;color:var(--accent);">💡 套票组合优化建议</div><div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">"门票+玻璃桥"组合销量上升32%，建议推广</div></div>
+                </div>
+            </div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">📋 最近操作</h3></div><div class="log-container" id="dashLogs"></div></div>
+        </div>
+
+        <!-- ===== 订单管理 ===== -->
+        <div class="page" id="page-orders">
+            <div class="top-bar"><div><div class="page-title">📋 订单管理</div><div class="page-subtitle">全渠道订单统一管理</div></div><div class="top-actions"><button class="btn btn-primary" onclick="syncOrders()">🔄 同步订单</button><button class="btn btn-outline" onclick="exportOrders()">📥 导出</button></div></div>
+            <div class="stats-grid" id="orderStats">
+                <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value" id="orderTotal">347</div><div class="stat-label">总订单</div></div>
+                <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" style="color:var(--warning);" id="orderPending">89</div><div class="stat-label">待发货</div></div>
+                <div class="stat-card"><div class="stat-icon">🚚</div><div class="stat-value" style="color:var(--primary-light);" id="orderShipping">156</div><div class="stat-label">运输中</div></div>
+                <div class="stat-card"><div class="stat-icon">⚠️</div><div class="stat-value" style="color:var(--danger);" id="orderRefund">12</div><div class="stat-label">退款/售后</div></div>
+            </div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">订单列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="orderListCount">共 347 条</span></div>
+                <div class="table-container"><table><thead><tr><th>订单号</th><th>商品</th><th>渠道</th><th>金额</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="ordersTableBody">
+                    <tr><td>ORD-0905-001</td><td>云山茶叶礼盒</td><td><span style="color:var(--primary-light);">抖音</span></td><td>¥128</td><td><span class="status-badge success">已支付</span></td><td>14:32</td><td><button class="btn btn-primary btn-sm" onclick="handleOrderAction(this,'发货')">发货</button></td></tr>
+                    <tr><td>ORD-0905-002</td><td>手工竹编包</td><td><span style="color:#b55a1a;">淘宝</span></td><td>¥89</td><td><span class="status-badge warning">待发货</span></td><td>14:15</td><td><button class="btn btn-primary btn-sm" onclick="handleOrderAction(this,'处理')">处理</button></td></tr>
+                    <tr><td>ORD-0905-003</td><td>山核桃仁 250g</td><td><span style="color:#b51a3f;">拼多多</span></td><td>¥45</td><td><span class="status-badge info">已发货</span></td><td>13:50</td><td><button class="btn btn-outline btn-sm" onclick="handleOrderAction(this,'追踪')">追踪</button></td></tr>
+                    <tr><td>ORD-0905-004</td><td>手工皂套装</td><td><span style="color:#0d7c4f;">京东</span></td><td>¥79</td><td><span class="status-badge danger">退款中</span></td><td>13:20</td><td><button class="btn btn-danger btn-sm" onclick="handleOrderAction(this,'处理退款')">处理</button></td></tr>
+                    <tr><td>ORD-0905-005</td><td>云山陶瓷杯</td><td><span style="color:#b55a1a;">淘宝</span></td><td>¥58</td><td><span class="status-badge success">已支付</span></td><td>12:45</td><td><button class="btn btn-primary btn-sm" onclick="handleOrderAction(this,'发货')">发货</button></td></tr>
+                </tbody></table></div>
+            </div>
+        </div>
+
+        <!-- ===== 商品管理 ===== -->
+        <div class="page" id="page-products">
+            <div class="top-bar"><div><div class="page-title">📦 商品管理</div><div class="page-subtitle">跨平台商品统一管理</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addProduct()">➕ 新增商品</button><button class="btn btn-outline" onclick="batchPublish()">📤 批量发布</button></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">商品列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="productCount">共 8 件</span></div>
+                <div class="product-grid" id="productGrid">
+                    <div class="product-card"><div class="icon">🍃</div><div class="name">茶叶礼盒</div><div class="price">¥128</div><div class="status"><span class="status-badge success">在售</span> 库存234</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
+                    <div class="product-card"><div class="icon">👜</div><div class="name">竹编包</div><div class="price">¥89</div><div class="status"><span class="status-badge success">在售</span> 库存187</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
+                    <div class="product-card"><div class="icon">🌰</div><div class="name">山核桃仁</div><div class="price">¥45</div><div class="status"><span class="status-badge success">在售</span> 库存156</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
+                    <div class="product-card"><div class="icon">🧼</div><div class="name">手工皂套装</div><div class="price">¥79</div><div class="status"><span class="status-badge warning">待审核</span> 库存89</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
+                    <div class="product-card"><div class="icon">☕</div><div class="name">陶瓷杯</div><div class="price">¥58</div><div class="status"><span class="status-badge success">在售</span> 库存143</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
+                    <div class="product-card"><div class="icon">🎋</div><div class="name">书法折扇</div><div class="price">¥35</div><div class="status"><span class="status-badge danger">下架</span> 库存0</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-outline btn-sm" onclick="syncProduct()">上架</button></div></div>
+                    <div class="product-card"><div class="icon">🍯</div><div class="name">红糖姜茶</div><div class="price">¥29.9</div><div class="status"><span class="status-badge success">在售</span> 库存210</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
+                    <div class="product-card"><div class="icon">🧣</div><div class="name">国风丝巾</div><div class="price">¥68</div><div class="status"><span class="status-badge success">在售</span> 库存76</div><div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 平台绑定 ===== -->
+        <div class="page" id="page-platforms">
+            <div class="top-bar"><div><div class="page-title">🔗 平台绑定</div><div class="page-subtitle">绑定电商平台账号，统一管理</div></div><div class="top-actions"><button class="btn btn-primary" onclick="showBindingPanel()">➕ 绑定平台</button></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">已绑定平台</h3><span id="boundCount" style="color:var(--text-secondary);">0 个平台</span></div>
+                <div class="table-container"><table><thead><tr><th>平台</th><th>账号名称</th><th>账号ID</th><th>状态</th><th>绑定时间</th><th>操作</th></tr></thead><tbody id="boundPlatformsBody"><tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">暂无绑定平台</td></tr></tbody></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">可用平台</h3></div><div class="platform-grid" id="platformGrid"></div></div>
+        </div>
+
+        <!-- ===== 智能获客 ===== -->
+        <div class="page" id="page-discovery">
+            <div class="top-bar"><div><div class="page-title">🔍 智能获客</div><div class="page-subtitle">AI自动发现目标客户</div></div><div class="top-actions"><button class="btn btn-primary" onclick="startDiscovery()">🔍 开始发现</button></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">发现设置</h3></div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
+                    <div class="form-group"><label class="form-label">目标行业</label><select class="form-select" id="discoveryIndustry"><option>科技数码</option><option>美食餐饮</option><option selected>旅游出行</option><option>美妆时尚</option><option>健康养生</option><option>教育培训</option></select></div>
+                    <div class="form-group"><label class="form-label">最低互动率</label><select class="form-select" id="discoveryEngagement"><option value="1">1% 以上</option><option value="2" selected>2% 以上</option><option value="3">3% 以上</option><option value="5">5% 以上</option></select></div>
+                    <div class="form-group"><label class="form-label">最小粉丝数</label><input type="number" class="form-input" id="discoveryFollowers" value="1000"></div>
+                </div>
+            </div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">发现结果</h3><span id="discoveredCount" style="color:var(--text-secondary);">0 个</span></div>
+                <div id="discoveredList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;"><div style="text-align:center;color:var(--text-secondary);padding:30px;grid-column:1/-1;">点击"开始发现"获取目标客户</div></div>
+            </div>
+        </div>
+
+        <!-- ===== 私信营销 ===== -->
+        <div class="page" id="page-chat">
+            <div class="top-bar"><div><div class="page-title">💬 私信营销</div><div class="page-subtitle">AI智能回复 + 组件发送</div></div><div class="top-actions"><button class="btn btn-outline" onclick="refreshChats()">🔄 刷新</button></div></div>
+            <div class="panel">
+                <div class="chat-container">
+                    <div class="chat-list" id="chatList">
+                        <div class="chat-list-item active" onclick="selectChat(0)"><div style="font-weight:600;">用户A</div><div style="font-size:12px;color:var(--text-secondary);">请问怎么预约？</div></div>
+                        <div class="chat-list-item" onclick="selectChat(1)"><div style="font-weight:600;">用户B</div><div style="font-size:12px;color:var(--text-secondary);">价格多少？</div></div>
+                        <div class="chat-list-item" onclick="selectChat(2)"><div style="font-weight:600;">用户C</div><div style="font-size:12px;color:var(--text-secondary);">想了解加盟</div></div>
+                    </div>
+                    <div class="chat-messages">
+                        <div class="chat-messages-header" id="chatHeader">用户A</div>
+                        <div class="chat-messages-body" id="chatMessages">
+                            <div class="message-bubble message-in">你好，我想咨询一下</div>
+                            <div class="message-bubble message-out">您好，很高兴为您服务！</div>
+                            <div class="message-bubble message-in">请问怎么预约？</div>
+                            <div class="message-bubble message-out">您可以点击下方卡片进行预约哦~</div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" class="form-input" id="chatInput" placeholder="输入回复内容...">
+                            <button class="btn btn-primary" onclick="sendChatMessage()">发送</button>
+                            <button class="btn btn-outline" onclick="sendComponent()">📎 组件</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 组件管理 ===== -->
+        <div class="page" id="page-components">
+            <div class="top-bar"><div><div class="page-title">🧩 组件管理</div><div class="page-subtitle">管理私信组件（留资卡片、预约组件等）</div></div><div class="top-actions"><button class="btn btn-primary" onclick="refreshComponents()">🔄 刷新</button></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">组件列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="componentCount">共 3 个</span></div>
+                <div id="componentsList">
+                    <div class="component-card"><div><div style="font-weight:600;">一键收集电话</div><div style="font-size:13px;color:var(--text-secondary);">线索组件 · CMP001</div></div><div><span class="status-badge success">生效</span><span style="margin-left:12px;font-size:13px;color:var(--text-secondary);">2024-01-15</span><button class="btn btn-outline btn-sm" style="margin-left:12px;" onclick="useComponent()">使用</button></div></div>
+                    <div class="component-card"><div><div style="font-weight:600;">高级在线预约</div><div style="font-size:13px;color:var(--text-secondary);">预约组件 · CMP002</div></div><div><span class="status-badge success">生效</span><span style="margin-left:12px;font-size:13px;color:var(--text-secondary);">2024-01-16</span><button class="btn btn-outline btn-sm" style="margin-left:12px;" onclick="useComponent()">使用</button></div></div>
+                    <div class="component-card"><div><div style="font-weight:600;">企业微信卡片</div><div style="font-size:13px;color:var(--text-secondary);">企微组件 · CMP003</div></div><div><span class="status-badge warning">审核中</span><span style="margin-left:12px;font-size:13px;color:var(--text-secondary);">2024-01-17</span><button class="btn btn-outline btn-sm" style="margin-left:12px;" onclick="useComponent()">使用</button></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 触达计划 ===== -->
+        <div class="page" id="page-touchplan">
+            <div class="top-bar"><div><div class="page-title">🎯 触达计划</div><div class="page-subtitle">短视频评论、直播弹幕自动私信触达</div></div><div class="top-actions"><button class="btn btn-primary" onclick="createTouchPlan()">➕ 新建计划</button></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">计划列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="touchPlanCount">共 2 个</span></div>
+                <div id="touchPlanList">
+                    <div class="plan-card"><div><div style="font-weight:600;">短视频评论高意向跟进</div><div style="font-size:13px;color:var(--text-secondary);">触发: 短视频评论 | 已触达 128人 | 留资 32人</div></div><div><span class="status-badge success">执行中</span><button class="btn btn-outline btn-sm" style="margin-left:12px;" onclick="togglePlan(this)">暂停</button><button class="btn btn-danger btn-sm" style="margin-left:6px;" onclick="deletePlan(this)">删除</button></div></div>
+                    <div class="plan-card"><div><div style="font-weight:600;">直播弹幕跟进</div><div style="font-size:13px;color:var(--text-secondary);">触发: 直播弹幕 | 已触达 56人 | 留资 12人</div></div><div><span class="status-badge warning">已暂停</span><button class="btn btn-primary btn-sm" style="margin-left:12px;" onclick="togglePlan(this)">恢复</button><button class="btn btn-danger btn-sm" style="margin-left:6px;" onclick="deletePlan(this)">删除</button></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 线索管理 ===== -->
+        <div class="page" id="page-leads">
+            <div class="top-bar"><div><div class="page-title">📇 线索管理</div><div class="page-subtitle">AI采集的客户线索统一管理</div></div><div class="top-actions"><button class="btn btn-outline" onclick="exportLeads()">📥 导出</button></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">线索列表</h3><span id="leadsCount" style="color:var(--text-secondary);">0 条</span></div>
+                <div class="table-container"><table><thead><tr><th>姓名</th><th>电话(脱敏)</th><th>来源</th><th>意向</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="leadsTableBody"></tbody></div></div>
+        </div>
+
+        <!-- ===== 自动互动 ===== -->
+        <div class="page" id="page-automation">
+            <div class="top-bar"><div><div class="page-title">⚡ 自动互动</div><div class="page-subtitle">配置自动化关注和回复规则</div></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">互动设置</h3></div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+                    <div class="form-group"><label class="form-label">自动关注</label><label class="toggle-switch"><input type="checkbox" id="autoFollow" checked onchange="updateAutoSetting()"><span class="toggle-slider"></span></label></div>
+                    <div class="form-group"><label class="form-label">自动回复</label><label class="toggle-switch"><input type="checkbox" id="autoReply" checked onchange="updateAutoSetting()"><span class="toggle-slider"></span></label></div>
+                    <div class="form-group"><label class="form-label">操作间隔(秒)</label><input type="number" class="form-input" id="operationInterval" value="5" onchange="updateAutoSetting()"></div>
+                    <div class="form-group"><label class="form-label">每日最大操作数</label><input type="number" class="form-input" id="maxOperations" value="100" onchange="updateAutoSetting()"></div>
+                </div>
+                <div style="margin-top:12px;padding:12px;background:var(--bg-dark);border-radius:8px;font-size:13px;color:var(--text-secondary);">
+                    <span id="autoStatus">✅ 自动互动已开启 | 间隔 5秒 | 每日上限 100次</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 定时任务 ===== -->
+        <div class="page" id="page-scheduler">
+            <div class="top-bar"><div><div class="page-title">⏰ 定时任务</div><div class="page-subtitle">设置定时执行的自动化任务</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addTask()">➕ 新建任务</button></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">任务列表</h3><span style="color:var(--text-secondary);font-size:13px;" id="taskCount">共 2 个</span></div>
+                <div class="table-container"><table><thead><tr><th>任务名称</th><th>执行时间</th><th>平台</th><th>状态</th><th>上次执行</th><th>操作</th></tr></thead><tbody id="tasksTableBody">
+                    <tr><td>每日自动获客</td><td>每天 09:00</td><td>抖音</td><td><span class="status-badge success">执行中</span></td><td>2025-01-20 09:00</td><td><button class="btn btn-outline btn-sm" onclick="toggleTask(this)">暂停</button><button class="btn btn-danger btn-sm" onclick="deleteTask(this)">删除</button></td></tr>
+                    <tr><td>定时私信发送</td><td>每天 14:00</td><td>抖音</td><td><span class="status-badge warning">待执行</span></td><td>2025-01-19 14:00</td><td><button class="btn btn-outline btn-sm" onclick="toggleTask(this)">启动</button><button class="btn btn-danger btn-sm" onclick="deleteTask(this)">删除</button></td></tr>
+                </tbody></table></div>
+            </div>
+        </div>
+
+        <!-- ===== 回复模板 ===== -->
+        <div class="page" id="page-templates">
+            <div class="top-bar"><div><div class="page-title">📝 回复模板</div><div class="page-subtitle">AI自动回复模板管理</div></div><div class="top-actions"><button class="btn btn-primary" onclick="addTemplate()">➕ 新建模板</button></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">模板列表</h3><span id="templateCount" style="color:var(--text-secondary);">0 个</span></div><div id="templatesList"></div></div>
+        </div>
+
+        <!-- ===== 系统配置 ===== -->
+        <div class="page" id="page-settings">
+            <div class="top-bar"><div><div class="page-title">⚙️ 系统配置</div><div class="page-subtitle">配置系统运行参数</div></div><div class="top-actions"><button class="btn btn-primary" onclick="saveSettings()">💾 保存</button></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">基本设置</h3></div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+                    <div class="form-group"><label class="form-label">系统名称</label><input type="text" class="form-input" id="systemName" value="AI智营"></div>
+                    <div class="form-group"><label class="form-label">默认行业</label><select class="form-select" id="defaultIndustry"><option>旅游出行</option><option>科技数码</option><option>美食餐饮</option><option>美妆时尚</option></select></div>
+                    <div class="form-group"><label class="form-label">数据刷新间隔(秒)</label><input type="number" class="form-input" id="refreshInterval" value="30"></div>
+                </div>
+            </div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">AI配置</h3></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div class="form-group"><label class="form-label">AI模型</label><select class="form-select" id="aiModel"><option>DeepSeek V4 (推荐)</option><option>通义千问</option><option>GPT-4o</option><option>Claude 3.5</option></select></div>
+                    <div class="form-group"><label class="form-label">API Key</label><input type="password" class="form-input" id="apiKey" value="sk-xxxxxxxxxxxx"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 操作日志 ===== -->
+        <div class="page" id="page-logs">
+            <div class="top-bar"><div><div class="page-title">📋 操作日志</div><div class="page-subtitle">系统操作记录</div></div><div class="top-actions"><button class="btn btn-outline" onclick="exportLogs()">📥 导出</button><button class="btn btn-danger" onclick="clearLogs()">🗑️ 清空</button></div></div>
+            <div class="panel"><div class="panel-header"><h3 class="panel-title">日志记录</h3></div><div class="log-container" id="mainLogContainer" style="height:400px;"></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 弹窗 ===== -->
+<div class="modal-overlay" id="bindingModal">
+    <div class="modal-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;">绑定平台</h3><button class="btn btn-outline" style="padding:4px 10px;" onclick="closeModal('bindingModal')">✕</button></div>
+        <div class="form-group"><label class="form-label">平台</label><select class="form-select" id="modalPlatformSelect"><option value="">请选择平台</option><option value="douyin">抖音</option><option value="taobao">淘宝</option><option value="pdd">拼多多</option><option value="jd">京东</option></select></div>
+        <div class="form-group"><label class="form-label">账号名称</label><input type="text" class="form-input" id="modalAccountName" placeholder="请输入账号名称"></div>
+        <div class="form-group"><label class="form-label">账号ID</label><input type="text" class="form-input" id="modalAccountId" placeholder="请输入账号ID"></div>
+        <div class="form-group"><label class="form-label">API密钥/Cookie</label><input type="password" class="form-input" id="modalApiKey" placeholder="请输入API密钥"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;"><button class="btn btn-outline" onclick="closeModal('bindingModal')">取消</button><button class="btn btn-primary" onclick="confirmBinding()">✅ 确认绑定</button></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="templateModal">
+    <div class="modal-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;">新建回复模板</h3><button class="btn btn-outline" style="padding:4px 10px;" onclick="closeModal('templateModal')">✕</button></div>
+        <div class="form-group"><label class="form-label">模板名称</label><input type="text" class="form-input" id="templateName" placeholder="请输入模板名称"></div>
+        <div class="form-group"><label class="form-label">模板内容</label><textarea class="form-textarea" id="templateContent" rows="4" placeholder="请输入回复内容..."></textarea></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;"><button class="btn btn-outline" onclick="closeModal('templateModal')">取消</button><button class="btn btn-primary" onclick="confirmAddTemplate()">✅ 确认添加</button></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="taskModal">
+    <div class="modal-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;">新建定时任务</h3><button class="btn btn-outline" style="padding:4px 10px;" onclick="closeModal('taskModal')">✕</button></div>
+        <div class="form-group"><label class="form-label">任务名称</label><input type="text" class="form-input" id="taskName" placeholder="请输入任务名称"></div>
+        <div class="form-group"><label class="form-label">执行时间</label><select class="form-select" id="taskTime"><option>每天 09:00</option><option>每天 14:00</option><option>每天 18:00</option><option>每天 21:00</option></select></div>
+        <div class="form-group"><label class="form-label">平台</label><select class="form-select" id="taskPlatform"><option>抖音</option><option>淘宝</option><option>拼多多</option><option>京东</option></select></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;"><button class="btn btn-outline" onclick="closeModal('taskModal')">取消</button><button class="btn btn-primary" onclick="confirmAddTask()">✅ 确认添加</button></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="planModal">
+    <div class="modal-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;">新建触达计划</h3><button class="btn btn-outline" style="padding:4px 10px;" onclick="closeModal('planModal')">✕</button></div>
+        <div class="form-group"><label class="form-label">计划名称</label><input type="text" class="form-input" id="planName" placeholder="请输入计划名称"></div>
+        <div class="form-group"><label class="form-label">触发类型</label><select class="form-select" id="planTrigger"><option>短视频评论</option><option>直播弹幕</option><option>私信互动</option></select></div>
+        <div class="form-group"><label class="form-label">发送内容</label><textarea class="form-textarea" id="planContent" rows="3" placeholder="请输入私信内容..."></textarea></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;"><button class="btn btn-outline" onclick="closeModal('planModal')">取消</button><button class="btn btn-primary" onclick="confirmAddPlan()">✅ 确认添加</button></div>
+    </div>
+</div>
+
+<script>
+    // ============ 系统状态 ============
+    let systemState = {
+        boundPlatforms: {},
+        discoveredVideos: [],
+        leads: [],
+        templates: [],
+        tasks: [],
+        touchPlans: [],
+        components: [],
+        logs: [],
+        autoFollow: true,
+        autoReply: true,
+        operationInterval: 5,
+        maxOperations: 100,
+        currentChat: 0,
+        stats: { totalVideos: 0, totalUsers: 0, totalReplies: 0, totalLeads: 0, successRate: 0 }
+    };
+
+    const platformInfo = {
+        douyin: { name: '抖音', icon: '🎵' },
+        taobao: { name: '淘宝', icon: '🛒' },
+        pdd: { name: '拼多多', icon: '📦' },
+        jd: { name: '京东', icon: '💎' }
+    };
+
+    // 聊天数据
+    const chatData = [
+        { id: 0, name: '用户A', messages: [
+            { type: 'in', text: '你好，我想咨询一下' },
+            { type: 'out', text: '您好，很高兴为您服务！' },
+            { type: 'in', text: '请问怎么预约？' },
+            { type: 'out', text: '您可以点击下方卡片进行预约哦~' }
+        ]},
+        { id: 1, name: '用户B', messages: [
+            { type: 'in', text: '价格多少？' },
+            { type: 'out', text: '您好，具体价格可以查看我们的套餐详情' }
+        ]},
+        { id: 2, name: '用户C', messages: [
+            { type: 'in', text: '想了解加盟' },
+            { type: 'out', text: '好的，为您发送加盟资料' }
+        ]}
+    ];
+
+    // ============ Toast 提示 ============
+    function showToast(msg) {
+        let toast = document.getElementById('toastMsg');
+        if (!toast) {
+            const div = document.createElement('div');
+            div.id = 'toastMsg';
+            div.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg-card);color:var(--text-primary);padding:12px 24px;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow-lg);z-index:999;font-size:14px;display:none;';
+            document.body.appendChild(div);
+            toast = div;
+        }
+        toast.textContent = msg;
+        toast.style.display = 'block';
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => { toast.style.display = 'none'; }, 2500);
+    }
+
+    // ============ 登录 ============
+    function handleLogin() {
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+        if (!username || !password) { alert('请输入用户名和密码'); return; }
+        if (username === 'admin' && password === '123456') {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('appContainer').classList.add('show');
+            document.getElementById('sidebarAvatar').textContent = 'A';
+            document.getElementById('sidebarUsername').textContent = '管理员';
+            document.getElementById('sidebarRole').textContent = '超级管理员';
+            addLog('success', '✅ 登录成功，欢迎回来！');
+            initSystem();
+        } else { alert('用户名或密码错误'); }
+    }
+
+    function handleLogout() {
+        if (confirm('确认退出登录？')) {
+            document.getElementById('appContainer').classList.remove('show');
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('loginPassword').value = '';
+        }
+    }
+
+    // ============ 页面切换 ============
+    function switchPage(pageName) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        const navItem = document.querySelector(`.nav-item[data-page="${pageName}"]`);
+        if (navItem) navItem.classList.add('active');
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        const pageElement = document.getElementById(`page-${pageName}`);
+        if (pageElement) pageElement.classList.add('active');
+    }
+
+    // ============ 平台管理 ============
+    function showBindingPanel() { openModal('bindingModal'); }
+    function selectPlatform(key) {
+        document.getElementById('modalPlatformSelect').value = key;
+        openModal('bindingModal');
+    }
+    function confirmBinding() {
+        const platformKey = document.getElementById('modalPlatformSelect').value;
+        const accountName = document.getElementById('modalAccountName').value.trim();
+        const accountId = document.getElementById('modalAccountId').value.trim();
+        if (!platformKey || !accountName || !accountId) { alert('请完整填写信息'); return; }
+        systemState.boundPlatforms[platformKey] = { ...platformInfo[platformKey], accountName, accountId, boundAt: new Date().toLocaleString('zh-CN') };
+        updatePlatformUI();
+        addLog('success', `✅ ${platformInfo[platformKey].name} 平台绑定成功`);
+        closeModal('bindingModal');
+        document.getElementById('modalAccountName').value = '';
+        document.getElementById('modalAccountId').value = '';
+        document.getElementById('modalApiKey').value = '';
+        showToast(`✅ ${platformInfo[platformKey].name} 绑定成功`);
+    }
+    function updatePlatformUI() {
+        const grid = document.getElementById('platformGrid');
+        grid.innerHTML = Object.keys(platformInfo).map(key => {
+            const bound = systemState.boundPlatforms[key];
+            return `<div class="platform-card" onclick="selectPlatform('${key}')">
+                <div class="platform-icon">${platformInfo[key].icon}</div>
+                <div class="platform-name">${platformInfo[key].name}</div>
+                <div class="platform-status ${bound?'bound':''}">${bound?'✅ 已绑定':'未绑定'}</div>
+            </div>`;
+        }).join('');
+        const tbody = document.getElementById('boundPlatformsBody');
+        const platforms = Object.values(systemState.boundPlatforms);
+        if (platforms.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-secondary);">暂无绑定平台</td></tr>';
+            document.getElementById('boundCount').textContent = '0 个平台';
+        } else {
+            tbody.innerHTML = platforms.map(p => {
+                const key = Object.keys(systemState.boundPlatforms).find(k => systemState.boundPlatforms[k] === p);
+                return `<tr><td>${p.icon} ${p.name}</td><td>${p.accountName}</td><td>${p.accountId}</td><td><span class="status-badge success">已连接</span></td><td>${p.boundAt}</td><td><button class="btn btn-danger btn-sm" onclick="unbindPlatform('${key}')">解绑</button></td></tr>`;
+            }).join('');
+            document.getElementById('boundCount').textContent = `${platforms.length} 个平台`;
+        }
+        document.getElementById('platformBadge').textContent = platforms.length;
+    }
+    function unbindPlatform(key) {
+        if (confirm(`确认解绑 ${platformInfo[key]?.name || key} 平台？`)) {
+            delete systemState.boundPlatforms[key];
+            updatePlatformUI();
+            addLog('warning', `已解绑 ${platformInfo[key]?.name || key} 平台`);
+            showToast(`已解绑 ${platformInfo[key]?.name || key}`);
+        }
+    }
+
+    // ============ 智能获客 ============
+    function startDiscovery() {
+        const industry = document.getElementById('discoveryIndustry').value;
+        const engagement = document.getElementById('discoveryEngagement').value;
+        const followers = document.getElementById('discoveryFollowers').value;
+        addLog('info', `🔍 开始发现${industry}行业的优质客户... (互动率≥${engagement}%, 粉丝≥${followers})`);
+        systemState.discoveredVideos = [
+            { title: '旅游攻略大全', author: '旅游达人', likes: '18.5K', comments: '3.2K', score: 96 },
+            { title: '最美乡村风景', author: '实战家', likes: '15.2K', comments: '2.8K', score: 94 },
+            { title: '高端酒店推荐', author: '探店博主', likes: '12.8K', comments: '2.1K', score: 92 },
+            { title: '自驾游路线分享', author: '自驾达人', likes: '22.3K', comments: '4.5K', score: 98 },
+            { title: '美食探店Vlog', author: '美食博主', likes: '9.6K', comments: '1.8K', score: 88 }
+        ];
+        systemState.stats.totalVideos += systemState.discoveredVideos.length;
+        const container = document.getElementById('discoveredList');
+        container.innerHTML = systemState.discoveredVideos.map((v, i) => `
+            <div style="background:var(--bg-dark);border-radius:12px;padding:14px;border:1px solid var(--border);text-align:center;transition:var(--transition);cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                <div style="font-size:32px;margin-bottom:4px;">🎬</div>
+                <div style="font-weight:600;font-size:14px;">${v.title}</div>
+                <div style="font-size:13px;color:var(--text-secondary);">👤 ${v.author} | 👍 ${v.likes}</div>
+                <div style="margin-top:6px;"><span class="status-badge success">优质 ${v.score}分</span></div>
+                <div style="margin-top:8px;"><button class="btn btn-primary btn-sm" onclick="addLeadFromDiscovery('${v.title}','${v.author}')">➕ 添加线索</button></div>
+            </div>
+        `).join('');
+        document.getElementById('discoveredCount').textContent = `${systemState.discoveredVideos.length} 个`;
+        addLog('success', `✅ 发现 ${systemState.discoveredVideos.length} 个优质客户`);
+        showToast(`✅ 发现 ${systemState.discoveredVideos.length} 个优质客户`);
+    }
+
+    function addLeadFromDiscovery(title, author) {
+        const phones = ['138****1234', '159****5678', '177****9012', '136****3344', '152****7788'];
+        systemState.leads.push({
+            name: author,
+            phone: phones[Math.floor(Math.random() * phones.length)],
+            source: title,
+            intent: ['高','中','低'][Math.floor(Math.random() * 3)],
+            status: '待跟进',
+            time: new Date().toLocaleString('zh-CN')
+        });
+        updateLeadsTable();
+        addLog('success', `✅ 添加线索：${author} (来自 ${title})`);
+        document.getElementById('leadBadge').textContent = systemState.leads.length;
+        showToast(`✅ 已添加线索：${author}`);
+    }
+
+    // ============ 线索管理 ============
+    function exportLeads() {
+        if (systemState.leads.length === 0) { alert('暂无线索可导出'); return; }
+        const text = systemState.leads.map(l => `${l.name},${l.phone},${l.source},${l.intent},${l.status},${l.time}`).join('\n');
+        const blob = new Blob(['姓名,电话,来源,意向,状态,时间\n' + text], {type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'leads.csv'; a.click();
+        URL.revokeObjectURL(url);
+        addLog('success', '✅ 线索导出成功');
+        showToast('✅ 线索导出成功');
+    }
+    function updateLeadsTable() {
+        const tbody = document.getElementById('leadsTableBody');
+        if (systemState.leads.length === 0) {
+            systemState.leads = [
+                { name: '张先生', phone: '138****1234', source: '抖音评论', intent: '高', status: '待跟进', time: '2025-01-20 10:30' },
+                { name: '李女士', phone: '159****5678', source: '直播弹幕', intent: '中', status: '已联系', time: '2025-01-20 11:15' },
+                { name: '王先生', phone: '177****9012', source: '短视频互动', intent: '高', status: '待跟进', time: '2025-01-20 12:00' }
+            ];
+            systemState.stats.totalLeads = systemState.leads.length;
+        }
+        tbody.innerHTML = systemState.leads.map((l, i) => `
+            <tr>
+                <td>${l.name}</td>
+                <td>${l.phone}</td>
+                <td>${l.source}</td>
+                <td><span class="status-badge ${l.intent === '高' ? 'danger' : l.intent === '中' ? 'warning' : 'info'}">${l.intent}</span></td>
+                <td><span class="status-badge ${l.status === '已联系' ? 'success' : 'warning'}">${l.status}</span></td>
+                <td>${l.time}</td>
+                <td>
+                    <button class="btn btn-success btn-sm" onclick="markLeadContacted(${i})">联系</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteLead(${i})">删除</button>
+                </td>
+            </tr>
+        `).join('');
+        document.getElementById('leadsCount').textContent = `${systemState.leads.length} 条`;
+        document.getElementById('leadBadge').textContent = systemState.leads.length;
+        document.getElementById('dashLeads').textContent = systemState.leads.length;
+    }
+    function markLeadContacted(i) {
+        systemState.leads[i].status = '已联系';
+        updateLeadsTable();
+        addLog('success', `✅ 已联系 ${systemState.leads[i].name}`);
+        showToast(`✅ 已联系 ${systemState.leads[i].name}`);
+    }
+    function deleteLead(i) {
+        if (confirm('确认删除该线索？')) {
+            const name = systemState.leads[i].name;
+            systemState.leads.splice(i, 1);
+            updateLeadsTable();
+            addLog('warning', `已删除线索：${name}`);
+            showToast(`已删除线索：${name}`);
+        }
+    }
+
+    // ============ 私信营销 ============
+    function selectChat(index) {
+        systemState.currentChat = index;
+        document.querySelectorAll('.chat-list-item').forEach((el, i) => el.classList.toggle('active', i === index));
+        const chat = chatData[index];
+        document.getElementById('chatHeader').textContent = chat.name;
+        document.getElementById('chatMessages').innerHTML = chat.messages.map(m =>
+            `<div class="message-bubble ${m.type === 'in' ? 'message-in' : 'message-out'}">${m.text}</div>`
+        ).join('');
+    }
+
+    function sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text) { showToast('⚠️ 请输入内容'); return; }
+        const chat = chatData[systemState.currentChat];
+        chat.messages.push({ type: 'out', text });
+        selectChat(systemState.currentChat);
+        input.value = '';
+        addLog('info', `💬 发送私信：${text}`);
+        showToast(`✅ 已发送私信`);
+        // 模拟AI回复
+        setTimeout(() => {
+            const replies = ['好的，收到您的问题，我会尽快处理', '感谢您的咨询，请问还有其他问题吗？', '已收到您的消息，正在为您查询', '您好，这个问题我来帮您解答'];
+            const reply = replies[Math.floor(Math.random() * replies.length)];
+            chat.messages.push({ type: 'in', text: reply });
+            selectChat(systemState.currentChat);
+            addLog('info', `🤖 AI自动回复：${reply}`);
+            showToast(`🤖 AI回复：${reply.slice(0, 20)}...`);
+        }, 1200);
+    }
+
+    function sendComponent() {
+        const chat = chatData[systemState.currentChat];
+        chat.messages.push({ type: 'out', text: '📎 [组件] 一键收集电话卡片' });
+        selectChat(systemState.currentChat);
+        addLog('success', '✅ 已发送组件消息');
+        showToast('✅ 组件消息已发送');
+    }
+
+    function refreshChats() {
+        addLog('info', '🔄 刷新私信会话...');
+        setTimeout(() => { addLog('success', '✅ 会话列表已更新'); showToast('✅ 会话已刷新'); }, 1000);
+    }
+
+    // ============ 组件管理 ============
+    function refreshComponents() {
+        addLog('success', '✅ 组件列表已刷新');
+        showToast('✅ 组件已刷新');
+    }
+    function useComponent() {
+        sendComponent();
+    }
+
+    // ============ 触达计划 ============
+    function createTouchPlan() {
+        document.getElementById('planName').value = '';
+        document.getElementById('planContent').value = '';
+        openModal('planModal');
+    }
+    function confirmAddPlan() {
+        const name = document.getElementById('planName').value.trim();
+        const trigger = document.getElementById('planTrigger').value;
+        const content = document.getElementById('planContent').value.trim();
+        if (!name || !content) { alert('请完整填写信息'); return; }
+        systemState.touchPlans.push({ name, trigger, content, status: '执行中', sendCnt: 0, clueCnt: 0 });
+        updateTouchPlanList();
+        closeModal('planModal');
+        addLog('success', `✅ 创建触达计划：${name}`);
+        showToast(`✅ 创建触达计划：${name}`);
+    }
+    function updateTouchPlanList() {
+        const container = document.getElementById('touchPlanList');
+        if (systemState.touchPlans.length === 0) {
+            systemState.touchPlans = [
+                { name: '短视频评论高意向跟进', trigger: '短视频评论', content: '您好，看到您评论，留个联系方式吧', status: '执行中', sendCnt: 128, clueCnt: 32 },
+                { name: '直播弹幕跟进', trigger: '直播弹幕', content: '您好，感谢观看直播，点击卡片领取优惠', status: '已暂停', sendCnt: 56, clueCnt: 12 }
+            ];
+        }
+        container.innerHTML = systemState.touchPlans.map((p, i) => `
+            <div class="plan-card">
+                <div>
+                    <div style="font-weight:600;">${p.name}</div>
+                    <div style="font-size:13px;color:var(--text-secondary);">触发: ${p.trigger} | 已触达 ${p.sendCnt}人 | 留资 ${p.clueCnt}人</div>
+                </div>
+                <div>
+                    <span class="status-badge ${p.status === '执行中' ? 'success' : 'warning'}">${p.status}</span>
+                    <button class="btn ${p.status === '执行中' ? 'btn-outline' : 'btn-primary'} btn-sm" style="margin-left:8px;" onclick="togglePlan(${i})">${p.status === '执行中' ? '暂停' : '恢复'}</button>
+                    <button class="btn btn-danger btn-sm" style="margin-left:4px;" onclick="deletePlan(${i})">删除</button>
+                </div>
+            </div>
+        `).join('');
+        document.getElementById('touchPlanCount').textContent = `共 ${systemState.touchPlans.length} 个`;
+    }
+    function togglePlan(i) {
+        systemState.touchPlans[i].status = systemState.touchPlans[i].status === '执行中' ? '已暂停' : '执行中';
+        updateTouchPlanList();
+        addLog('warning', `触达计划 "${systemState.touchPlans[i].name}" 已${systemState.touchPlans[i].status}`);
+        showToast(`触达计划已${systemState.touchPlans[i].status}`);
+    }
+    function deletePlan(i) {
+        if (confirm('确认删除该触达计划？')) {
+            const name = systemState.touchPlans[i].name;
+            systemState.touchPlans.splice(i, 1);
+            updateTouchPlanList();
+            addLog('warning', `已删除触达计划：${name}`);
+            showToast(`已删除：${name}`);
+        }
+    }
+    function togglePlanByBtn(btn) {
+        const card = btn.closest('.plan-card');
+        const name = card.querySelector('div:first-child div:first-child')?.textContent || '';
+        const idx = systemState.touchPlans.findIndex(p => p.name === name);
+        if (idx !== -1) togglePlan(idx);
+    }
+
+    // ============ 回复模板 ============
+    function addTemplate() {
+        document.getElementById('templateName').value = '';
+        document.getElementById('templateContent').value = '';
+        openModal('templateModal');
+    }
+    function confirmAddTemplate() {
+        const name = document.getElementById('templateName').value.trim();
+        const content = document.getElementById('templateContent').value.trim();
+        if (!name || !content) { alert('请完整填写模板信息'); return; }
+        systemState.templates.push({ name, content });
+        updateTemplatesList();
+        closeModal('templateModal');
+        addLog('success', `✅ 创建模板：${name}`);
+        showToast(`✅ 创建模板：${name}`);
+    }
+    function updateTemplatesList() {
+        const container = document.getElementById('templatesList');
+        if (systemState.templates.length === 0) {
+            systemState.templates = [
+                { name: '感谢关注', content: '感谢您的关注！期待更多精彩内容分享～' },
+                { name: '产品咨询', content: '您好，您咨询的产品目前有优惠活动，详情请点击链接查看' }
+            ];
+        }
+        container.innerHTML = systemState.templates.map((t, i) => `
+            <div style="background:var(--bg-dark);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                <div><div style="font-weight:600;">${t.name}</div><div style="font-size:13px;color:var(--text-secondary);">${t.content}</div></div>
+                <div>
+                    <button class="btn btn-primary btn-sm" onclick="useTemplate(${i})">使用</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteTemplate(${i})">删除</button>
+                </div>
+            </div>
+        `).join('');
+        document.getElementById('templateCount').textContent = `${systemState.templates.length} 个`;
+    }
+    function useTemplate(i) {
+        const content = systemState.templates[i].content;
+        document.getElementById('chatInput').value = content;
+        addLog('success', `✅ 已加载模板：${systemState.templates[i].name}`);
+        showToast(`✅ 已加载模板：${systemState.templates[i].name}`);
+    }
+    function deleteTemplate(i) {
+        if (confirm('确认删除该模板？')) {
+            const name = systemState.templates[i].name;
+            systemState.templates.splice(i, 1);
+            updateTemplatesList();
+            addLog('warning', `已删除模板：${name}`);
+            showToast(`已删除：${name}`);
+        }
+    }
+
+    // ============ 自动互动 ============
+    function updateAutoSetting() {
+        const follow = document.getElementById('autoFollow').checked;
+        const reply = document.getElementById('autoReply').checked;
+        const interval = document.getElementById('operationInterval').value;
+        const maxOps = document.getElementById('maxOperations').value;
+        systemState.autoFollow = follow;
+        systemState.autoReply = reply;
+        systemState.operationInterval = parseInt(interval) || 5;
+        systemState.maxOperations = parseInt(maxOps) || 100;
+        document.getElementById('autoStatus').textContent =
+            `${follow && reply ? '✅' : '⚠️'} 自动互动 ${follow && reply ? '已开启' : '部分关闭'} | 间隔 ${systemState.operationInterval}秒 | 每日上限 ${systemState.maxOperations}次`;
+        addLog('info', `⚡ 自动互动设置已更新`);
+        showToast('⚡ 自动互动设置已保存');
+    }
+
+    // ============ 定时任务 ============
+    function addTask() {
+        document.getElementById('taskName').value = '';
+        openModal('taskModal');
+    }
+    function confirmAddTask() {
+        const name = document.getElementById('taskName').value.trim();
+        const time = document.getElementById('taskTime').value;
+        const platform = document.getElementById('taskPlatform').value;
+        if (!name) { alert('请填写任务名称'); return; }
+        systemState.tasks.push({ name, time, platform, status: '待执行', lastRun: '-' });
+        updateTasksTable();
+        closeModal('taskModal');
+        addLog('success', `✅ 创建定时任务：${name}`);
+        showToast(`✅ 创建任务：${name}`);
+    }
+    function updateTasksTable() {
+        const tbody = document.getElementById('tasksTableBody');
+        if (systemState.tasks.length === 0) {
+            systemState.tasks = [
+                { name: '每日自动获客', time: '每天 09:00', platform: '抖音', status: '执行中', lastRun: '2025-01-20 09:00' },
+                { name: '定时私信发送', time: '每天 14:00', platform: '抖音', status: '待执行', lastRun: '2025-01-19 14:00' }
+            ];
+        }
+        tbody.innerHTML = systemState.tasks.map((t, i) => `
+            <tr>
+                <td>${t.name}</td>
+                <td>${t.time}</td>
+                <td>${t.platform}</td>
+                <td><span class="status-badge ${t.status === '执行中' ? 'success' : 'warning'}">${t.status}</span></td>
+                <td>${t.lastRun}</td>
+                <td>
+                    <button class="btn btn-outline btn-sm" onclick="toggleTask(${i})">${t.status === '执行中' ? '暂停' : '启动'}</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteTask(${i})">删除</button>
+                </td>
+            </tr>
+        `).join('');
+        document.getElementById('taskCount').textContent = `共 ${systemState.tasks.length} 个`;
+    }
+    function toggleTask(i) {
+        systemState.tasks[i].status = systemState.tasks[i].status === '执行中' ? '已暂停' : '执行中';
+        updateTasksTable();
+        addLog('warning', `任务 "${systemState.tasks[i].name}" 已${systemState.tasks[i].status}`);
+        showToast(`任务已${systemState.tasks[i].status}`);
+    }
+    function toggleTaskByBtn(btn) {
+        const row = btn.closest('tr');
+        const name = row?.querySelector('td:first-child')?.textContent || '';
+        const idx = systemState.tasks.findIndex(t => t.name === name);
+        if (idx !== -1) toggleTask(idx);
+    }
+    function deleteTask(i) {
+        if (confirm('确认删除该任务？')) {
+            const name = systemState.tasks[i].name;
+            systemState.tasks.splice(i, 1);
+            updateTasksTable();
+            addLog('warning', `已删除任务：${name}`);
+            showToast(`已删除：${name}`);
+        }
+    }
+
+    // ============ 订单/商品操作 ============
+    function syncOrders() {
+        addLog('success', '✅ 订单同步完成，更新 23 笔');
+        document.getElementById('orderBadge').textContent = '23';
+        showToast('✅ 订单同步完成，更新23笔');
+    }
+    function exportOrders() {
+        addLog('success', '✅ 订单导出成功');
+        showToast('✅ 订单导出成功');
+    }
+    function addProduct() {
+        const name = prompt('请输入商品名称：', `新品${document.querySelectorAll('.product-card').length + 1}`);
+        if (name) {
+            addLog('success', `✅ 新增商品：${name}`);
+            const grid = document.getElementById('productGrid');
+            const count = document.querySelectorAll('.product-card').length + 1;
+            grid.innerHTML += `
+                <div class="product-card">
+                    <div class="icon">📦</div>
+                    <div class="name">${name}</div>
+                    <div class="price">¥0</div>
+                    <div class="status"><span class="status-badge warning">草稿</span> 库存0</div>
+                    <div class="actions"><button class="btn btn-outline btn-sm" onclick="editProduct()">编辑</button><button class="btn btn-primary btn-sm" onclick="syncProduct()">同步</button></div>
+                </div>
+            `;
+            document.getElementById('productCount').textContent = `共 ${document.querySelectorAll('.product-card').length} 件`;
+            showToast(`✅ 新增商品：${name}`);
+        }
+    }
+    function batchPublish() {
+        addLog('success', '✅ 批量发布到抖音、淘宝、拼多多、京东');
+        showToast('✅ 批量发布成功');
+    }
+    function editProduct() {
+        addLog('info', '📝 打开商品编辑');
+        showToast('📝 打开商品编辑');
+    }
+    function syncProduct() {
+        addLog('success', '✅ 商品同步到所有平台');
+        showToast('✅ 商品同步成功');
+    }
+    function handleOrderAction(btn, action) {
+        const row = btn.closest('tr');
+        const orderId = row ? row.querySelector('td:first-child').textContent : '订单';
+        addLog('success', `✅ ${orderId} ${action}成功`);
+        btn.textContent = '已完成';
+        btn.className = 'btn btn-outline btn-sm';
+        btn.disabled = true;
+        showToast(`✅ ${orderId} ${action}成功`);
+    }
+
+    // ============ 系统操作 ============
+    function startSystem() {
+        addLog('success', '🚀 AI分析引擎启动...');
+        showToast('🚀 AI分析引擎启动...');
+        setTimeout(() => {
+            addLog('success', '✅ 分析完成，发现3条增长建议');
+            const container = document.getElementById('aiBriefContainer');
+            container.innerHTML += `
+                <div style="background:var(--bg-dark);border-radius:10px;padding:14px;border-left:3px solid var(--primary);grid-column:1/2;">
+                    <div style="font-weight:600;color:var(--primary-light);">📊 新发现：抖音渠道ROI提升15%</div>
+                    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">建议增加抖音投放预算，预计可提升整体GMV 8%</div>
+                </div>
+            `;
+            showToast('✅ AI分析完成，发现3条增长建议');
+        }, 2000);
+    }
+    function refreshData() {
+        addLog('info', '🔄 数据刷新中...');
+        showToast('🔄 数据刷新中...');
+        setTimeout(() => {
+            addLog('success', '✅ 数据已更新');
+            const orders = 347 + Math.floor(Math.random() * 20);
+            document.getElementById('dashOrders').textContent = orders;
+            document.getElementById('dashRevenue').textContent = '¥' + (18.7 + Math.random() * 1.5).toFixed(1) + 'k';
+            showToast('✅ 数据已更新');
+        }, 1000);
+    }
+    function saveSettings() {
+        const name = document.getElementById('systemName').value;
+        const interval = document.getElementById('refreshInterval').value;
+        addLog('success', `✅ 配置已保存：系统名称=${name}，刷新间隔=${interval}秒`);
+        showToast('✅ 配置已保存');
+    }
+
+    // ============ 弹窗 ============
+    function openModal(id) { document.getElementById(id).classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    // ============ 日志 ============
+    function addLog(type, message) {
+        const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+        const logEntry = { time, type, message };
+        systemState.logs.push(logEntry);
+        const mainContainer = document.getElementById('mainLogContainer');
+        const dashContainer = document.getElementById('dashLogs');
+        if (mainContainer) appendLogEntry(mainContainer, logEntry);
+        if (dashContainer) appendLogEntry(dashContainer, logEntry);
+    }
+    function appendLogEntry(container, entry) {
+        const div = document.createElement('div');
+        div.className = 'log-entry';
+        let cls = 'log-info';
+        if (entry.type === 'success') cls = 'log-success';
+        else if (entry.type === 'warning') cls = 'log-warning';
+        else if (entry.type === 'error') cls = 'log-error';
+        div.innerHTML = `<span class="log-time">[${entry.time}]</span><span class="${cls}">${entry.message}</span>`;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+    }
+    function clearLogs() {
+        if (confirm('确认清空所有日志？')) {
+            systemState.logs = [];
+            document.getElementById('mainLogContainer').innerHTML = '';
+            document.getElementById('dashLogs').innerHTML = '';
+            addLog('info', '🗑️ 日志已清空');
+            showToast('🗑️ 日志已清空');
+        }
+    }
+    function exportLogs() {
+        if (systemState.logs.length === 0) { alert('暂无日志可导出'); return; }
+        const text = systemState.logs.map(l => `[${l.time}] ${l.message}`).join('\n');
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `logs_${new Date().toISOString().slice(0,10)}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+        addLog('success', '✅ 日志导出成功');
+        showToast('✅ 日志导出成功');
+    }
+
+    // ============ 初始化 ============
+    function initSystem() {
+        updatePlatformUI();
+        updateLeadsTable();
+        updateTemplatesList();
+        updateTasksTable();
+        updateTouchPlanList();
+        updateAutoSetting();
+        selectChat(0);
+        addLog('info', '🚀 系统初始化完成，欢迎使用AI智营');
+        // 更新统计数据
+        document.getElementById('dashOrders').textContent = '347';
+        document.getElementById('dashRevenue').textContent = '¥18.7k';
+        document.getElementById('dashProducts').textContent = '1,283';
+        document.getElementById('dashLeads').textContent = systemState.leads.length;
+        document.getElementById('dashAI率').textContent = '79.6%';
+        document.getElementById('dashGrowth').textContent = '12.3%';
+        document.getElementById('orderBadge').textContent = '23';
+        document.getElementById('leadBadge').textContent = systemState.leads.length;
+    }
+
+    // 页面加载时初始化平台网格
+    document.addEventListener('DOMContentLoaded', () => {
+        const grid = document.getElementById('platformGrid');
+        if (grid) {
+            grid.innerHTML = Object.keys(platformInfo).map(key => `
+                <div class="platform-card" onclick="selectPlatform('${key}')">
+                    <div class="platform-icon">${platformInfo[key].icon}</div>
+                    <div class="platform-name">${platformInfo[key].name}</div>
+                    <div class="platform-status">未绑定</div>
+                </div>
+            `).join('');
+        }
+        // 初始化日志容器
+        const mainLog = document.getElementById('mainLogContainer');
+        if (mainLog) mainLog.innerHTML = '';
+        const dashLog = document.getElementById('dashLogs');
+        if (dashLog) dashLog.innerHTML = '';
+    });
+</script>
+</body>
+</html>
